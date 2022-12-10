@@ -9,7 +9,7 @@ import { QueryClientProvider } from "react-query";
 import { useIsConnected } from "./src/stores/useIsConnected";
 import { toastConfig } from "./src/lib/defaultToastConfig";
 import { queryClient } from "./src/lib/queryClient";
-import { Main } from "./src/Main";
+import { MainNavigator } from "./src/MainNavigator";
 
 if (Text.defaultProps == null) {
   Text.defaultProps = {};
@@ -22,7 +22,7 @@ if (TextInput.defaultProps == null) {
 }
 
 const App = () => {
-  const { connected, setConnected } = useIsConnected((s) => s);
+  const { setConnected } = useIsConnected((s) => s);
 
   const [fontsLoaded] = useFonts({
     "Inter-Light": require("./src/assets/fonts/Inter-Light.ttf"),
@@ -47,7 +47,7 @@ const App = () => {
     <SafeAreaProvider>
       <QueryClientProvider client={queryClient}>
         <SafeAreaView />
-        <Main />
+        <MainNavigator />
         <Toast
           config={toastConfig}
           onPress={() => Toast.hide()}
