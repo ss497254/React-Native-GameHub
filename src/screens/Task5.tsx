@@ -1,18 +1,41 @@
-import React from "react";
-import { TaskInstructionView } from "../components/TaskInstructionView";
-import { task5 } from "../constants/tasks";
+import React, { useEffect, useState } from "react";
+import { View } from "react-native";
 import { Text } from "react-native-paper";
-import { colors } from "../constants/AppStyle";
+import { Task5Game } from "../components/Games/Task5Game";
+import { GameScreen } from "../components/GameScreen";
+import { useCountDown } from "../stores/useCountdown";
 
 const Task5 = () => {
+  const [a, reset] = useState(false);
+  const { countDown, startCountDown } = useCountDown((s) => s);
+
+  useEffect(() => {
+    const clearCountDown = startCountDown(4);
+    return clearCountDown;
+  }, [a]);
+
+  let tiles = 8,
+    grid = 7;
+
   return (
-    <TaskInstructionView task={task5}>
-      <Text variant="headlineSmall" style={{ color: colors["gray-700"] }}>
-        You will see a maze displayed.{"\n\n"}Drag the red ball to collect all
-        the cherries, then exit at the letter E.{"\n\n"}You can click on the “I
-        Give Up” button at any time to end this task.
+    <GameScreen key={a} reset={reset}>
+      <Text style={{ fontSize: 30, fontWeight: "700", marginVertical: 40 }}>
+        {countDown.length > 0 ? countDown : "Start"}
       </Text>
-    </TaskInstructionView>
+      <View
+        style={{
+          marginVertical: 20,
+          flexDirection: "row",
+          width: 300,
+        }}
+      >
+        <Text style={{ flex: 1 }} variant="titleMedium">
+          Tiles: {tiles}
+        </Text>
+        <Text variant="titleMedium">Grid: {grid}</Text>
+      </View>
+      <Task5Game tiles={tiles} grid={grid} visible={countDown.length > 0} />
+    </GameScreen>
   );
 };
 

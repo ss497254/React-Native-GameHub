@@ -1,17 +1,17 @@
-import { useRoute } from "@react-navigation/core";
 import { LinearGradient } from "expo-linear-gradient";
-import React from "react";
+import React, { useRef } from "react";
 import { StatusBar, StyleSheet, View } from "react-native";
 import { Surface, Text, TouchableRipple } from "react-native-paper";
+import { useActivityLog } from "../stores/useActivityLog";
 import { colors, radius } from "../constants/AppStyle";
 import { task1, task2, task3, task4, task5 } from "../constants/tasks";
 
 const setStatusbarColor = (name: string) => {
-  if (name === "Task1") return task1.color;
-  if (name === "Task2") return task2.color;
-  if (name === "Task3") return task3.color;
-  if (name === "Task4") return task4.color;
-  if (name === "Task5") return task5.color;
+  if (name.includes("Task 1")) return task1.color;
+  if (name.includes("Task 2")) return task2.color;
+  if (name.includes("Task 3")) return task3.color;
+  if (name.includes("Task 4")) return task4.color;
+  if (name.includes("Task 5")) return task5.color;
 
   return colors["blue-500"];
 };
@@ -64,13 +64,24 @@ const Tab = ({ title, color, progress, screen, navigate, num, icon }: any) => (
 
 const Tasks = [task1, task2, task3, task4, task5];
 
-export const MainPage = ({ navigation }: any) => {
+export const HomePage = ({ navigation }: any) => {
+  const { addActivity } = useActivityLog((s) => s);
+  const ref = useRef("");
+
   React.useEffect(() => {
     const unsubscribe = navigation.addListener("state", ({ data }: any) => {
-      if (!data || !data.state || data.state.length === 0) return;
-      const { name } = data.state.routes[data.state.index];
+      const name = data.state.routeNames[data.state.index];
+
+      if (ref.current === name) return;
+
+      ref.current = name;
 
       StatusBar.setBackgroundColor(setStatusbarColor(name));
+
+      addActivity({
+        timestamp: new Date().getTime(),
+        message: "Moved to Screen " + name,
+      });
     });
 
     return unsubscribe;

@@ -25,7 +25,6 @@ if ((TextInput as any).defaultProps == null) {
 
 const App = () => {
   const { setConnected } = useNetworkStatus((s) => s);
-  const { loadActivity } = useActivityLog((s) => s);
 
   const [fontsLoaded] = useFonts({
     "Inter-Light": require("./src/assets/fonts/Inter-Light.ttf"),
@@ -34,7 +33,7 @@ const App = () => {
   });
 
   useEffect(() => {
-    if (!fontsLoaded) loadActivity();
+    // if (!fontsLoaded) {}
 
     const unsubscribe = NetInfo.addEventListener((state) => {
       const { isConnected, isInternetReachable } = state;

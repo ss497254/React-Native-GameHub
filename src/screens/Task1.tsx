@@ -1,19 +1,41 @@
-import React from "react";
-import { TaskInstructionView } from "../components/TaskInstructionView";
-import { task1 } from "../constants/tasks";
+import React, { useEffect, useState } from "react";
+import { View } from "react-native";
 import { Text } from "react-native-paper";
-import { colors } from "../constants/AppStyle";
+import { Task1Game } from "../components/Games/Task1Game";
+import { GameScreen } from "../components/GameScreen";
+import { useCountDown } from "../stores/useCountdown";
 
 const Task1 = () => {
+  const [a, reset] = useState(false);
+  const { countDown, startCountDown } = useCountDown((s) => s);
+
+  useEffect(() => {
+    const clearCountDown = startCountDown(4);
+    return clearCountDown;
+  }, [a]);
+
+  let tiles = 8,
+    grid = 7;
+
   return (
-    <TaskInstructionView task={task1}>
-      <Text variant="headlineSmall" style={{ color: colors["gray-700"] }}>
-        You will see a blue grid with some green squares.{"\n\n"}Remember the
-        locations of the green squares.{"\n\n"}After the green squares
-        disappear, tap on the squares where they used to be.{"\n\n"}We will move
-        on to the next task after two mistakes in a row.
+    <GameScreen key={a} reset={reset}>
+      <Text style={{ fontSize: 30, fontWeight: "700", marginVertical: 40 }}>
+        {countDown.length > 0 ? countDown : "Start"}
       </Text>
-    </TaskInstructionView>
+      <View
+        style={{
+          marginVertical: 20,
+          flexDirection: "row",
+          width: 300,
+        }}
+      >
+        <Text style={{ flex: 1 }} variant="titleMedium">
+          Tiles: {tiles}
+        </Text>
+        <Text variant="titleMedium">Grid: {grid}</Text>
+      </View>
+      <Task1Game tiles={tiles} grid={grid} visible={countDown.length > 0} />
+    </GameScreen>
   );
 };
 

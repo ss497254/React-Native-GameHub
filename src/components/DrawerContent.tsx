@@ -11,7 +11,7 @@ const DrawerItemsData = [
     label: "Home",
     activeIcon: "home-variant",
     icon: "home-variant-outline",
-    action: "MainPage",
+    action: "Home Page",
   },
   {
     label: "Activity Log",

@@ -16,31 +16,10 @@ export const useActivityLog = create(
     },
     (set) => ({
       addActivity: (x: Activity) => {
-        set((state) => {
-          state.activities.push(x);
-          AsyncStorage.setItem(
-            activityKey,
-            JSON.stringify(state.activities)
-          ).catch();
-
-          return { activities: state.activities };
-        });
+        set((state) => ({ activities: [...state.activities, x] }));
       },
-      loadActivity: async () => {
-        try {
-          let activities = (await AsyncStorage.getItem(activityKey)) || "[]";
-
-          if (activities && activities.startsWith("[")) {
-            set((state) => ({
-              activities: [
-                ...(JSON.parse(activities) as Activity[]),
-                ...state.activities,
-              ],
-            }));
-          } else {
-            set({ activities: [] });
-          }
-        } catch {}
+      clearActivityLog: () => {
+        set({ activities: [] });
       },
     })
   )

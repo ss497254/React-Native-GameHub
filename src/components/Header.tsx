@@ -3,20 +3,23 @@ import { View } from "react-native";
 import { Text, IconButton } from "react-native-paper";
 import { colors } from "../constants/AppStyle";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import type { DrawerHeaderProps } from "@react-navigation/drawer";
 
-export const Header = ({ navigation, back = false, title = "CREaiTORS" }) => {
+export const Header = ({
+  navigation,
+  back = false,
+  title = "CREaiTORS",
+}: DrawerHeaderProps & { back: boolean; title: string }) => {
   const inset = useSafeAreaInsets();
 
   return (
     <View
       style={{
         height: 55,
-        borderBottomColor: colors["gray-300"],
+        borderBottomColor: colors["gray-500"],
         borderBottomWidth: 0.5,
         position: "relative",
         marginTop: inset.bottom,
-        // borderTopColor: colors["gray-300"],
-        // borderTopWidth: 0.5,
       }}
     >
       {back ? (

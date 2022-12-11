@@ -1,21 +1,41 @@
-import React from "react";
-import { TaskInstructionView } from "../components/TaskInstructionView";
-import { task3 } from "../constants/tasks";
+import React, { useEffect, useState } from "react";
+import { View } from "react-native";
 import { Text } from "react-native-paper";
-import { colors } from "../constants/AppStyle";
+import { Task3Game } from "../components/Games/Task3Game";
+import { GameScreen } from "../components/GameScreen";
+import { useCountDown } from "../stores/useCountdown";
 
 const Task3 = () => {
+  const [a, reset] = useState(false);
+  const { countDown, startCountDown } = useCountDown((s) => s);
+
+  useEffect(() => {
+    const clearCountDown = startCountDown(4);
+    return clearCountDown;
+  }, [a]);
+
+  let tiles = 8,
+    grid = 7;
+
   return (
-    <TaskInstructionView task={task3}>
-      <Text variant="headlineSmall" style={{ color: colors["gray-700"] }}>
-        You will see a few grey cards. There may be an item behind each card.
-        {"\n\n"}
-        The cards with items will flip one by one.{"\n\n"}
-        An item will appear in the middle of the screen. Click on the grey card
-        with matching item.{"\n\n"}
-        We will move on to the next task after two mistakes in a row.{"\n\n"}
+    <GameScreen key={a} reset={reset}>
+      <Text style={{ fontSize: 30, fontWeight: "700", marginVertical: 40 }}>
+        {countDown.length > 0 ? countDown : "Start"}
       </Text>
-    </TaskInstructionView>
+      <View
+        style={{
+          marginVertical: 20,
+          flexDirection: "row",
+          width: 300,
+        }}
+      >
+        <Text style={{ flex: 1 }} variant="titleMedium">
+          Tiles: {tiles}
+        </Text>
+        <Text variant="titleMedium">Grid: {grid}</Text>
+      </View>
+      <Task3Game tiles={tiles} grid={grid} visible={countDown.length > 0} />
+    </GameScreen>
   );
 };
 

@@ -12,14 +12,17 @@ import { DrawerContent } from "./components/DrawerContent";
 import { Header } from "./components/Header";
 import { colors, fonts } from "./constants/AppStyle";
 import { navigationRef } from "./navigation/RootNavigation";
-import { MainPage } from "./screens/MainPage";
+import { HomePage } from "./screens/HomePage";
 import Task1 from "./screens/Task1";
 import Task2 from "./screens/Task2";
 import Task3 from "./screens/Task3";
 import Task4 from "./screens/Task4";
 import Task5 from "./screens/Task5";
 import ActivityLogs from "./screens/ActivityLogs";
+// import A from "./screens/A";
 import { useActivityLog } from "./stores/useActivityLog";
+import { task1, task2, task3, task4, task5 } from "./constants/tasks";
+import { TaskInstructionView } from "./components/TaskInstructionView";
 
 const Drawer = createDrawerNavigator();
 
@@ -46,6 +49,9 @@ const navigatorTheme = {
   },
 };
 
+const tasks = [task1, task2, task3, task5, task4];
+const games = [Task1, Task2, Task3, Task4, Task5];
+
 export const MainNavigator = () => {
   const { addActivity } = useActivityLog((s) => s);
 
@@ -64,49 +70,35 @@ export const MainNavigator = () => {
         linking={{ prefixes: ["cece://", "https://creaitors.vercel.app"] }}
       >
         <Drawer.Navigator
-          initialRouteName="MainPage"
+          initialRouteName="Home Page"
           drawerContent={DrawerContent}
         >
           <Drawer.Screen
-            name="MainPage"
+            name="Home Page"
             options={{ headerShown: false }}
-            component={MainPage}
+            component={HomePage}
           />
-          <Drawer.Screen
-            name="Task1"
-            options={{
-              header: (props) => <Header {...props} back title="Task 1" />,
-            }}
-            component={Task1}
-          />
-          <Drawer.Screen
-            name="Task2"
-            options={{
-              header: (props) => <Header {...props} back title="Task 2" />,
-            }}
-            component={Task2}
-          />
-          <Drawer.Screen
-            name="Task3"
-            options={{
-              header: (props) => <Header {...props} back title="Task 3" />,
-            }}
-            component={Task3}
-          />
-          <Drawer.Screen
-            name="Task4"
-            options={{
-              header: (props) => <Header {...props} back title="Task 4" />,
-            }}
-            component={Task4}
-          />
-          <Drawer.Screen
-            name="Task5"
-            options={{
-              header: (props) => <Header {...props} back title="Task 5" />,
-            }}
-            component={Task5}
-          />
+          {tasks.map((task) => (
+            <Drawer.Screen
+              key={task.screen}
+              name={task.screen}
+              options={{
+                header: (props) => (
+                  <Header {...props} back title={task.screen} />
+                ),
+              }}
+            >
+              {() => <TaskInstructionView task={task} />}
+            </Drawer.Screen>
+          ))}
+          {games.map((Task, idx) => (
+            <Drawer.Screen
+              key={tasks[idx].screen + " Game"}
+              name={tasks[idx].screen + " Game"}
+              options={{ headerShown: false }}
+              component={Task}
+            />
+          ))}
           <Drawer.Screen
             name="ActivityLogs"
             options={{

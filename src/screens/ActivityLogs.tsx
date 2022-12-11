@@ -9,7 +9,7 @@ const ActivityLogs = () => {
   return (
     <ScrollView>
       {activities.map((activity, idx) => (
-        <Text key={idx}>
+        <Text key={idx} style={{ marginVertical: 4 }} variant="labelSmall">
           {activity.timestamp}: {activity.message}
         </Text>
       ))}

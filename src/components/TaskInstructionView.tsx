@@ -1,16 +1,15 @@
-import { radius } from "../constants/AppStyle";
-import type { task1 } from "constants/tasks";
+import { colors, radius } from "../constants/AppStyle";
+import type { task1 } from "../constants/tasks";
 import React from "react";
 import { Image, View } from "react-native";
 import { Button, IconButton, Text } from "react-native-paper";
+import { useActivityLog } from "../stores/useActivityLog";
+import { useNavigation } from "@react-navigation/core";
 
-export const TaskInstructionView = ({
-  task,
-  children,
-}: {
-  task: typeof task1;
-  children: React.ReactNode;
-}) => {
+export const TaskInstructionView = ({ task }: { task: typeof task1 }) => {
+  const navigation = useNavigation();
+  const { addActivity } = useActivityLog((s) => s);
+
   return (
     <View style={{ flex: 1, alignItems: "center", paddingVertical: 40 }}>
       <Image
@@ -46,14 +45,23 @@ export const TaskInstructionView = ({
         <Text variant="headlineMedium" style={{ marginBottom: 15 }}>
           Instruction
         </Text>
-        {children}
+        <Text variant="headlineSmall" style={{ color: colors["gray-700"] }}>
+          {task.instruction}
+        </Text>
       </View>
       <Button
         buttonColor={task.color}
         theme={{ roundness: 1.5 }}
         mode="contained"
         labelStyle={{ fontSize: 16, paddingVertical: 4 }}
-        onPress={() => {}}
+        onPress={() => {
+          addActivity({
+            timestamp: new Date().getTime(),
+            message: "Clicked on " + task.screen + " I'm ready Button.",
+          });
+          //@ts-ignore
+          navigation.navigate(task.screen + " Game");
+        }}
         style={{ width: 340 }}
       >
         OK I'M READY
