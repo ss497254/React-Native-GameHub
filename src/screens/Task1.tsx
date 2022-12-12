@@ -18,13 +18,10 @@ const Task1 = () => {
     grid = 7;
 
   return (
-    <GameScreen key={a} reset={reset}>
-      <Text style={{ fontSize: 30, fontWeight: "700", marginVertical: 40 }}>
-        {countDown.length > 0 ? countDown : "Start"}
-      </Text>
+    <GameScreen key={a} reset={reset} countDown={countDown}>
       <View
         style={{
-          marginVertical: 20,
+          marginBottom: 20,
           flexDirection: "row",
           width: 300,
         }}

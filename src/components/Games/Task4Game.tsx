@@ -1,89 +1,88 @@
-import React from "react";
-import { View } from "react-native";
-import { IconButton, Text, TouchableRipple } from "react-native-paper";
-import { colors } from "../../constants/AppStyle";
+import React, { memo, useState } from "react";
+import { KeyboardAvoidingView, ScrollView } from "react-native";
+import { Text, TextInput } from "react-native-paper";
+import { colors, radius } from "../../constants/AppStyle";
 
-const NumButton = ({ value, nums, onClick }: any) => {
-  const active = nums.filter((x: number) => x === value).length > 0;
-
-  const borderRadius = active ? 30 : 50;
-
-  return (
-    <TouchableRipple
-      borderless
-      style={{
-        margin: 6,
-        borderRadius,
-      }}
-      onPress={active ? null : onClick}
-    >
-      <Text
-        style={{
-          width: 90,
-          height: 90,
-          borderRadius,
-          justifyContent: "center",
-          alignItems: "center",
-          textAlign: "center",
-          textAlignVertical: "center",
-          color: colors.white,
-          backgroundColor: active ? colors["green-400"] : colors["blue-500"],
-          fontSize: 30,
-        }}
-      >
-        {value}
-      </Text>
-    </TouchableRipple>
-  );
+type props = {
+  [x: string]: any;
 };
 
-export const Task4Game = ({ setValue, nums }: any) => {
-  return (
-    <>
-      <View
+export const Task4Game: React.FC<props> = memo(
+  ({ activeWordList, onError = () => {} }) => {
+    const [words, setWords] = useState<string[]>([]);
+    const [value, setValue] = useState("");
+
+    return (
+      <KeyboardAvoidingView
         style={{
-          flexDirection: "row",
-          flexWrap: "wrap",
-          justifyContent: "space-evenly",
-          width: 9 * 34,
+          width: 300,
+          flex: 1,
+          justifyContent: "center",
         }}
       >
-        {Array(10)
-          .fill(0)
-          .map((_, idx) => (
-            <NumButton
-              key={idx}
-              nums={nums}
-              value={(idx + 1) % 10}
-              onClick={() => {
-                nums.push((idx + 1) % 10);
-                setValue({ nums });
-              }}
-            />
-          ))}
-      </View>
-      <View
-        style={{ flexDirection: "row-reverse", marginTop: -102, width: 300 }}
-      >
-        <TouchableRipple
-          borderless
+        <Text
+          variant="labelMedium"
           style={{
-            margin: 6,
-            width: 90,
-            borderRadius: 50,
-            height: 90,
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "#ef4444",
-          }}
-          onPress={() => {
-            nums.pop();
-            setValue({ nums });
+            marginBottom: 15,
           }}
         >
-          <IconButton icon="backspace" iconColor={colors.white} size={28} />
-        </TouchableRipple>
-      </View>
-    </>
-  );
-};
+          Try to recall as many words as you can from the list.
+        </Text>
+        <TextInput
+          mode="outlined"
+          theme={{
+            roundness: 10,
+          }}
+          style={{ width: 300 }}
+          label="Word"
+          placeholder="Enter words"
+          value={value}
+          onChangeText={(e) => setValue(e)}
+          onSubmitEditing={(e) => {
+            e.preventDefault();
+            words.push(value.trim());
+            setValue("");
+            setWords(words);
+          }}
+          returnKeyType="next"
+          autoCapitalize="none"
+          textContentType="emailAddress"
+        />
+        <ScrollView
+          contentContainerStyle={{
+            flexDirection: "row",
+            flexWrap: "wrap",
+            marginTop: 60,
+            width: 300,
+            minHeight: 200,
+          }}
+        >
+          {words.map((i) => {
+            let backgroundColor = colors["red-400"];
+
+            if (activeWordList.has(i)) backgroundColor = colors["green-400"];
+            else onError();
+
+            return (
+              <Text
+                variant="labelLarge"
+                key={i}
+                style={{
+                  width: 140,
+                  borderRadius: radius.m,
+                  backgroundColor,
+                  margin: 5,
+                  color: colors.white,
+                  paddingVertical: 10,
+                  textAlign: "center",
+                }}
+              >
+                {i}
+              </Text>
+            );
+          })}
+        </ScrollView>
+      </KeyboardAvoidingView>
+    );
+  }
+);

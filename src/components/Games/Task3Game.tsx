@@ -1,11 +1,12 @@
-import { ScrollView } from "react-native";
+import { View } from "react-native";
 import React, { useState, useMemo, memo } from "react";
 import { colors } from "../../constants/AppStyle";
 import { IconButton } from "react-native-paper";
 import { generateRandomNumberList } from "../../utils/generateRandomNumberList";
 
 type props = {
-  tiles: number;
+  cards: number;
+  images: number;
   grid: number;
   visible: boolean;
   [x: string]: any;
@@ -20,26 +21,28 @@ const widthTable = {
 };
 
 export const TabButton = ({
-  activeTiles,
+  active,
+  activeImages,
   baseWidth,
   value,
   visible,
 }: {
-  activeTiles: Set<number>;
+  active: boolean;
+  activeImages: Set<number>;
   baseWidth: number;
   value: number;
   visible: boolean;
 }) => {
   const [pressed, setPressed] = useState(false);
 
-  let backgroundColor =
-      visible && activeTiles.has(value)
-        ? colors["green-400"]
-        : colors["blue-400"],
-    icon = "";
+  let backgroundColor = active ? colors["gray-400"] : colors.white,
+    icon =
+      visible && activeImages.has(value)
+        ? require("../../assets/icon.png")
+        : "";
 
   if (pressed) {
-    if (activeTiles.has(value)) {
+    if (activeImages.has(value)) {
       backgroundColor = colors["green-400"];
       icon = "check";
     } else {
@@ -60,26 +63,37 @@ export const TabButton = ({
         height: baseWidth * 10,
         backgroundColor,
       }}
-      onPress={() => {
-        setPressed(true);
-      }}
+      onPress={
+        visible
+          ? undefined
+          : () => {
+              setPressed(true);
+            }
+      }
     />
   );
 };
 
 export const Task3Game: React.FC<props> = memo(
-  ({ tiles = 3, grid = 5, visible }) => {
+  ({ cards = 3, images, grid = 5, visible }) => {
     //@ts-ignore
     const baseWidth = widthTable[grid];
+    let i = 0;
 
-    const activeTiles = useMemo(
-      () => generateRandomNumberList(tiles, grid * grid),
-      [tiles, grid]
+    const activeCards = useMemo(
+      () => generateRandomNumberList(cards, grid * grid),
+      [cards, grid]
     );
 
+    const activeImages = useMemo(
+      () => generateRandomNumberList(images, cards),
+      [images, cards]
+    );
+    console.log(activeImages);
+
     return (
-      <ScrollView
-        contentContainerStyle={{
+      <View
+        style={{
           flexWrap: "wrap",
           flexDirection: "row",
           alignItems: "center",
@@ -92,13 +106,14 @@ export const Task3Game: React.FC<props> = memo(
           .map((_, idx) => (
             <TabButton
               visible={visible}
-              activeTiles={activeTiles}
+              active={activeCards.has(idx)}
+              activeImages={activeImages}
               key={idx}
-              value={idx}
+              value={activeCards.has(idx) ? i++ : -1}
               baseWidth={baseWidth}
             />
           ))}
-      </ScrollView>
+      </View>
     );
   }
 );

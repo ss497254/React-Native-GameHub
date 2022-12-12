@@ -18,7 +18,7 @@ export const task2 = {
   screen: "Task 2",
   instructionImgSrc: require("../assets/images/task-2.png"),
   instruction:
-    "A series of numbers will be displayed.\n\nClick on the numbers in    the same sequence as they were displayed.\n\nWe will move on to the    next task after two mistakes in a row.",
+    "A series of numbers will be displayed.\n\nClick on the numbers in the same sequence as they were displayed.\n\nWe will move on to the next task after two mistakes in a row.",
 };
 
 export const task3 = {
@@ -28,7 +28,7 @@ export const task3 = {
   screen: "Task 3",
   instructionImgSrc: require("../assets/images/task-3.png"),
   instruction:
-    "  You will see a few grey cards. There may be an item behind each card.    \n\n    The cards with items will flip one by one.\n\n    An item will appear in the middle of the screen. Click on the grey card    with matching item.\n\n    We will move on to the next task after two mistakes in a row.\n\n",
+    "  You will see a few grey cards. There may be an item behind each card.\n\nThe cards with items will flip one by one.\n\nAn item will appear in the middle of the screen. Click on the grey card with matching item.\n\nWe will move on to the next task after two mistakes in a row.\n\n",
 };
 
 export const task4 = {
@@ -38,7 +38,7 @@ export const task4 = {
   screen: "Task 4",
   instructionImgSrc: require("../assets/images/task-4.png"),
   instruction:
-    "You will be given 15 seconds to look at list of 9 words (List A).    \n\n    After timer is up, type in as many words as you can remember from the list.\n\n",
+    "You will be given 15 seconds to look at list of 9 words (List A).\n\nAfter timer is up, type in as many words as you can remember from the list.\n\n",
 };
 
 export const task5 = {
@@ -48,5 +48,5 @@ export const task5 = {
   screen: "Task 5",
   instructionImgSrc: require("../assets/images/task-5.png"),
   instruction:
-    "You will see a maze displayed.\n\nDrag the red ball to collect all    the cherries, then exit at the letter E.\n\nYou can click on the “I Give Up” button at any time to end this task.",
+    "You will see a maze displayed.\n\nDrag the red ball to collect all the cherries, then exit at the letter E.\n\nYou can click on the “I Give Up” button at any time to end this task.",
 };

@@ -12,8 +12,9 @@ export const useCountDown = create(
           x -= 1;
           if (x < 0) {
             clearInterval(timerId);
+            set({ countDown: "" });
           } else {
-            set({ countDown: x > 0 ? x.toString() : "" });
+            set({ countDown: x > 0 ? x.toString() : "Start" });
           }
         }, 1000);
         return () => {

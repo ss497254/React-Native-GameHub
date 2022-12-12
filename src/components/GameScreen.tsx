@@ -1,5 +1,6 @@
 import React from "react";
 import { View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import { Text, ProgressBar, Button } from "react-native-paper";
 
 export const GameScreen: React.FC<any> = ({
@@ -7,9 +8,19 @@ export const GameScreen: React.FC<any> = ({
   currLevel = 3,
   totalLevel = 5,
   reset,
+  scroll,
+  countDown,
 }) => {
   return (
-    <View style={{ alignItems: "center", flex: 1, justifyContent: "center" }}>
+    <ScrollView
+      style={{
+        height: "100%",
+      }}
+      contentContainerStyle={{
+        flex: scroll ? undefined : 1,
+        alignItems: "center",
+      }}
+    >
       <View
         style={{
           flexDirection: "row",
@@ -35,15 +46,29 @@ export const GameScreen: React.FC<any> = ({
           marginBottom: 30,
         }}
       />
+      <View style={{ flexGrow: 1 }}>
+        {typeof countDown === "string" ? (
+          <Text
+            style={{
+              fontSize: 30,
+              fontWeight: "700",
+              marginVertical: 20,
+            }}
+          >
+            {countDown.length > 0 ? countDown : ""}
+          </Text>
+        ) : null}
+      </View>
       {children}
+      <View style={{ flexGrow: 1 }}></View>
       <Button
         onPress={() => reset((a: boolean) => !a)}
-        labelStyle={{ fontWeight: "700", fontSize: 20 }}
-        contentStyle={{ padding: 10 }}
-        style={{ marginBottom: 10 }}
+        labelStyle={{ letterSpacing: 0.1, fontSize: 20 }}
+        contentStyle={{ paddingVertical: 6, paddingHorizontal: 30 }}
+        style={{ marginVertical: 14 }}
       >
         Reset
       </Button>
-    </View>
+    </ScrollView>
   );
 };

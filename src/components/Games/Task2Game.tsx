@@ -6,7 +6,7 @@ import { colors } from "../../constants/AppStyle";
 const NumButton = ({ value, nums, onClick }: any) => {
   const active = nums.filter((x: number) => x === value).length > 0;
 
-  const borderRadius = active ? 30 : 50;
+  const borderRadius = active ? 25 : 50;
 
   return (
     <TouchableRipple
@@ -39,7 +39,7 @@ const NumButton = ({ value, nums, onClick }: any) => {
 
 export const Task2Game = ({ setValue, nums }: any) => {
   return (
-    <View style={{ flex: 1, justifyContent: "center" }}>
+    <>
       <View
         style={{
           flexDirection: "row",
@@ -84,6 +84,6 @@ export const Task2Game = ({ setValue, nums }: any) => {
           <IconButton icon="backspace" iconColor={colors.white} size={28} />
         </TouchableRipple>
       </View>
-    </View>
+    </>
   );
 };

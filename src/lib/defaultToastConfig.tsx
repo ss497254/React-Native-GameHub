@@ -3,6 +3,7 @@ import { colors, radius } from "../constants/AppStyle";
 
 const text1Style = {
   fontSize: 14,
+  letterSpacing: 1.4,
   fontFamily: "Inter-Regular",
   fontWeight: "400",
   textAlign: "left",

@@ -1,13 +1,11 @@
-import { ScrollView } from "react-native";
-import React, { useState, useMemo, memo } from "react";
+import React, { memo, useMemo, useState } from "react";
+import { ScrollView, View } from "react-native";
+import generator from "generate-maze";
 import { colors } from "../../constants/AppStyle";
-import { IconButton } from "react-native-paper";
-import { generateRandomNumberList } from "../../utils/generateRandomNumberList";
 
 type props = {
   tiles: number;
   grid: number;
-  visible: boolean;
   [x: string]: any;
 };
 
@@ -17,88 +15,68 @@ const widthTable = {
   5: 6,
   6: 5,
   7: 4.4,
+  8: 4,
+  9: 3.6,
+  10: 3.2,
 };
 
-export const TabButton = ({
-  activeTiles,
+export const Box = ({
   baseWidth,
-  value,
-  visible,
-}: {
-  activeTiles: Set<number>;
+  bottom,
+  top,
+  left,
+  right,
+}: // x,
+// y,
+{
   baseWidth: number;
-  value: number;
-  visible: boolean;
+  [x: string]: any;
 }) => {
-  const [pressed, setPressed] = useState(false);
-
-  let backgroundColor =
-      visible && activeTiles.has(value)
-        ? colors["green-400"]
-        : colors["blue-400"],
-    icon = "";
-
-  if (pressed) {
-    if (activeTiles.has(value)) {
-      backgroundColor = colors["green-400"];
-      icon = "check";
-    } else {
-      backgroundColor = colors["red-400"];
-      icon = "window-close";
-    }
-  }
-
   return (
-    <IconButton
-      icon={icon}
-      iconColor={colors.white}
+    <View
       style={{
-        marginHorizontal: baseWidth * 0.5,
-        marginVertical: baseWidth * 0.5,
-        borderRadius: baseWidth,
-        width: baseWidth * 10,
-        height: baseWidth * 10,
-        backgroundColor,
+        borderWidth: 1.1,
+        margin: -0.5,
+        borderBottomColor: right ? colors.black : colors["blue-50"],
+        borderTopColor: left ? colors.black : colors["blue-50"],
+        borderLeftColor: top ? colors.black : colors["blue-50"],
+        borderRightColor: bottom ? colors.black : colors["blue-50"],
+        width: baseWidth * 11,
+        height: baseWidth * 11,
       }}
-      onPress={() => {
-        setPressed(true);
-      }}
-    />
+    ></View>
   );
 };
 
-export const Task5Game: React.FC<props> = memo(
-  ({ tiles = 3, grid = 5, visible }) => {
-    //@ts-ignore
-    const baseWidth = widthTable[grid];
+export const Task5Game: React.FC<props> = memo(({ tiles = 3, grid = 5 }) => {
+  //@ts-ignore
+  const baseWidth = widthTable[grid] || 3;
 
-    const activeTiles = useMemo(
-      () => generateRandomNumberList(tiles, grid * grid),
-      [tiles, grid]
-    );
+  const mazeMap: Object[][] = useMemo(
+    () => generator(grid, grid, true, Math.round(Math.random() * 100000)),
+    [grid]
+  );
+  tiles;
 
-    return (
-      <ScrollView
-        contentContainerStyle={{
-          flexWrap: "wrap",
-          flexDirection: "row",
-          alignItems: "center",
-          width: baseWidth * 11 * grid,
-          height: baseWidth * 11 * grid,
-        }}
-      >
-        {Array(grid * grid)
-          .fill(0)
-          .map((_, idx) => (
-            <TabButton
-              visible={visible}
-              activeTiles={activeTiles}
-              key={idx}
-              value={idx}
-              baseWidth={baseWidth}
-            />
+  return (
+    <ScrollView
+      contentContainerStyle={{
+        flexWrap: "wrap",
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: colors["blue-50"],
+        width: baseWidth * 11 * grid + 1.5 - 1 * grid,
+        height: baseWidth * 11 * grid + 1.5 - 1 * grid,
+        borderWidth: 0.7,
+      }}
+    >
+      {mazeMap.map((row, idx) => (
+        <View key={idx}>
+          {row.map((col, idx: number) => (
+            <Box key={idx} baseWidth={baseWidth} {...col} />
           ))}
-      </ScrollView>
-    );
-  }
-);
+        </View>
+      ))}
+    </ScrollView>
+  );
+});

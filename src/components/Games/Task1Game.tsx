@@ -60,9 +60,13 @@ export const TabButton = ({
         height: baseWidth * 10,
         backgroundColor,
       }}
-      onPress={() => {
-        setPressed(true);
-      }}
+      onPress={
+        visible
+          ? undefined
+          : () => {
+              setPressed(true);
+            }
+      }
     />
   );
 };

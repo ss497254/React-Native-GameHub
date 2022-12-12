@@ -14,27 +14,30 @@ const Task3 = () => {
     return clearCountDown;
   }, [a]);
 
-  let tiles = 8,
-    grid = 7;
+  let cards = 8,
+    grid = 6,
+    images = 4;
 
   return (
-    <GameScreen key={a} reset={reset}>
-      <Text style={{ fontSize: 30, fontWeight: "700", marginVertical: 40 }}>
-        {countDown.length > 0 ? countDown : "Start"}
-      </Text>
+    <GameScreen key={a} reset={reset} countDown={countDown}>
       <View
         style={{
-          marginVertical: 20,
+          marginBottom: 20,
           flexDirection: "row",
           width: 300,
         }}
       >
         <Text style={{ flex: 1 }} variant="titleMedium">
-          Tiles: {tiles}
+          Cards: {cards}
         </Text>
-        <Text variant="titleMedium">Grid: {grid}</Text>
+        <Text variant="titleMedium">Images: {images}</Text>
       </View>
-      <Task3Game tiles={tiles} grid={grid} visible={countDown.length > 0} />
+      <Task3Game
+        cards={cards}
+        images={images}
+        grid={grid}
+        visible={countDown.length > 0}
+      />
     </GameScreen>
   );
 };

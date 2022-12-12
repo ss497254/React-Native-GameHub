@@ -8,49 +8,40 @@ import { colors, radius } from "../constants/AppStyle";
 import { useMemo } from "react";
 import { useCountDown } from "../stores/useCountdown";
 
-const Tab = ({ value }: any) => {
-  const level = 5;
-
-  const res = Array.from(
-    useMemo(() => generateRandomNumberList(level, 9), [level])
-  );
-  console.log(res);
-
+const Tab = ({ value = { nums: [] }, res, level, visible }: any) => {
   return (
     <View
       style={{
-        marginTop: 30,
+        marginBottom: 40,
         flexDirection: "row",
         width: 300,
-        justifyContent: "space-between",
+        justifyContent: level > 5 ? "space-between" : "space-evenly",
       }}
     >
-      {Array(level)
-        .fill(0)
-        .map((_, idx) => {
-          const active = !isNaN(value.nums[idx]);
+      {(visible ? res : Array(level).fill(0)).map((_: number, idx: number) => {
+        const active = !isNaN(value.nums[idx]);
 
-          return (
-            <Text
-              key={idx}
-              variant="titleMedium"
-              style={{
-                fontSize: 20,
-                backgroundColor: active
-                  ? value.nums[idx] === res[idx]
-                    ? colors["green-400"]
-                    : colors["red-400"]
-                  : colors["gray-300"],
-                padding: 20,
-                height: 65,
-                borderRadius: radius.m,
-                color: active ? colors.white : colors.black,
-              }}
-            >
-              {active ? value.nums[idx] : "-"}
-            </Text>
-          );
-        })}
+        return (
+          <Text
+            key={idx}
+            variant="titleMedium"
+            style={{
+              fontSize: 20,
+              backgroundColor: active
+                ? value.nums[idx] === res[idx]
+                  ? colors["green-400"]
+                  : colors["red-400"]
+                : colors["gray-300"],
+              paddingVertical: 20,
+              paddingHorizontal: level > 5 ? (level > 6 ? 13 : 15) : 20,
+              borderRadius: radius.m,
+              color: active ? colors.white : colors.black,
+            }}
+          >
+            {visible ? res[idx] : active ? value.nums[idx] : "  "}
+          </Text>
+        );
+      })}
     </View>
   );
 };
@@ -60,27 +51,41 @@ const Task2 = () => {
   const [a, reset] = useState(false);
   const { countDown, startCountDown } = useCountDown((s) => s);
 
+  const level = 7;
+  const res = Array.from(
+    useMemo(() => generateRandomNumberList(level, 9), [level, a])
+  );
+
   useEffect(() => {
     const clearCountDown = startCountDown(4);
     return clearCountDown;
   }, [a]);
 
   return (
-    <GameScreen key={a} reset={reset}>
+    <GameScreen
+      key={a}
+      reset={() => {
+        setValue({ nums: [] });
+        reset(!a);
+      }}
+    >
       {countDown.length > 0 ? (
-        <Text
-          style={{
-            flex: 1,
-            fontSize: 40,
-            fontWeight: "700",
-            textAlignVertical: "center",
-          }}
-        >
-          {countDown}
-        </Text>
+        <>
+          <Tab visible value={value} res={res} level={level} />
+          <Text
+            style={{
+              flex: 1,
+              fontSize: 40,
+              fontWeight: "700",
+              textAlignVertical: "center",
+            }}
+          >
+            {countDown}
+          </Text>
+        </>
       ) : (
         <>
-          <Tab value={value} />
+          <Tab value={value} res={res} level={level} />
           <Task2Game setValue={setValue} nums={value.nums} />
         </>
       )}

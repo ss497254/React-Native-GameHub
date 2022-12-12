@@ -49,7 +49,7 @@ const navigatorTheme = {
   },
 };
 
-const tasks = [task1, task2, task3, task5, task4];
+const tasks = [task1, task2, task3, task4, task5];
 const games = [Task1, Task2, Task3, Task4, Task5];
 
 export const MainNavigator = () => {
