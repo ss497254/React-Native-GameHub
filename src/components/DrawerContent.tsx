@@ -1,5 +1,4 @@
 import { DrawerContentScrollView } from "@react-navigation/drawer";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as React from "react";
 import { Image, StyleSheet, View } from "react-native";
 import { Divider, Drawer, Text } from "react-native-paper";
@@ -20,16 +19,15 @@ const DrawerItemsData = [
     action: "ActivityLogs",
   },
   {
-    label: "Task4",
+    label: "Help",
     activeIcon: "help-circle",
     icon: "help-circle-outline",
-    action: "Task4",
+    action: "Landing Page",
   },
 ];
 
 export const DrawerContent = ({ navigation, state }: any) => {
   const user = useUserStore((s) => s.user);
-  const inset = useSafeAreaInsets();
 
   let activeRoute = "";
   if (!isNaN(state.index) && state.routes.length > 0)
@@ -43,14 +41,14 @@ export const DrawerContent = ({ navigation, state }: any) => {
             width: "100%",
             alignItems: "center",
             paddingVertical: 20,
-            paddingHorizontal: 12,
+            paddingHorizontal: 16,
             borderBottomWidth: 0.5,
             borderBottomColor: colors["gray-500"],
           }}
         >
           <Image
-            source={require("../assets/icon.png")}
-            style={{ width: 150, height: 150, marginBottom: 20 }}
+            source={require("../assets/images/profile.png")}
+            style={{ width: 120, height: 120, marginBottom: 40 }}
           />
           <View
             style={{
@@ -62,22 +60,33 @@ export const DrawerContent = ({ navigation, state }: any) => {
             }}
           >
             <Text
+              variant="titleMedium"
               style={{
-                fontSize: 19,
-                fontWeight: "600",
+                fontSize: 18,
+                marginBottom: 3,
                 color: colors["blue-600"],
               }}
             >
               {user.firstName + " " + user.lastName}
             </Text>
-            <Text style={{ fontSize: 13, color: colors["gray-700"] }}>
+            <Text variant="labelMedium" style={{ color: colors["gray-700"] }}>
               User
             </Text>
           </View>
         </View>
-        <View style={{ flexGrow: 1, flex: 1, marginVertical: 20 }}>
+        <View
+          style={{
+            flexGrow: 1,
+            flex: 1,
+            marginVertical: 20,
+            marginHorizontal: 6,
+          }}
+        >
           {DrawerItemsData.map((props, index) => (
             <Drawer.Item
+              theme={{
+                colors: { secondaryContainer: colors["light-blue-100"] },
+              }}
               key={index}
               label={props.label}
               style={{ marginBottom: 8 }}
@@ -98,7 +107,6 @@ export const DrawerContent = ({ navigation, state }: any) => {
           borderTopWidth: 0.5,
           borderTopColor: colors["gray-500"],
           textAlign: "center",
-          marginBottom: inset.bottom / 2,
         }}
         variant="labelSmall"
       >

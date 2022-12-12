@@ -1,16 +1,18 @@
 import React from "react";
-import { View } from "react-native";
+import { Dimensions, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { Text, ProgressBar, Button } from "react-native-paper";
 
 export const GameScreen: React.FC<any> = ({
   children,
-  currLevel = 3,
-  totalLevel = 5,
+  currLevel = 1,
+  totalLevel = 2,
   reset,
   scroll,
   countDown,
 }) => {
+  const { height } = Dimensions.get("window");
+
   return (
     <ScrollView
       style={{
@@ -19,6 +21,7 @@ export const GameScreen: React.FC<any> = ({
       contentContainerStyle={{
         flex: scroll ? undefined : 1,
         alignItems: "center",
+        minHeight: height,
       }}
     >
       <View

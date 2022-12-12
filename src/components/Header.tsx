@@ -33,7 +33,7 @@ export const Header = ({
           iconColor="black"
           icon="menu"
           style={{ marginLeft: 10 }}
-          onPress={() => navigation.openDrawer()}
+          onPress={navigation.openDrawer}
         />
       ) : null}
       <Text

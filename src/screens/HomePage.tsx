@@ -1,123 +1,175 @@
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useRef } from "react";
-import { StatusBar, StyleSheet, View } from "react-native";
-import { Surface, Text, TouchableRipple } from "react-native-paper";
-import { useActivityLog } from "../stores/useActivityLog";
+import React from "react";
+import { Dimensions, View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
+import { IconButton, Surface, Text, TouchableRipple } from "react-native-paper";
+import CircularProgress from "../components/CircularProgress";
 import { colors, radius } from "../constants/AppStyle";
+import { Progress } from "../constants/progress";
 import { task1, task2, task3, task4, task5 } from "../constants/tasks";
+import { useTaskProgress } from "../stores/useTaskProgress";
 
-const setStatusbarColor = (name: string) => {
-  if (name.includes("Task 1")) return task1.color;
-  if (name.includes("Task 2")) return task2.color;
-  if (name.includes("Task 3")) return task3.color;
-  if (name.includes("Task 4")) return task4.color;
-  if (name.includes("Task 5")) return task5.color;
+const Tab = ({ title, color, progress, screen, navigate, num, icon }: any) => {
+  let subTitleColor = "",
+    subTitle = "";
 
-  return colors["blue-500"];
-};
+  if (progress.currLevel === 0) {
+    subTitleColor = Progress.NOT_STARTED.color;
+    subTitle = Progress.NOT_STARTED.title;
+  } else if (progress.currLevel === progress.totalLevel) {
+    subTitleColor = Progress.COMPLETED.color;
+    subTitle = Progress.COMPLETED.title;
+  } else {
+    subTitleColor = Progress.IN_PROGRESS.color;
+    subTitle = Progress.IN_PROGRESS.title;
+  }
 
-const Tab = ({ title, color, progress, screen, navigate, num, icon }: any) => (
-  <Surface style={styles.taskContainer}>
-    <Text
+  return (
+    <Surface
       style={{
+        backgroundColor: colors.white,
         height: 70,
-        width: 45,
-        display: "flex",
-        textAlignVertical: "center",
-        textAlign: "center",
-        color,
-        backgroundColor: colors["gray-200"],
-      }}
-      variant="titleLarge"
-    >
-      {num}
-    </Text>
-    <TouchableRipple
-      style={{
-        flex: 1,
-        paddingTop: 12,
-        paddingLeft: 12,
-      }}
-      onPress={() => {
-        navigate(screen);
+        flexDirection: "row",
+        overflow: "hidden",
+        borderRadius: radius.m,
+        marginTop: 15,
       }}
     >
-      <>
-        <Text
-          variant="titleMedium"
-          style={{
-            textAlignVertical: "center",
-            color,
-            marginVertical: 3,
-          }}
-        >
-          {title}
-        </Text>
-        <Text variant="labelSmall" style={{ color: progress.color }}>
-          {progress.title}
-        </Text>
-        {icon}
-      </>
-    </TouchableRipple>
-  </Surface>
-);
+      <Text
+        style={{
+          height: 70,
+          width: 45,
+          display: "flex",
+          textAlignVertical: "center",
+          textAlign: "center",
+          color,
+          backgroundColor: colors["gray-200"],
+        }}
+        variant="titleLarge"
+      >
+        {num}
+      </Text>
+      <TouchableRipple
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+        onPress={() => {
+          navigate(screen);
+        }}
+      >
+        <>
+          <View
+            style={{
+              flexGrow: 1,
+              paddingLeft: 12,
+            }}
+          >
+            <Text
+              variant="titleLarge"
+              style={{
+                fontSize: 18,
+                textAlignVertical: "center",
+                color,
+                marginBottom: 1,
+              }}
+            >
+              {title}
+            </Text>
+            <Text variant="labelSmall" style={{ color: subTitleColor }}>
+              {subTitle}
+            </Text>
+            {icon}
+          </View>
+          <Text
+            style={{
+              textAlignVertical: "center",
+              textAlign: "center",
+              // color: colors["green-500"],
+              height: 40,
+              width: 40,
+              borderRadius: 100,
+              backgroundColor: colors["gray-200"],
+              fontSize: 16,
+              marginRight: 20,
+              fontWeight: "700",
+            }}
+          >
+            {progress.currLevel}/{progress.totalLevel}
+          </Text>
+        </>
+      </TouchableRipple>
+    </Surface>
+  );
+};
 
 const Tasks = [task1, task2, task3, task4, task5];
 
 export const HomePage = ({ navigation }: any) => {
-  const { addActivity } = useActivityLog((s) => s);
-  const ref = useRef("");
+  const { height } = Dimensions.get("window");
+  const taskProgress = useTaskProgress((s) => s);
 
-  React.useEffect(() => {
-    const unsubscribe = navigation.addListener("state", ({ data }: any) => {
-      const name = data.state.routeNames[data.state.index];
-
-      if (ref.current === name) return;
-
-      ref.current = name;
-
-      StatusBar.setBackgroundColor(setStatusbarColor(name));
-
-      addActivity({
-        timestamp: new Date().getTime(),
-        message: "Moved to Screen " + name,
-      });
-    });
-
-    return unsubscribe;
-  }, [navigation]);
-
-  StatusBar.setBarStyle("light-content");
+  const totalTaskCompleted = 1;
 
   return (
-    <LinearGradient
-      colors={[colors["blue-500"], colors["blue-400"]]}
-      style={{ flex: 1, paddingHorizontal: 20, paddingBottom: 40 }}
-    >
-      <View style={{ flex: 1, justifyContent: "flex-end", marginBottom: 30 }}>
+    <ScrollView>
+      <LinearGradient
+        colors={[colors["blue-600"], colors["blue-400"]]}
+        style={{
+          flex: 1,
+          paddingHorizontal: 20,
+          paddingBottom: 40,
+          minHeight: height,
+          alignItems: "center",
+        }}
+      >
+        <IconButton
+          icon="menu"
+          onPress={navigation.openDrawer}
+          iconColor={colors.white}
+          style={{ marginRight: "auto", top: 10, left: -10 }}
+        />
+        <CircularProgress
+          percent={totalTaskCompleted * 20}
+          style={{ marginVertical: 20 }}
+        >
+          <>
+            <Text
+              style={{
+                color: colors.white,
+                fontSize: 40,
+                lineHeight: 45,
+              }}
+            >
+              {totalTaskCompleted}/5
+            </Text>
+            <Text variant="labelMedium" style={{ color: colors.white }}>
+              Task Completed
+            </Text>
+          </>
+        </CircularProgress>
         <Text
           variant="titleMedium"
-          style={{ color: colors.white, fontSize: 17, lineHeight: 26 }}
+          style={{ color: colors.white, lineHeight: 24, marginVertical: 10 }}
         >
-          The complete assessment will take around 15 minutes.{"\n\n"}There will
-          be 5 tasks altogether.{"\n\n"}Please find a quiet place where you can
-          concentrate and perform the assessment uninterrupted
+          The complete assessment will take around 15 minutes.
         </Text>
-      </View>
-      {Tasks.map((task, idx) => (
-        <Tab key={idx} num={idx + 1} navigate={navigation.navigate} {...task} />
-      ))}
-    </LinearGradient>
+        {Tasks.map((task, idx) => (
+          <Tab
+            key={idx}
+            num={idx + 1}
+            progress={
+              taskProgress[
+                `task${idx + 1}Progress` as keyof typeof taskProgress
+              ]
+            }
+            navigate={navigation.navigate}
+            {...task}
+          />
+        ))}
+      </LinearGradient>
+    </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  taskContainer: {
-    backgroundColor: colors.white,
-    height: 70,
-    flexDirection: "row",
-    overflow: "hidden",
-    borderRadius: radius.m,
-    marginTop: 20,
-  },
-});

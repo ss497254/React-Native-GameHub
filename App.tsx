@@ -11,7 +11,7 @@ import { toastConfig } from "./src/lib/defaultToastConfig";
 import { queryClient } from "./src/lib/queryClient";
 import { MainNavigator } from "./src/MainNavigator";
 import { OfflineBar } from "./src/components/OfflineBar";
-import { useActivityLog } from "./src/stores/useActivityLog";
+import { useTaskProgress } from "./src/stores/useTaskProgress";
 
 if ((Text as any).defaultProps == null) {
   (Text as any).defaultProps = {};
@@ -25,6 +25,7 @@ if ((TextInput as any).defaultProps == null) {
 
 const App = () => {
   const { setConnected } = useNetworkStatus((s) => s);
+  const { loadTaskProgress } = useTaskProgress((s) => s);
 
   const [fontsLoaded] = useFonts({
     "Inter-Light": require("./src/assets/fonts/Inter-Light.ttf"),
@@ -33,7 +34,9 @@ const App = () => {
   });
 
   useEffect(() => {
-    // if (!fontsLoaded) {}
+    if (!fontsLoaded) {
+      loadTaskProgress();
+    }
 
     const unsubscribe = NetInfo.addEventListener((state) => {
       const { isConnected, isInternetReachable } = state;

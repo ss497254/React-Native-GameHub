@@ -18,7 +18,7 @@ const Task4 = () => {
     return clearCountDown;
   }, [a]);
 
-  let words = 15;
+  let words = 14;
 
   const activeWords = useMemo(
     () =>
@@ -49,7 +49,7 @@ const Task4 = () => {
               style={{
                 width: 140,
                 borderRadius: radius.m,
-                backgroundColor: colors["blue-200"],
+                backgroundColor: colors["light-blue-100"],
                 margin: 5,
                 paddingVertical: 10,
                 textAlign: "center",
@@ -65,7 +65,7 @@ const Task4 = () => {
           onError={() => showToast("Incorrect", "error")}
         />
       )}
-      <View style={{ height: 100 }} />
+      <View style={{ height: 60 }} />
     </GameScreen>
   );
 };

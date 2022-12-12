@@ -16,7 +16,7 @@ const Task5 = () => {
 
   return (
     <GameScreen key={a} reset={reset}>
-      <Task5Game grid={9} tiles={4} />
+      <Task5Game grid={5} tiles={4} />
     </GameScreen>
   );
 };

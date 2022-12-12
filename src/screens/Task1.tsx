@@ -4,8 +4,11 @@ import { Text } from "react-native-paper";
 import { Task1Game } from "../components/Games/Task1Game";
 import { GameScreen } from "../components/GameScreen";
 import { useCountDown } from "../stores/useCountdown";
+import { useTaskProgress } from "../stores/useTaskProgress";
 
 const Task1 = () => {
+  const { updateTaskProgress, task1Progress } = useTaskProgress((s) => s);
+
   const [a, reset] = useState(false);
   const { countDown, startCountDown } = useCountDown((s) => s);
 
@@ -18,7 +21,7 @@ const Task1 = () => {
     grid = 7;
 
   return (
-    <GameScreen key={a} reset={reset} countDown={countDown}>
+    <GameScreen key={a} reset={reset} countDown={countDown} {...task1Progress}>
       <View
         style={{
           marginBottom: 20,
@@ -31,7 +34,17 @@ const Task1 = () => {
         </Text>
         <Text variant="titleMedium">Grid: {grid}</Text>
       </View>
-      <Task1Game tiles={tiles} grid={grid} visible={countDown.length > 0} />
+      <Task1Game
+        tiles={tiles}
+        grid={grid}
+        visible={countDown.length > 0}
+        onSuccess={() => {
+          updateTaskProgress("task1Progress", {
+            ...task1Progress,
+            currLevel: task1Progress.currLevel + 1,
+          });
+        }}
+      />
     </GameScreen>
   );
 };

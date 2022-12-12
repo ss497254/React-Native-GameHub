@@ -1,10 +1,8 @@
 import { colors } from "./AppStyle";
-import { Progress } from "./progress";
 
 export const task1 = {
   title: "Grid Task",
   color: colors["purple-400"],
-  progress: Progress.COMPLETED,
   screen: "Task 1",
   instructionImgSrc: require("../assets/images/task-1.png"),
   instruction:
@@ -14,7 +12,6 @@ export const task1 = {
 export const task2 = {
   title: "Digit Span",
   color: colors["red-600"],
-  progress: Progress.IN_PROGRESS,
   screen: "Task 2",
   instructionImgSrc: require("../assets/images/task-2.png"),
   instruction:
@@ -24,7 +21,6 @@ export const task2 = {
 export const task3 = {
   title: "Paired Association",
   color: colors["cyan-600"],
-  progress: Progress.NOT_STARTED,
   screen: "Task 3",
   instructionImgSrc: require("../assets/images/task-3.png"),
   instruction:
@@ -34,7 +30,6 @@ export const task3 = {
 export const task4 = {
   title: "Word Recall",
   color: colors["indigo-500"],
-  progress: Progress.NOT_STARTED,
   screen: "Task 4",
   instructionImgSrc: require("../assets/images/task-4.png"),
   instruction:
@@ -44,7 +39,6 @@ export const task4 = {
 export const task5 = {
   title: "Maze Game",
   color: colors["amber-800"],
-  progress: Progress.NOT_STARTED,
   screen: "Task 5",
   instructionImgSrc: require("../assets/images/task-5.png"),
   instruction:
