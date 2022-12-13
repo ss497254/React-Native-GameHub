@@ -333,14 +333,14 @@ export const fonts = {
     fontSize: 30,
     fontWeight: "400",
     letterSpacing: 0,
-    lineHeight: 22,
+    lineHeight: 33,
   },
   displaySmall: {
     fontFamily: "Inter-Regular",
     fontSize: 25,
     fontWeight: "400",
     letterSpacing: 0,
-    lineHeight: 17,
+    lineHeight: 27,
   },
   headlineLarge: {
     fontFamily: "Inter-Regular",

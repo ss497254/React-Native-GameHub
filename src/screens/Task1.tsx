@@ -45,7 +45,7 @@ const Task1 = () => {
         }}
         onError={() => {
           //@ts-expect-error
-          navigate("Home Page");
+          navigate("Task 1");
         }}
       />
     </GameScreen>

@@ -3,12 +3,7 @@ import { colors, radius } from "../constants/AppStyle";
 import { Text } from "react-native-paper";
 import { View } from "react-native";
 
-export const NumberButton = ({
-  value = { nums: [] },
-  res,
-  level,
-  countDown = "",
-}: any) => {
+export const NumberButton = ({ nums, res, level, countDown = "" }: any) => {
   return (
     <View
       style={{
@@ -20,7 +15,7 @@ export const NumberButton = ({
     >
       {(countDown.length ? res : Array(level).fill(0)).map(
         (_: number, idx: number) => {
-          const active = !isNaN(value.nums[idx]);
+          const active = !isNaN(nums[idx]);
           const visible = level - idx >= parseInt(countDown);
 
           return (
@@ -30,7 +25,7 @@ export const NumberButton = ({
               style={{
                 fontSize: 20,
                 backgroundColor: active
-                  ? value.nums[idx] === res[idx]
+                  ? nums[idx] === res[idx]
                     ? colors["green-400"]
                     : colors["red-400"]
                   : colors["gray-300"],
@@ -40,7 +35,7 @@ export const NumberButton = ({
                 color: active ? colors.white : colors.black,
               }}
             >
-              {visible ? res[idx] : active ? value.nums[idx] : "  "}
+              {visible ? res[idx] : active ? nums[idx] : "  "}
             </Text>
           );
         }

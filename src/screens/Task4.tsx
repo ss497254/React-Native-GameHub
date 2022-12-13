@@ -1,16 +1,12 @@
-import React, { useMemo } from "react";
+import { useNavigation } from "@react-navigation/native";
+import React from "react";
 import { View } from "react-native";
-import { Text } from "react-native-paper";
+import Celebrations from "../components/Celebrations";
 import { Task4Game } from "../components/Games/Task4Game";
 import { GameScreen } from "../components/GameScreen";
-import { colors, radius } from "../constants/AppStyle";
-import { WordList } from "../constants/wordList";
+import { task4Levels } from "../constants/GameLevel";
 import { useCountDown } from "../hooks/useCountDown";
 import { useTaskProgress } from "../stores/useTaskProgress";
-import { generateRandomNumberList } from "../utils/generateRandomNumberList";
-import { task4Levels } from "../constants/GameLevel";
-import Celebrations from "../components/Celebrations";
-import { useNavigation } from "@react-navigation/native";
 
 const Task4 = () => {
   const {
@@ -22,60 +18,22 @@ const Task4 = () => {
     return <Celebrations />;
 
   const { navigate } = useNavigation();
-  const { words } = task4Levels[task4Progress.currLevel];
-  const { countDown } = useCountDown(words);
-
-  const activeWords = useMemo(
-    () =>
-      Array.from(generateRandomNumberList(words, WordList.length)).map(
-        (x) => WordList[x]
-      ),
-    [words]
-  );
-  const wordlist = new Set<string>();
-
-  activeWords.forEach((word) => wordlist.add(word));
+  const { words, time } = task4Levels[task4Progress.currLevel];
+  const { countDown } = useCountDown(time);
 
   return (
     <GameScreen countDown={countDown} scroll {...task4Progress}>
-      {countDown > 0 ? (
-        <View
-          style={{
-            flexDirection: "row",
-            flexWrap: "wrap",
-            marginTop: 20,
-            width: 300,
-          }}
-        >
-          {activeWords.map((i) => (
-            <Text
-              variant="labelLarge"
-              key={i}
-              style={{
-                width: 140,
-                borderRadius: radius.m,
-                backgroundColor: colors["blue-100"],
-                margin: 5,
-                paddingVertical: 10,
-                textAlign: "center",
-              }}
-            >
-              {i}
-            </Text>
-          ))}
-        </View>
-      ) : (
-        <Task4Game
-          activeWordList={wordlist}
-          onSuccess={() => {
-            updateTaskProgress(4, { currLevel: task4Progress.currLevel + 1 });
-          }}
-          onError={() => {
-            //@ts-expect-error
-            navigate("Home Page");
-          }}
-        />
-      )}
+      <Task4Game
+        wordsToShow={words}
+        countDown={countDown}
+        onSuccess={() => {
+          updateTaskProgress(4, { currLevel: task4Progress.currLevel + 1 });
+        }}
+        onError={() => {
+          //@ts-expect-error
+          navigate("Task 4");
+        }}
+      />
       <View style={{ height: 60 }} />
     </GameScreen>
   );

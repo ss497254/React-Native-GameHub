@@ -180,7 +180,24 @@ export const Task5Game: React.FC<{
           </View>
         ))}
       </View>
-      <Text>{countDown}</Text>
+      <Text
+        variant="headlineLarge"
+        style={{ marginTop: 50, textAlign: "center" }}
+      >
+        Time Left:
+        <Text
+          variant="headlineLarge"
+          style={{
+            color: colors["blue-600"],
+            fontWeight: "700",
+            letterSpacing: 1.4,
+            fontSize: 24,
+          }}
+        >
+          {" "}
+          {countDown}
+        </Text>
+      </Text>
     </GestureHandlerRootView>
   );
 });
