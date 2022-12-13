@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { View } from "react-native";
 import { Text } from "react-native-paper";
 import { Task1Game } from "../components/Games/Task1Game";
@@ -9,19 +9,18 @@ import { useTaskProgress } from "../stores/useTaskProgress";
 const Task1 = () => {
   const { updateTaskProgress, task1Progress } = useTaskProgress((s) => s);
 
-  const [a, reset] = useState(false);
   const { countDown, startCountDown } = useCountDown((s) => s);
 
   useEffect(() => {
     const clearCountDown = startCountDown(4);
     return clearCountDown;
-  }, [a]);
+  }, []);
 
   let tiles = 8,
     grid = 7;
 
   return (
-    <GameScreen key={a} reset={reset} countDown={countDown} {...task1Progress}>
+    <GameScreen countDown={countDown} {...task1Progress}>
       <View
         style={{
           marginBottom: 20,

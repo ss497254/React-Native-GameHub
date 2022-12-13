@@ -54,28 +54,20 @@ const Task2 = () => {
   const [value, setValue] = useState({ nums: [] });
   const { updateTaskProgress, task2Progress } = useTaskProgress((s) => s);
 
-  const [a, reset] = useState(false);
   const { countDown, startCountDown } = useCountDown((s) => s);
 
   const level = 6;
   const res = Array.from(
-    useMemo(() => generateRandomNumberList(level, 9), [level, a])
+    useMemo(() => generateRandomNumberList(level, 9), [level])
   );
 
   useEffect(() => {
     const clearCountDown = startCountDown(level + 1);
     return clearCountDown;
-  }, [a]);
+  }, []);
 
   return (
-    <GameScreen
-      key={a}
-      reset={() => {
-        setValue({ nums: [] });
-        reset(!a);
-      }}
-      {...task2Progress}
-    >
+    <GameScreen {...task2Progress}>
       {countDown.length > 0 ? (
         <>
           <Text

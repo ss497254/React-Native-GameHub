@@ -20,7 +20,7 @@
       "bundleIdentifier": "com.creaitors.cerebrus"
     },
     "android": {
-      "package": "com.creaitors.cece",
+      "package": "com.creaitors.cerebrus",
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/space-icon.png",
         "backgroundColor": "#FFFFFF"
@@ -35,6 +35,11 @@
           }
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "7c8bba6a-afef-4b0c-81c2-93d57e2e9a0a"
+      }
+    }
   }
 }

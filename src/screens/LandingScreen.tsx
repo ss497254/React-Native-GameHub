@@ -4,7 +4,6 @@ import { Button, Text } from "react-native-paper";
 import { useActivityLog } from "../stores/useActivityLog";
 import { task1, task2, task3, task4, task5 } from "../constants/tasks";
 import { colors } from "../constants/AppStyle";
-import { useCountDown } from "../stores/useCountdown";
 
 const setStatusbarColor = (name: string) => {
   if (name.includes("Task 1")) return task1.color;
@@ -19,7 +18,6 @@ const setStatusbarColor = (name: string) => {
 const LandingScreen = ({ navigation }: any) => {
   const ref = useRef("");
   const { addActivity } = useActivityLog((s) => s);
-  const { clearCountDown } = useCountDown();
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("state", ({ data }: any) => {
@@ -29,8 +27,6 @@ const LandingScreen = ({ navigation }: any) => {
 
       ref.current = name;
       StatusBar.setBackgroundColor(setStatusbarColor(name));
-
-      if (name === "Home Page") clearCountDown();
 
       addActivity({
         timestamp: new Date().getTime(),

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { View } from "react-native";
 import { Text } from "react-native-paper";
 import { Task3Game } from "../components/Games/Task3Game";
@@ -6,20 +6,19 @@ import { GameScreen } from "../components/GameScreen";
 import { useCountDown } from "../stores/useCountdown";
 
 const Task3 = () => {
-  const [a, reset] = useState(false);
   const { countDown, startCountDown } = useCountDown((s) => s);
 
   useEffect(() => {
     const clearCountDown = startCountDown(4);
     return clearCountDown;
-  }, [a]);
+  }, []);
 
   let cards = 8,
     grid = 6,
     images = 4;
 
   return (
-    <GameScreen key={a} reset={reset} countDown={countDown}>
+    <GameScreen countDown={countDown}>
       <View
         style={{
           marginBottom: 20,

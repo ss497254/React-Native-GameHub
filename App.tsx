@@ -5,10 +5,8 @@ import { Text, TextInput } from "react-native";
 import "react-native-gesture-handler";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
-import { QueryClientProvider } from "react-query";
 import { useNetworkStatus } from "./src/stores/useNetworkStatus";
 import { toastConfig } from "./src/lib/defaultToastConfig";
-import { queryClient } from "./src/lib/queryClient";
 import { MainNavigator } from "./src/MainNavigator";
 import { OfflineBar } from "./src/components/OfflineBar";
 import { useTaskProgress } from "./src/stores/useTaskProgress";
@@ -53,17 +51,15 @@ const App = () => {
 
   return (
     <SafeAreaProvider>
-      <QueryClientProvider client={queryClient}>
-        <SafeAreaView />
-        <MainNavigator />
-        <Toast
-          config={toastConfig}
-          onPress={() => Toast.hide()}
-          visibilityTime={5000}
-          autoHide
-        />
-        <OfflineBar />
-      </QueryClientProvider>
+      <SafeAreaView />
+      <MainNavigator />
+      <Toast
+        config={toastConfig}
+        onPress={() => Toast.hide()}
+        visibilityTime={5000}
+        autoHide
+      />
+      <OfflineBar />
     </SafeAreaProvider>
   );
 };

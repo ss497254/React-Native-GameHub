@@ -1,13 +1,12 @@
 import React from "react";
 import { Dimensions, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { Text, ProgressBar, Button } from "react-native-paper";
+import { ProgressBar, Text } from "react-native-paper";
 
 export const GameScreen: React.FC<any> = ({
   children,
   currLevel = 1,
   totalLevel = 2,
-  reset,
   scroll,
   countDown,
 }) => {
@@ -64,14 +63,6 @@ export const GameScreen: React.FC<any> = ({
       </View>
       {children}
       <View style={{ flexGrow: 1 }}></View>
-      <Button
-        onPress={() => reset((a: boolean) => !a)}
-        labelStyle={{ letterSpacing: 0.1, fontSize: 20 }}
-        contentStyle={{ paddingVertical: 6, paddingHorizontal: 30 }}
-        style={{ marginVertical: 14 }}
-      >
-        Reset
-      </Button>
     </ScrollView>
   );
 };

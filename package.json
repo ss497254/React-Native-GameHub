@@ -14,20 +14,13 @@
     "@react-native-async-storage/async-storage": "~1.17.3",
     "@react-native-community/datetimepicker": "6.2.0",
     "@react-native-community/netinfo": "9.3.0",
-    "@react-native-community/slider": "4.2.3",
     "@react-navigation/drawer": "^6.5.0",
     "@react-navigation/native": "^6.0.13",
-    "@react-navigation/native-stack": "^6.9.1",
-    "@types/react": "~18.0.0",
-    "@types/react-native": "~0.69.1",
     "axios": "^1.1.2",
     "expo": "^46.0.16",
     "expo-build-properties": "~0.3.0",
     "expo-font": "~10.2.0",
     "expo-linear-gradient": "~11.4.0",
-    "expo-linking": "~3.2.2",
-    "expo-web-browser": "~11.0.0",
-    "formik": "^2.2.9",
     "generate-maze": "^1.1.0",
     "react": "18.0.0",
     "react-native": "0.69.6",
@@ -35,16 +28,17 @@
     "react-native-gesture-handler": "~2.5.0",
     "react-native-paper": "^5.0.0-rc.6",
     "react-native-reanimated": "~2.9.1",
+    "react-native-safe-area-context": "4.3.1",
     "react-native-screens": "~3.15.0",
-    "react-native-slider-picker": "^1.1.4",
     "react-native-toast-message": "^2.1.5",
     "react-query": "^3.39.2",
-    "typescript": "^4.6.3",
-    "yup": "^0.32.11",
     "zustand": "^4.1.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.19.6"
+    "@babel/core": "^7.19.6",
+    "@types/react": "~18.0.0",
+    "@types/react-native": "~0.69.1",
+    "typescript": "^4.6.3"
   },
   "private": true
 }

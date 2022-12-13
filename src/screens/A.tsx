@@ -1,28 +1,57 @@
-import { Text } from "react-native-paper";
-import { View } from "react-native";
-import * as React from "react";
+import React, { Component } from "react";
+import { Animated, Dimensions } from "react-native";
+import {
+  GestureHandlerRootView,
+  PanGestureHandler,
+} from "react-native-gesture-handler";
 
-export default function CountDownTimer({ initialValue }: any) {
-  const [time, setTime] = React.useState(initialValue || 10);
-  const timerRef = React.useRef(time);
+const { width } = Dimensions.get("screen");
+const circleRadius = 30;
 
-  React.useEffect(() => {
-    const timerId = setInterval(() => {
-      timerRef.current -= 1;
-      if (timerRef.current < 0) {
-        clearInterval(timerId);
-      } else {
-        setTime(timerRef.current);
-      }
-    }, 1000);
-    return () => {
-      clearInterval(timerId);
-    };
-  }, []);
+class Circle extends Component {
+  _touchX = new Animated.Value(width / 2 - circleRadius);
 
-  return (
-    <View style={{ flex: 1, justifyContent: "center" }}>
-      <Text> {time} </Text>
-    </View>
-  );
+  _onPanGestureEvent = Animated.event([{ nativeEvent: { x: this._touchX } }], {
+    useNativeDriver: true,
+  });
+
+  render() {
+    return (
+      <GestureHandlerRootView>
+        <PanGestureHandler onGestureEvent={this._onPanGestureEvent}>
+          <Animated.View
+            style={{
+              height: 150,
+              justifyContent: "center",
+            }}
+          >
+            <Animated.View
+              style={[
+                {
+                  backgroundColor: "#42a5f5",
+                  borderRadius: circleRadius,
+                  height: circleRadius * 2,
+                  width: circleRadius * 2,
+                },
+                {
+                  transform: [
+                    {
+                      translateX: Animated.add(
+                        this._touchX,
+                        new Animated.Value(-circleRadius)
+                      ),
+                    },
+                  ],
+                },
+              ]}
+            />
+          </Animated.View>
+        </PanGestureHandler>
+      </GestureHandlerRootView>
+    );
+  }
+}
+
+export default function App() {
+  return <Circle />;
 }

@@ -1,10 +1,11 @@
 import generator from "generate-maze";
 import React, { memo, useMemo, useState } from "react";
 import { Image, View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { colors } from "../../constants/AppStyle";
 import { showToast } from "../../lib/showToast";
 import { generateRandomNumberList } from "../../utils/generateRandomNumberList";
-import { Draggable } from "../Draggable";
+import { DraggableButton } from "../DraggableButton";
 
 type props = {
   tiles: number;
@@ -30,7 +31,7 @@ export const Box = ({
   left,
   right,
   value,
-  changePos,
+  onDrag,
   active,
   exit,
   fruitPos,
@@ -56,23 +57,32 @@ export const Box = ({
       }}
     >
       {active ? (
-        <Draggable
-          size={baseWidth * 11}
+        <DraggableButton
+          minDist={baseWidth * 5}
           top={left}
           bottom={right}
           left={top}
           right={bottom}
-          changePos={changePos}
+          onDrag={onDrag}
         >
-          <Image
-            source={require("../../assets/images/pacman.png")}
+          <View
             style={{
-              width: baseWidth * 7,
-              height: baseWidth * 7,
-              margin: baseWidth * 2,
+              padding: baseWidth * 2,
+              width: baseWidth * 13,
+              height: baseWidth * 13,
+              margin: baseWidth * -1,
             }}
-          />
-        </Draggable>
+          >
+            <Image
+              source={require("../../assets/images/pacman.png")}
+              style={{
+                width: baseWidth * 7,
+                height: baseWidth * 7,
+                margin: baseWidth * 1 - 1.1,
+              }}
+            />
+          </View>
+        </DraggableButton>
       ) : null}
       {fruitPos.has(value) ? (
         <Image
@@ -133,34 +143,39 @@ export const Task5Game: React.FC<props> = memo(({ tiles = 3, grid = 5 }) => {
   };
 
   return (
-    <View
-      style={{
-        flexWrap: "wrap",
-        flexDirection: "row",
-        alignItems: "center",
-        position: "relative",
-        backgroundColor: colors["gray-100"],
-        width: baseWidth * 11 * grid + 1.5 - 1 * grid,
-        height: baseWidth * 11 * grid + 1.5 - 1 * grid,
-        borderWidth: 0.7,
-      }}
-    >
-      {mazeMap.map((row, idx_x) => (
-        <View key={idx_x}>
-          {row.map((col, idx_y: number) => (
-            <Box
-              key={idx_y}
-              value={idx_x * grid + idx_y}
-              active={idx_x === posX && idx_y === posY}
-              changePos={onChange}
-              fruitPos={fruitPos}
-              baseWidth={baseWidth}
-              exit={idx_x * grid + idx_y === size}
-              {...col}
-            />
-          ))}
-        </View>
-      ))}
-    </View>
+    <GestureHandlerRootView pointerEvents="box-only">
+      <View
+        style={{
+          flexWrap: "wrap",
+          flexDirection: "row",
+          alignItems: "center",
+          position: "relative",
+          backgroundColor: colors["gray-100"],
+          width: baseWidth * 11 * grid + 1.5 - 1 * grid,
+          height: baseWidth * 11 * grid + 1.5 - 1 * grid,
+          borderWidth: 0.7,
+        }}
+      >
+        {mazeMap.map((row, idx_x) => (
+          <View key={idx_x}>
+            {row.map((col, idx_y: number) => (
+              <Box
+                key={idx_y}
+                value={idx_x * grid + idx_y}
+                active={idx_x === posX && idx_y === posY}
+                onDrag={onChange}
+                fruitPos={fruitPos}
+                baseWidth={baseWidth}
+                exit={
+                  idx_x * grid + idx_y === size &&
+                  !(posX === idx_x && posY === idx_y)
+                }
+                {...col}
+              />
+            ))}
+          </View>
+        ))}
+      </View>
+    </GestureHandlerRootView>
   );
 });

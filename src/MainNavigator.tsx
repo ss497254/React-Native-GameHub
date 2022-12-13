@@ -41,13 +41,7 @@ export const theme = {
   fonts,
 };
 
-const navigatorTheme = {
-  ...NavigatorTheme,
-  colors: {
-    ...NavigatorTheme.colors,
-    background: "transparent",
-  },
-};
+NavigatorTheme.colors.background = colors.white;
 
 const tasks = [task1, task2, task3, task4, task5];
 const games = [Task1, Task2, Task3, Task4, Task5];
@@ -65,10 +59,7 @@ export const MainNavigator = () => {
 
   return (
     <PaperProvider theme={theme}>
-      <NavigationContainer
-        theme={navigatorTheme}
-        linking={{ prefixes: ["cece://", "https://creaitors.vercel.app"] }}
-      >
+      <NavigationContainer theme={NavigatorTheme}>
         <Drawer.Navigator
           initialRouteName="Landing Page"
           backBehavior="history"
@@ -99,6 +90,7 @@ export const MainNavigator = () => {
           ))}
           {games.map((Task, idx) => (
             <Drawer.Screen
+              navigationKey={Math.random().toString()}
               key={tasks[idx].screen + " Game"}
               name={tasks[idx].screen + " Game"}
               options={{ headerShown: false }}
