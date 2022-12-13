@@ -60,7 +60,7 @@ export const TabButton = ({
         backgroundColor,
       }}
       onPress={
-        visible
+        visible || !active
           ? undefined
           : () => {
               setPressed(true);

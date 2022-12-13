@@ -2357,8 +2357,6 @@ export const WordList = [
   "seven",
   "several",
   "severe",
-  "sex",
-  "sexual",
   "shade",
   "shadow",
   "shake",

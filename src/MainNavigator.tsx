@@ -62,8 +62,8 @@ export const MainNavigator = () => {
   const { addActivity } = useActivityLog((s) => s);
 
   useEffect(() => {
-    addActivity({ timestamp: new Date().getTime(), message: "App Launced" });
     StatusBar.setBarStyle("light-content");
+    addActivity({ timestamp: new Date().getTime(), message: "App Launced" });
 
     return () => {
       addActivity({ timestamp: new Date().getTime(), message: "App Closed!" });

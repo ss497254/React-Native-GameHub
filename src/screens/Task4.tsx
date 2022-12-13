@@ -10,7 +10,7 @@ import { showToast } from "../lib/showToast";
 import { generateRandomNumberList } from "../utils/generateRandomNumberList";
 
 const Task4 = () => {
-  const { countDown } = useCountDown();
+  const { countDown } = useCountDown(15);
 
   let words = 14;
 
@@ -43,7 +43,7 @@ const Task4 = () => {
               style={{
                 width: 140,
                 borderRadius: radius.m,
-                backgroundColor: colors["indigo-500"],
+                backgroundColor: colors["blue-100"],
                 margin: 5,
                 paddingVertical: 10,
                 textAlign: "center",

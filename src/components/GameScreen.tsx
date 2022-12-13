@@ -48,13 +48,17 @@ export const GameScreen: React.FC<any> = ({
           marginBottom: 30,
         }}
       />
-      <View style={{ flexGrow: 1 }}>
+      <View
+        style={{
+          flexGrow: 1,
+          justifyContent: "center",
+        }}
+      >
         {typeof countDown !== "undefined" ? (
           <Text
             style={{
-              fontSize: 30,
+              fontSize: 32,
               fontWeight: "700",
-              marginVertical: 20,
             }}
           >
             {countDown > 0 ? countDown : ""}

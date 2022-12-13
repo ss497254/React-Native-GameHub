@@ -9,7 +9,7 @@ import { useTaskProgress } from "../stores/useTaskProgress";
 const Task1 = () => {
   const { updateTaskProgress, task1Progress } = useTaskProgress((s) => s);
 
-  const { countDown } = useCountDown(4);
+  const { countDown } = useCountDown(5);
 
   let tiles = 8,
     grid = 7;

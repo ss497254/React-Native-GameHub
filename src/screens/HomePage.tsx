@@ -78,7 +78,9 @@ const Tab = ({ title, color, progress, screen, navigate, num, icon }: any) => {
             >
               {title}
             </Text>
-            <Text variant="labelSmall" style={{ color: subTitleColor }}>
+            <Text
+              style={{ color: subTitleColor, letterSpacing: 0.5, fontSize: 13 }}
+            >
               {subTitle}
             </Text>
             {icon}

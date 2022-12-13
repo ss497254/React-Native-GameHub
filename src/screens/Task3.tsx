@@ -6,8 +6,7 @@ import { GameScreen } from "../components/GameScreen";
 import { useCountDown } from "../hooks/useCountDown";
 
 const Task3 = () => {
-  const { countDown } = useCountDown(4);
-  console.log(countDown);
+  const { countDown } = useCountDown(5);
 
   let cards = 8,
     grid = 6,

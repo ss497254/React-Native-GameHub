@@ -24,7 +24,7 @@ export const task3 = {
   screen: "Task 3",
   instructionImgSrc: require("../assets/images/task-3.png"),
   instruction:
-    "  You will see a few grey cards. There may be an item behind each card.\n\nThe cards with items will flip one by one.\n\nAn item will appear in the middle of the screen. Click on the grey card with matching item.\n\nWe will move on to the next task after two mistakes in a row.\n\n",
+    "You will see a few grey cards. There may be an item behind each card.\n\nThe cards with items will flip one by one.\n\nAn item will appear in the middle of the screen. Click on the grey card with matching item.\n\nWe will move on to the next task after two mistakes in a row.\n\n",
 };
 
 export const task4 = {
