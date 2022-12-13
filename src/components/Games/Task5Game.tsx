@@ -2,16 +2,12 @@ import generator from "generate-maze";
 import React, { memo, useMemo, useState } from "react";
 import { Image, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { Text } from "react-native-paper";
 import { colors } from "../../constants/AppStyle";
+import { useCountDown } from "../../hooks/useCountDown";
 import { showToast } from "../../lib/showToast";
 import { generateRandomNumberList } from "../../utils/generateRandomNumberList";
 import { DraggableButton } from "../DraggableButton";
-
-type props = {
-  images: number;
-  grid: number;
-  [x: string]: any;
-};
 
 const widthTable: Record<number, number> = {
   3: 8,
@@ -108,9 +104,16 @@ export const Box = ({
   );
 };
 
-export const Task5Game: React.FC<props> = memo(({ images = 3, grid = 5 }) => {
+export const Task5Game: React.FC<{
+  grid: number;
+  images: number;
+  timer: number;
+  onSuccess: () => void;
+  onError: () => void;
+}> = memo(({ images, grid, timer, onSuccess, onError }) => {
   const [posX, setPosX] = useState(0);
   const [posY, setPosY] = useState(0);
+  const { countDown } = useCountDown(timer);
 
   const size = grid * grid - 1;
   const baseWidth = widthTable[grid] || 3;
@@ -134,8 +137,9 @@ export const Task5Game: React.FC<props> = memo(({ images = 3, grid = 5 }) => {
     if (fruitPos.has(pos)) fruitPos.delete(pos);
 
     if (pos === size) {
-      if (fruitPos.size === 0) showToast("success", "success");
-      else showToast("Failed", "error");
+      if (fruitPos.size === 0) {
+        onSuccess();
+      } else showToast("Failed", "error");
     }
 
     setPosX(x);
@@ -176,6 +180,7 @@ export const Task5Game: React.FC<props> = memo(({ images = 3, grid = 5 }) => {
           </View>
         ))}
       </View>
+      <Text>{countDown}</Text>
     </GestureHandlerRootView>
   );
 });

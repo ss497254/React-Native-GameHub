@@ -9,15 +9,18 @@ import { useCountDown } from "../hooks/useCountDown";
 import { useTaskProgress } from "../stores/useTaskProgress";
 import { generateRandomNumberList } from "../utils/generateRandomNumberList";
 import { task4Levels } from "../constants/GameLevel";
+import Celebrations from "../components/Celebrations";
 
 const Task4 = () => {
-  const { countDown } = useCountDown(15);
   const {
     updateTaskProgress,
     taskProgress: [_1, _2, _3, task4Progress],
   } = useTaskProgress((s) => s);
+  if (task4Progress.currLevel === task4Progress.totalLevel)
+    return <Celebrations />;
 
   const { words } = task4Levels[task4Progress.currLevel];
+  const { countDown } = useCountDown(words);
 
   const activeWords = useMemo(
     () =>

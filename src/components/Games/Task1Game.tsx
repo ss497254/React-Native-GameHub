@@ -4,14 +4,7 @@ import { colors } from "../../constants/AppStyle";
 import { IconButton } from "react-native-paper";
 import { generateRandomNumberList } from "../../utils/generateRandomNumberList";
 
-type props = {
-  tiles: number;
-  grid: number;
-  visible: boolean;
-  [x: string]: any;
-};
-
-const widthTable = {
+const widthTable: Record<any, any> = {
   3: 8,
   4: 7,
   5: 6,
@@ -20,26 +13,24 @@ const widthTable = {
 };
 
 export const TabButton = ({
-  activeTiles,
+  active,
   baseWidth,
-  value,
   visible,
+  onClick,
+  success,
 }: {
-  activeTiles: Set<number>;
+  active: boolean;
   baseWidth: number;
-  value: number;
   visible: boolean;
+  success: boolean;
+  onClick: () => void;
 }) => {
-  const [pressed, setPressed] = useState(false);
-
   let backgroundColor =
-      visible && activeTiles.has(value)
-        ? colors["green-400"]
-        : colors["blue-400"],
+      visible && active ? colors["green-400"] : colors["blue-400"],
     icon = "";
 
-  if (pressed) {
-    if (activeTiles.has(value)) {
+  if (success) {
+    if (active) {
       backgroundColor = colors["green-400"];
       icon = "check";
     } else {
@@ -60,49 +51,63 @@ export const TabButton = ({
         height: baseWidth * 10,
         backgroundColor,
       }}
-      onPress={
-        visible
-          ? undefined
-          : () => {
-              setPressed(true);
-            }
-      }
+      onPress={visible ? undefined : onClick}
     />
   );
 };
 
-export const Task1Game: React.FC<props> = memo(
-  ({ tiles = 3, grid = 5, visible }) => {
-    //@ts-ignore
-    const baseWidth = widthTable[grid];
+export const Task1Game: React.FC<{
+  tiles: number;
+  grid: number;
+  visible: boolean;
+  onSuccess: () => void;
+  onError: () => void;
+  [x: string]: any;
+}> = memo(({ tiles, grid, visible, onSuccess, onError }) => {
+  const baseWidth = widthTable[grid];
+  const [clickedTiles, setClickedTiles] = useState<{ tiles: number[] }>({
+    tiles: [],
+  });
 
-    const activeTiles = useMemo(
-      () => generateRandomNumberList(tiles, grid * grid),
-      [tiles, grid]
-    );
+  const activeTiles = useMemo(
+    () => generateRandomNumberList(tiles, grid * grid),
+    [tiles, grid]
+  );
 
-    return (
-      <ScrollView
-        contentContainerStyle={{
-          flexWrap: "wrap",
-          flexDirection: "row",
-          alignItems: "center",
-          width: baseWidth * 11 * grid,
-          height: baseWidth * 11 * grid,
-        }}
-      >
-        {Array(grid * grid)
-          .fill(0)
-          .map((_, idx) => (
-            <TabButton
-              visible={visible}
-              activeTiles={activeTiles}
-              key={idx}
-              value={idx}
-              baseWidth={baseWidth}
-            />
-          ))}
-      </ScrollView>
-    );
-  }
-);
+  const onClickProvider = (idx: number) => () => {
+    clickedTiles.tiles.push(idx);
+    setClickedTiles({ tiles: clickedTiles.tiles });
+    if (activeTiles.has(idx)) {
+    } else {
+      onError();
+      return;
+    }
+
+    if (clickedTiles.tiles.length === tiles) onSuccess();
+  };
+
+  return (
+    <ScrollView
+      contentContainerStyle={{
+        flexWrap: "wrap",
+        flexDirection: "row",
+        alignItems: "center",
+        width: baseWidth * 11 * grid,
+        height: baseWidth * 11 * grid,
+      }}
+    >
+      {Array(grid * grid)
+        .fill(0)
+        .map((_, idx) => (
+          <TabButton
+            key={idx}
+            baseWidth={baseWidth}
+            visible={visible}
+            active={activeTiles.has(idx)}
+            success={clickedTiles.tiles.includes(idx)}
+            onClick={onClickProvider(idx)}
+          />
+        ))}
+    </ScrollView>
+  );
+});

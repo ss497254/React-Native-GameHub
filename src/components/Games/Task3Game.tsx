@@ -6,14 +6,6 @@ import { generateRandomNumberList } from "../../utils/generateRandomNumberList";
 import { IconList } from "../../constants/IconList";
 import { showToast } from "../../lib/showToast";
 
-type props = {
-  cards: number;
-  images: number;
-  countDown: number;
-  grid: number;
-  [x: string]: any;
-};
-
 const widthTable: Record<number, number> = {
   3: 8,
   4: 7,
@@ -67,103 +59,108 @@ export const TabButton = ({
   );
 };
 
-export const Task3Game: React.FC<props> = memo(
-  ({ cards = 3, images, grid = 5, countDown }) => {
-    const visible = countDown > 0;
-    const [iconIdx, setIconIdx] = useState(0);
-    const baseWidth = widthTable[grid];
-    let i = 0,
-      j = 0;
-    setIconIdx;
-    const activeCards = useMemo(
-      () => generateRandomNumberList(cards, grid * grid),
-      [cards, grid]
-    );
+export const Task3Game: React.FC<{
+  cards: number;
+  images: number;
+  countDown: number;
+  grid: number;
+  onSuccess: () => void;
+  onError: () => void;
+  [x: string]: any;
+}> = memo(({ cards, images, grid, countDown, onSuccess, onError }) => {
+  const visible = countDown > 0;
+  const [iconIdx, setIconIdx] = useState(0);
+  const baseWidth = widthTable[grid];
+  let i = 0,
+    j = 0;
+  setIconIdx;
+  const activeCards = useMemo(
+    () => generateRandomNumberList(cards, grid * grid),
+    [cards, grid]
+  );
 
-    const [activeImages, icons] = useMemo(
-      () => [
-        generateRandomNumberList(images, cards),
-        Array.from(generateRandomNumberList(images, IconList.length)).map(
-          (x) => IconList[x]
-        ),
-      ],
-      [images, cards]
-    );
+  const [activeImages, icons] = useMemo(
+    () => [
+      generateRandomNumberList(images, cards),
+      Array.from(generateRandomNumberList(images, IconList.length)).map(
+        (x) => IconList[x]
+      ),
+    ],
+    [images, cards]
+  );
 
-    return (
-      <>
-        {visible ? (
-          <Text
-            style={{
-              marginTop: -100,
-              marginBottom: 75,
-              fontSize: 32,
-              height: baseWidth * 10 + 16,
-            }}
-          >
-            {countDown}
-          </Text>
-        ) : (
-          <IconButton
-            icon={icons[iconIdx].icon}
-            style={{
-              marginTop: -100,
-              marginBottom: 75,
-            }}
-            size={baseWidth * 10}
-            iconColor={icons[iconIdx].color}
-          />
-        )}
-        <View
+  return (
+    <>
+      {visible ? (
+        <Text
           style={{
-            marginBottom: 20,
-            flexDirection: "row",
-            width: 300,
+            marginTop: -100,
+            marginBottom: 75,
+            fontSize: 32,
+            height: baseWidth * 10 + 16,
           }}
         >
-          <Text style={{ flex: 1 }} variant="titleMedium">
-            Cards: {cards}
-          </Text>
-          <Text variant="titleMedium">Images: {images}</Text>
-        </View>
-        <View
+          {countDown}
+        </Text>
+      ) : (
+        <IconButton
+          icon={icons[iconIdx].icon}
           style={{
-            flexWrap: "wrap",
-            flexDirection: "row",
-            alignItems: "center",
-            width: baseWidth * 11 * grid,
-            height: baseWidth * 11 * grid,
+            marginTop: -100,
+            marginBottom: 75,
           }}
-        >
-          {Array(grid * grid)
-            .fill(0)
-            .map((_, idx) => {
-              const active = activeCards.has(idx),
-                hasIcon = active && activeImages.has(i++),
-                currIconIdx = hasIcon ? j++ : 1000;
+          size={baseWidth * 10}
+          iconColor={icons[iconIdx].color}
+        />
+      )}
+      <View
+        style={{
+          marginBottom: 20,
+          flexDirection: "row",
+          width: 300,
+        }}
+      >
+        <Text style={{ flex: 1 }} variant="titleMedium">
+          Cards: {cards}
+        </Text>
+        <Text variant="titleMedium">Images: {images}</Text>
+      </View>
+      <View
+        style={{
+          flexWrap: "wrap",
+          flexDirection: "row",
+          alignItems: "center",
+          width: baseWidth * 11 * grid,
+          height: baseWidth * 11 * grid,
+        }}
+      >
+        {Array(grid * grid)
+          .fill(0)
+          .map((_, idx) => {
+            const active = activeCards.has(idx),
+              hasIcon = active && activeImages.has(i++),
+              currIconIdx = hasIcon ? j++ : 1000;
 
-              return (
-                <TabButton
-                  onClick={() => {
-                    if (currIconIdx === iconIdx) {
-                      if (iconIdx === images - 1)
-                        showToast("success", "success");
-                      else setIconIdx((i) => i + 1);
-                    } else {
-                      showToast("error", "error");
-                    }
-                  }}
-                  visible={visible}
-                  active={active}
-                  success={currIconIdx < iconIdx}
-                  iconSource={hasIcon ? icons[currIconIdx] : {}}
-                  key={idx}
-                  baseWidth={baseWidth}
-                />
-              );
-            })}
-        </View>
-      </>
-    );
-  }
-);
+            return (
+              <TabButton
+                onClick={() => {
+                  if (currIconIdx === iconIdx) {
+                    if (iconIdx === images - 1) onSuccess();
+                    else setIconIdx((i) => i + 1);
+                  } else {
+                    onError();
+                  }
+                }}
+                visible={visible}
+                active={active}
+                success={currIconIdx < iconIdx}
+                iconSource={hasIcon ? icons[currIconIdx] : {}}
+                key={idx}
+                baseWidth={baseWidth}
+              />
+            );
+          })}
+      </View>
+    </>
+  );
+});

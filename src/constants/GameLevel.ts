@@ -67,11 +67,11 @@ export const task4Levels = [
 ];
 
 export const task5Levels = [
-  { images: 3, grid: 4 },
-  { images: 4, grid: 4 },
-  { images: 5, grid: 5 },
-  { images: 7, grid: 6 },
-  { images: 8, grid: 7 },
-  { images: 9, grid: 7 },
-  { images: 10, grid: 7 },
+  { images: 3, timer: 80, grid: 4 },
+  { images: 4, timer: 90, grid: 4 },
+  { images: 5, timer: 100, grid: 5 },
+  { images: 7, timer: 110, grid: 6 },
+  { images: 8, timer: 120, grid: 7 },
+  { images: 9, timer: 130, grid: 7 },
+  { images: 10, timer: 140, grid: 7 },
 ];

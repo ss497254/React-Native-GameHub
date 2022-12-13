@@ -7,14 +7,17 @@ import { useCountDown } from "../hooks/useCountDown";
 import { useTaskProgress } from "../stores/useTaskProgress";
 import { generateRandomNumberList } from "../utils/generateRandomNumberList";
 import { task2Levels } from "../constants/GameLevel";
+import Celebrations from "../components/Celebrations";
 
 const Task2 = () => {
-  const [value, setValue] = useState({ nums: [] });
   const {
     updateTaskProgress,
     taskProgress: [_, task2Progress],
   } = useTaskProgress((s) => s);
+  if (task2Progress.currLevel === task2Progress.totalLevel)
+    return <Celebrations />;
 
+  const [value, setValue] = useState({ nums: [] });
   const { level } = task2Levels[task2Progress.currLevel];
 
   const { countDown } = useCountDown(level);
@@ -57,6 +60,7 @@ const Task2 = () => {
                 currLevel: task2Progress.currLevel + 1,
               });
             }}
+            onError={() => {}}
           />
         </>
       )}
