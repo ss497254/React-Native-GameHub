@@ -1,28 +1,29 @@
-import React, { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import React from "react";
 import { View } from "react-native";
 import { Text } from "react-native-paper";
+import Celebrations from "../components/Celebrations";
 import { Task1Game } from "../components/Games/Task1Game";
 import { GameScreen } from "../components/GameScreen";
+import { task1Levels } from "../constants/GameLevel";
 import { useCountDown } from "../hooks/useCountDown";
 import { useTaskProgress } from "../stores/useTaskProgress";
-import { task1Levels } from "../constants/GameLevel";
-import Celebrations from "../components/Celebrations";
 
 const Task1 = () => {
   const {
     updateTaskProgress,
     taskProgress: [task1Progress],
   } = useTaskProgress((s) => s);
+
   if (task1Progress.currLevel === task1Progress.totalLevel)
     return <Celebrations />;
 
-  const [anchor, reset] = useState(false);
+  const { navigate } = useNavigation();
+  const { tiles, grid } = task1Levels[task1Progress.currLevel];
   const { countDown } = useCountDown(5);
 
-  const { tiles, grid } = task1Levels[task1Progress.currLevel];
-
   return (
-    <GameScreen key={anchor} countDown={countDown} {...task1Progress}>
+    <GameScreen countDown={countDown} {...task1Progress}>
       <View
         style={{
           marginBottom: 20,
@@ -42,7 +43,10 @@ const Task1 = () => {
         onSuccess={() => {
           updateTaskProgress(1, { currLevel: task1Progress.currLevel + 1 });
         }}
-        onError={() => reset(!anchor)}
+        onError={() => {
+          //@ts-expect-error
+          navigate("Home Page");
+        }}
       />
     </GameScreen>
   );

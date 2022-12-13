@@ -1,10 +1,9 @@
+import React, { memo, useMemo, useState } from "react";
 import { View } from "react-native";
-import React, { useState, useMemo, memo } from "react";
-import { colors } from "../../constants/AppStyle";
 import { IconButton, Text } from "react-native-paper";
-import { generateRandomNumberList } from "../../utils/generateRandomNumberList";
+import { colors } from "../../constants/AppStyle";
 import { IconList } from "../../constants/IconList";
-import { showToast } from "../../lib/showToast";
+import { generateRandomNumberList } from "../../utils/generateRandomNumberList";
 
 const widthTable: Record<number, number> = {
   3: 8,

@@ -8,19 +8,22 @@ import { useTaskProgress } from "../stores/useTaskProgress";
 import { generateRandomNumberList } from "../utils/generateRandomNumberList";
 import { task2Levels } from "../constants/GameLevel";
 import Celebrations from "../components/Celebrations";
+import { useNavigation } from "@react-navigation/native";
 
 const Task2 = () => {
   const {
     updateTaskProgress,
     taskProgress: [_, task2Progress],
   } = useTaskProgress((s) => s);
+
   if (task2Progress.currLevel === task2Progress.totalLevel)
     return <Celebrations />;
 
-  const [value, setValue] = useState({ nums: [] });
+  const { navigate } = useNavigation();
   const { level } = task2Levels[task2Progress.currLevel];
-
   const { countDown } = useCountDown(level);
+
+  const [value, setValue] = useState({ nums: [] });
 
   const res = Array.from(
     useMemo(() => generateRandomNumberList(level, 9), [level])
@@ -60,7 +63,10 @@ const Task2 = () => {
                 currLevel: task2Progress.currLevel + 1,
               });
             }}
-            onError={() => {}}
+            onError={() => {
+              //@ts-expect-error
+              navigate("Home Page");
+            }}
           />
         </>
       )}
