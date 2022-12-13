@@ -1,13 +1,12 @@
-import { GameScreen } from "../components/GameScreen";
-import React, { useEffect, useState } from "react";
-import { Task2Game } from "../components/Games/Task2Game";
-import { generateRandomNumberList } from "../utils/generateRandomNumberList";
+import React, { useMemo, useState } from "react";
 import { View } from "react-native";
 import { Text } from "react-native-paper";
+import { Task2Game } from "../components/Games/Task2Game";
+import { GameScreen } from "../components/GameScreen";
 import { colors, radius } from "../constants/AppStyle";
-import { useMemo } from "react";
-import { useCountDown } from "../stores/useCountdown";
+import { useCountDown } from "../hooks/useCountDown";
 import { useTaskProgress } from "../stores/useTaskProgress";
+import { generateRandomNumberList } from "../utils/generateRandomNumberList";
 
 const Tab = ({ value = { nums: [] }, res, level, countDown = "" }: any) => {
   return (
@@ -51,24 +50,20 @@ const Tab = ({ value = { nums: [] }, res, level, countDown = "" }: any) => {
 };
 
 const Task2 = () => {
+  const level = 6;
+
   const [value, setValue] = useState({ nums: [] });
   const { updateTaskProgress, task2Progress } = useTaskProgress((s) => s);
 
-  const { countDown, startCountDown } = useCountDown((s) => s);
+  const { countDown } = useCountDown(level);
 
-  const level = 6;
   const res = Array.from(
     useMemo(() => generateRandomNumberList(level, 9), [level])
   );
 
-  useEffect(() => {
-    const clearCountDown = startCountDown(level + 1);
-    return clearCountDown;
-  }, []);
-
   return (
     <GameScreen {...task2Progress}>
-      {countDown.length > 0 ? (
+      {countDown > 0 ? (
         <>
           <Text
             style={{

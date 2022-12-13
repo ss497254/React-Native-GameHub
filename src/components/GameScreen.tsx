@@ -49,7 +49,7 @@ export const GameScreen: React.FC<any> = ({
         }}
       />
       <View style={{ flexGrow: 1 }}>
-        {typeof countDown === "string" ? (
+        {typeof countDown !== "undefined" ? (
           <Text
             style={{
               fontSize: 30,
@@ -57,7 +57,7 @@ export const GameScreen: React.FC<any> = ({
               marginVertical: 20,
             }}
           >
-            {countDown.length > 0 ? countDown : ""}
+            {countDown > 0 ? countDown : ""}
           </Text>
         ) : null}
       </View>

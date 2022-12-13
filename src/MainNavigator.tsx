@@ -3,7 +3,8 @@ import {
   DefaultTheme as NavigatorTheme,
   NavigationContainer,
 } from "@react-navigation/native";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
+import { StatusBar } from "react-native";
 import {
   MD3LightTheme as DefaultTheme,
   Provider as PaperProvider,
@@ -21,8 +22,8 @@ import Task2 from "./screens/Task2";
 import Task3 from "./screens/Task3";
 import Task4 from "./screens/Task4";
 import Task5 from "./screens/Task5";
-// import A from "./screens/A";
 import { useActivityLog } from "./stores/useActivityLog";
+// import A from "./screens/A";
 
 const Drawer = createDrawerNavigator();
 
@@ -46,11 +47,23 @@ NavigatorTheme.colors.background = colors.white;
 const tasks = [task1, task2, task3, task4, task5];
 const games = [Task1, Task2, Task3, Task4, Task5];
 
+const setStatusbarColor = (name: string) => {
+  if (name.includes("Task 1")) return task1.color;
+  if (name.includes("Task 2")) return task2.color;
+  if (name.includes("Task 3")) return task3.color;
+  if (name.includes("Task 4")) return task4.color;
+  if (name.includes("Task 5")) return task5.color;
+
+  return colors["blue-600"];
+};
+
 export const MainNavigator = () => {
+  const ref = useRef("");
   const { addActivity } = useActivityLog((s) => s);
 
   useEffect(() => {
     addActivity({ timestamp: new Date().getTime(), message: "App Launced" });
+    StatusBar.setBarStyle("light-content");
 
     return () => {
       addActivity({ timestamp: new Date().getTime(), message: "App Closed!" });
@@ -59,7 +72,22 @@ export const MainNavigator = () => {
 
   return (
     <PaperProvider theme={theme}>
-      <NavigationContainer theme={NavigatorTheme}>
+      <NavigationContainer
+        theme={NavigatorTheme}
+        onStateChange={(e) => {
+          const name = e?.routeNames[e.index] || "";
+
+          if (ref.current === name) return;
+
+          ref.current = name;
+          StatusBar.setBackgroundColor(setStatusbarColor(name));
+
+          addActivity({
+            timestamp: new Date().getTime(),
+            message: "Moved to Screen " + name,
+          });
+        }}
+      >
         <Drawer.Navigator
           initialRouteName="Landing Page"
           backBehavior="history"
@@ -93,7 +121,7 @@ export const MainNavigator = () => {
               navigationKey={Math.random().toString()}
               key={tasks[idx].screen + " Game"}
               name={tasks[idx].screen + " Game"}
-              options={{ headerShown: false }}
+              options={{ headerShown: false, swipeEnabled: false }}
               component={Task}
             />
           ))}

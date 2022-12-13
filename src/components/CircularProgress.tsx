@@ -1,5 +1,5 @@
-import React, { Children } from "react";
-import { View, StyleSheet, ViewStyle } from "react-native";
+import React from "react";
+import { StyleSheet, View, ViewStyle } from "react-native";
 import { colors } from "../constants/AppStyle";
 /**
  * Override styles that get passed from props

@@ -1,21 +1,16 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import { View } from "react-native";
 import { Text } from "react-native-paper";
 import { Task4Game } from "../components/Games/Task4Game";
 import { GameScreen } from "../components/GameScreen";
 import { colors, radius } from "../constants/AppStyle";
 import { WordList } from "../constants/wordList";
+import { useCountDown } from "../hooks/useCountDown";
 import { showToast } from "../lib/showToast";
-import { useCountDown } from "../stores/useCountdown";
 import { generateRandomNumberList } from "../utils/generateRandomNumberList";
 
 const Task4 = () => {
-  const { countDown, startCountDown } = useCountDown((s) => s);
-
-  useEffect(() => {
-    const clearCountDown = startCountDown(16);
-    return clearCountDown;
-  }, []);
+  const { countDown } = useCountDown();
 
   let words = 14;
 
@@ -32,7 +27,7 @@ const Task4 = () => {
 
   return (
     <GameScreen countDown={countDown} scroll>
-      {countDown.length > 0 ? (
+      {countDown > 0 ? (
         <View
           style={{
             flexDirection: "row",
@@ -48,7 +43,7 @@ const Task4 = () => {
               style={{
                 width: 140,
                 borderRadius: radius.m,
-                backgroundColor: colors["light-blue-100"],
+                backgroundColor: colors["indigo-500"],
                 margin: 5,
                 paddingVertical: 10,
                 textAlign: "center",

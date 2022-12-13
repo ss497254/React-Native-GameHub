@@ -4,7 +4,6 @@ import { colors, radius } from "../constants/AppStyle";
 import { Title, Text, Button, Surface } from "react-native-paper";
 import { showToast } from "../lib/showToast";
 import { useNetworkStatus } from "../stores/useNetworkStatus";
-import * as WebBrowser from "expo-web-browser";
 
 export const TestingCard = memo(() => {
   const isConnected = useNetworkStatus((s) => s.isConnected);
@@ -33,14 +32,6 @@ export const TestingCard = memo(() => {
         Internet isConnected: {JSON.stringify(isConnected)}
       </Text>
       <View style={{ padding: 20 }}>
-        <Button
-          mode="contained"
-          onPress={async () =>
-            await WebBrowser.openAuthSessionAsync("https://www.google.com")
-          }
-        >
-          Open Browser
-        </Button>
         <Text
           variant={"titleMedium"}
           style={{ textAlign: "center", marginBottom: 10 }}

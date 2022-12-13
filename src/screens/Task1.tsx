@@ -1,20 +1,15 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { View } from "react-native";
 import { Text } from "react-native-paper";
 import { Task1Game } from "../components/Games/Task1Game";
 import { GameScreen } from "../components/GameScreen";
-import { useCountDown } from "../stores/useCountdown";
+import { useCountDown } from "../hooks/useCountDown";
 import { useTaskProgress } from "../stores/useTaskProgress";
 
 const Task1 = () => {
   const { updateTaskProgress, task1Progress } = useTaskProgress((s) => s);
 
-  const { countDown, startCountDown } = useCountDown((s) => s);
-
-  useEffect(() => {
-    const clearCountDown = startCountDown(4);
-    return clearCountDown;
-  }, []);
+  const { countDown } = useCountDown(4);
 
   let tiles = 8,
     grid = 7;
@@ -36,7 +31,7 @@ const Task1 = () => {
       <Task1Game
         tiles={tiles}
         grid={grid}
-        visible={countDown.length > 0}
+        visible={countDown > 0}
         onSuccess={() => {
           updateTaskProgress("task1Progress", {
             ...task1Progress,

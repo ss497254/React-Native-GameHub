@@ -33,16 +33,17 @@ export const Task4Game: React.FC<props> = memo(
           theme={{
             roundness: 10,
           }}
+          underlineColor="transparent"
           style={{ width: 300 }}
           label="Word"
           placeholder="Enter words"
           value={value}
           onChangeText={(e) => setValue(e)}
           onSubmitEditing={(e) => {
-            e.preventDefault();
-            words.push(value.trim());
             setValue("");
+            words.push(value.trim());
             setWords(words);
+            e.preventDefault();
           }}
           returnKeyType="next"
           autoCapitalize="none"

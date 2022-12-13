@@ -143,7 +143,7 @@ export const Task5Game: React.FC<props> = memo(({ tiles = 3, grid = 5 }) => {
   };
 
   return (
-    <GestureHandlerRootView pointerEvents="box-only">
+    <GestureHandlerRootView>
       <View
         style={{
           flexWrap: "wrap",

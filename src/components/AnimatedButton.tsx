@@ -24,7 +24,6 @@ export const AnimateButton: React.FC<any> = ({ text }) => {
     <Animated.View
       style={{
         borderRadius: animatedButtonBorderRadius,
-
         alignItems: "center",
         backgroundColor: colors["green-500"],
         justifyContent: "center",

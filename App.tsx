@@ -5,10 +5,9 @@ import { Text, TextInput } from "react-native";
 import "react-native-gesture-handler";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
-import { useNetworkStatus } from "./src/stores/useNetworkStatus";
 import { toastConfig } from "./src/lib/defaultToastConfig";
 import { MainNavigator } from "./src/MainNavigator";
-import { OfflineBar } from "./src/components/OfflineBar";
+import { useNetworkStatus } from "./src/stores/useNetworkStatus";
 import { useTaskProgress } from "./src/stores/useTaskProgress";
 
 if ((Text as any).defaultProps == null) {
@@ -56,10 +55,9 @@ const App = () => {
       <Toast
         config={toastConfig}
         onPress={() => Toast.hide()}
-        visibilityTime={5000}
+        visibilityTime={4000}
         autoHide
       />
-      <OfflineBar />
     </SafeAreaProvider>
   );
 };

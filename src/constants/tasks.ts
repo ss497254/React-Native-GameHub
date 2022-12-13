@@ -42,5 +42,5 @@ export const task5 = {
   screen: "Task 5",
   instructionImgSrc: require("../assets/images/task-5.png"),
   instruction:
-    "You will see a maze displayed.\n\nDrag the red ball to collect all the cherries, then exit at the letter E.\n\nYou can click on the “I Give Up” button at any time to end this task.",
+    "You will see a maze displayed.\n\nDrag the pacman icon to collect all the cherries, then exit at the letter E.\n\nYou can click on the “I Give Up” button at any time to end this task.",
 };
