@@ -5,14 +5,17 @@ import { Task1Game } from "../components/Games/Task1Game";
 import { GameScreen } from "../components/GameScreen";
 import { useCountDown } from "../hooks/useCountDown";
 import { useTaskProgress } from "../stores/useTaskProgress";
+import { task1Levels } from "../constants/GameLevel";
 
 const Task1 = () => {
-  const { updateTaskProgress, task1Progress } = useTaskProgress((s) => s);
+  const {
+    updateTaskProgress,
+    taskProgress: [task1Progress],
+  } = useTaskProgress((s) => s);
 
   const { countDown } = useCountDown(5);
 
-  let tiles = 8,
-    grid = 7;
+  const { tiles, grid } = task1Levels[task1Progress.currLevel];
 
   return (
     <GameScreen countDown={countDown} {...task1Progress}>
@@ -33,10 +36,7 @@ const Task1 = () => {
         grid={grid}
         visible={countDown > 0}
         onSuccess={() => {
-          updateTaskProgress("task1Progress", {
-            ...task1Progress,
-            currLevel: task1Progress.currLevel + 1,
-          });
+          updateTaskProgress(1, { currLevel: task1Progress.currLevel + 1 });
         }}
       />
     </GameScreen>

@@ -5,14 +5,10 @@ import {
 } from "@react-navigation/native";
 import React, { useEffect, useRef } from "react";
 import { StatusBar } from "react-native";
-import {
-  MD3LightTheme as DefaultTheme,
-  Provider as PaperProvider,
-} from "react-native-paper";
 import { DrawerContent } from "./components/DrawerContent";
 import { Header } from "./components/Header";
 import { TaskInstructionView } from "./components/TaskInstructionView";
-import { colors, fonts } from "./constants/AppStyle";
+import { colors } from "./constants/AppStyle";
 import { task1, task2, task3, task4, task5 } from "./constants/tasks";
 import ActivityLogs from "./screens/ActivityLogs";
 import { HomePage } from "./screens/HomePage";
@@ -23,24 +19,10 @@ import Task3 from "./screens/Task3";
 import Task4 from "./screens/Task4";
 import Task5 from "./screens/Task5";
 import { useActivityLog } from "./stores/useActivityLog";
+
 // import A from "./screens/A";
 
 const Drawer = createDrawerNavigator();
-
-export const theme = {
-  ...DefaultTheme,
-  roundness: 2,
-  version: 3,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: colors["blue-500"],
-    secondary: colors["green-500"],
-    tertiary: colors.accent,
-    primaryContainer: colors["blue-200"],
-    secondaryContainer: colors["blue-100"],
-  },
-  fonts,
-};
 
 NavigatorTheme.colors.background = colors.white;
 
@@ -71,71 +53,65 @@ export const MainNavigator = () => {
   }, []);
 
   return (
-    <PaperProvider theme={theme}>
-      <NavigationContainer
-        theme={NavigatorTheme}
-        onStateChange={(e) => {
-          const name = e?.routeNames[e.index] || "";
+    <NavigationContainer
+      theme={NavigatorTheme}
+      onStateChange={(e) => {
+        const name = e?.routeNames[e.index] || "";
 
-          if (ref.current === name) return;
+        if (ref.current === name) return;
 
-          ref.current = name;
-          StatusBar.setBackgroundColor(setStatusbarColor(name));
+        ref.current = name;
+        StatusBar.setBackgroundColor(setStatusbarColor(name));
 
-          addActivity({
-            timestamp: new Date().getTime(),
-            message: "Moved to Screen " + name,
-          });
-        }}
+        addActivity({
+          timestamp: new Date().getTime(),
+          message: "Moved to Screen " + name,
+        });
+      }}
+    >
+      <Drawer.Navigator
+        initialRouteName="Landing Page"
+        backBehavior="history"
+        drawerContent={DrawerContent}
       >
-        <Drawer.Navigator
-          initialRouteName="Landing Page"
-          backBehavior="history"
-          drawerContent={DrawerContent}
-        >
+        <Drawer.Screen
+          name="Landing Page"
+          options={{ headerShown: false }}
+          component={LandingScreen}
+        />
+        <Drawer.Screen
+          name="Home Page"
+          options={{ headerShown: false }}
+          component={HomePage}
+        />
+        {tasks.map((task) => (
           <Drawer.Screen
-            name="Landing Page"
-            options={{ headerShown: false }}
-            component={LandingScreen}
-          />
-          <Drawer.Screen
-            name="Home Page"
-            options={{ headerShown: false }}
-            component={HomePage}
-          />
-          {tasks.map((task) => (
-            <Drawer.Screen
-              key={task.screen}
-              name={task.screen}
-              options={{
-                header: (props) => (
-                  <Header {...props} back title={task.screen} />
-                ),
-              }}
-            >
-              {() => <TaskInstructionView task={task} />}
-            </Drawer.Screen>
-          ))}
-          {games.map((Task, idx) => (
-            <Drawer.Screen
-              navigationKey={Math.random().toString()}
-              key={tasks[idx].screen + " Game"}
-              name={tasks[idx].screen + " Game"}
-              options={{ headerShown: false, swipeEnabled: false }}
-              component={Task}
-            />
-          ))}
-          <Drawer.Screen
-            name="ActivityLogs"
+            key={task.screen}
+            name={task.screen}
             options={{
-              header: (props) => (
-                <Header {...props} back title="Activity Logs" />
-              ),
+              header: (props) => <Header {...props} back title={task.screen} />,
             }}
-            component={ActivityLogs}
+          >
+            {() => <TaskInstructionView task={task} />}
+          </Drawer.Screen>
+        ))}
+        {games.map((Task, idx) => (
+          <Drawer.Screen
+            navigationKey={Math.random().toString()}
+            key={tasks[idx].screen + " Game"}
+            name={tasks[idx].screen + " Game"}
+            options={{ headerShown: false, swipeEnabled: false }}
+            component={Task}
           />
-        </Drawer.Navigator>
-      </NavigationContainer>
-    </PaperProvider>
+        ))}
+        <Drawer.Screen
+          name="ActivityLogs"
+          options={{
+            header: (props) => <Header {...props} back title="Activity Logs" />,
+          }}
+          component={ActivityLogs}
+        />
+      </Drawer.Navigator>
+    </NavigationContainer>
   );
 };

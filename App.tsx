@@ -9,6 +9,11 @@ import { toastConfig } from "./src/lib/defaultToastConfig";
 import { MainNavigator } from "./src/MainNavigator";
 import { useNetworkStatus } from "./src/stores/useNetworkStatus";
 import { useTaskProgress } from "./src/stores/useTaskProgress";
+import {
+  MD3LightTheme as DefaultTheme,
+  Provider as PaperProvider,
+} from "react-native-paper";
+import { colors, fonts } from "./src/constants/AppStyle";
 
 if ((Text as any).defaultProps == null) {
   (Text as any).defaultProps = {};
@@ -19,6 +24,21 @@ if ((TextInput as any).defaultProps == null) {
   (TextInput as any).defaultProps = {};
   (TextInput as any).defaultProps.allowFontScaling = false;
 }
+
+export const theme = {
+  ...DefaultTheme,
+  roundness: 2,
+  version: 3,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: colors["blue-500"],
+    secondary: colors["green-500"],
+    tertiary: colors.accent,
+    primaryContainer: colors["blue-200"],
+    secondaryContainer: colors["blue-100"],
+  },
+  fonts,
+};
 
 const App = () => {
   const { setConnected } = useNetworkStatus((s) => s);
@@ -51,7 +71,9 @@ const App = () => {
   return (
     <SafeAreaProvider>
       <SafeAreaView />
-      <MainNavigator />
+      <PaperProvider theme={theme}>
+        <MainNavigator />
+      </PaperProvider>
       <Toast
         config={toastConfig}
         onPress={() => Toast.hide()}

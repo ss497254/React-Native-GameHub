@@ -6,13 +6,18 @@ import { GameScreen } from "../components/GameScreen";
 import { colors, radius } from "../constants/AppStyle";
 import { WordList } from "../constants/wordList";
 import { useCountDown } from "../hooks/useCountDown";
-import { showToast } from "../lib/showToast";
+import { useTaskProgress } from "../stores/useTaskProgress";
 import { generateRandomNumberList } from "../utils/generateRandomNumberList";
+import { task4Levels } from "../constants/GameLevel";
 
 const Task4 = () => {
   const { countDown } = useCountDown(15);
+  const {
+    updateTaskProgress,
+    taskProgress: [_1, _2, _3, task4Progress],
+  } = useTaskProgress((s) => s);
 
-  let words = 14;
+  const { words } = task4Levels[task4Progress.currLevel];
 
   const activeWords = useMemo(
     () =>
@@ -26,7 +31,7 @@ const Task4 = () => {
   activeWords.forEach((word) => wordlist.add(word));
 
   return (
-    <GameScreen countDown={countDown} scroll>
+    <GameScreen countDown={countDown} {...task4Progress}>
       {countDown > 0 ? (
         <View
           style={{
@@ -56,7 +61,10 @@ const Task4 = () => {
       ) : (
         <Task4Game
           activeWordList={wordlist}
-          onError={() => showToast("Incorrect", "error")}
+          onSuccess={() => {
+            updateTaskProgress(4, { currLevel: task4Progress.currLevel + 1 });
+          }}
+          onError={() => console.log("Incorrect", "error")}
         />
       )}
       <View style={{ height: 60 }} />

@@ -7,7 +7,7 @@ import CircularProgress from "../components/CircularProgress";
 import { colors, radius } from "../constants/AppStyle";
 import { Progress } from "../constants/progress";
 import { task1, task2, task3, task4, task5 } from "../constants/tasks";
-import { useTaskProgress } from "../stores/useTaskProgress";
+import { useTaskProgress, IntialProgress } from "../stores/useTaskProgress";
 
 const Tab = ({ title, color, progress, screen, navigate, num, icon }: any) => {
   let subTitleColor = "",
@@ -109,11 +109,21 @@ const Tab = ({ title, color, progress, screen, navigate, num, icon }: any) => {
 
 const Tasks = [task1, task2, task3, task4, task5];
 
+const getTotaltaskCompleted = (taskProgress: typeof IntialProgress) => {
+  let x = 0;
+
+  taskProgress.forEach((y) => {
+    if (y.currLevel === y.totalLevel) x++;
+  });
+
+  return x;
+};
+
 export const HomePage = ({ navigation }: any) => {
   const { height } = Dimensions.get("window");
-  const taskProgress = useTaskProgress((s) => s);
+  const { taskProgress } = useTaskProgress((s) => s);
 
-  const totalTaskCompleted = 1;
+  const totalTaskCompleted = getTotaltaskCompleted(taskProgress);
 
   return (
     <ScrollView>
@@ -162,11 +172,7 @@ export const HomePage = ({ navigation }: any) => {
           <Tab
             key={idx}
             num={idx + 1}
-            progress={
-              taskProgress[
-                `task${idx + 1}Progress` as keyof typeof taskProgress
-              ]
-            }
+            progress={taskProgress[idx]}
             navigate={navigation.navigate}
             {...task}
           />

@@ -8,7 +8,7 @@ import { generateRandomNumberList } from "../../utils/generateRandomNumberList";
 import { DraggableButton } from "../DraggableButton";
 
 type props = {
-  tiles: number;
+  images: number;
   grid: number;
   [x: string]: any;
 };
@@ -108,7 +108,7 @@ export const Box = ({
   );
 };
 
-export const Task5Game: React.FC<props> = memo(({ tiles = 3, grid = 5 }) => {
+export const Task5Game: React.FC<props> = memo(({ images = 3, grid = 5 }) => {
   const [posX, setPosX] = useState(0);
   const [posY, setPosY] = useState(0);
 
@@ -121,8 +121,8 @@ export const Task5Game: React.FC<props> = memo(({ tiles = 3, grid = 5 }) => {
   );
 
   const fruitPos = useMemo(
-    () => generateRandomNumberList(tiles, size, 1),
-    [tiles, grid]
+    () => generateRandomNumberList(images, size, 1),
+    [images, grid]
   );
 
   const onChange = (x: number, y: number) => {

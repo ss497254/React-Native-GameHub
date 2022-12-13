@@ -1,15 +1,16 @@
 import { View } from "react-native";
 import React, { useState, useMemo, memo } from "react";
 import { colors } from "../../constants/AppStyle";
-import { IconButton } from "react-native-paper";
+import { IconButton, Text } from "react-native-paper";
 import { generateRandomNumberList } from "../../utils/generateRandomNumberList";
 import { IconList } from "../../constants/IconList";
+import { showToast } from "../../lib/showToast";
 
 type props = {
   cards: number;
   images: number;
+  countDown: number;
   grid: number;
-  visible: boolean;
   [x: string]: any;
 };
 
@@ -26,17 +27,19 @@ export const TabButton = ({
   baseWidth,
   iconSource: { icon = "", color },
   visible,
+  onClick,
+  success,
 }: {
   active: boolean;
+  success: boolean;
   iconSource: { icon?: string; color?: string };
   baseWidth: number;
   visible: boolean;
+  onClick: () => void;
 }) => {
-  const [pressed, setPressed] = useState(false);
-
   let backgroundColor = active ? colors["gray-300"] : colors.white;
 
-  if (pressed) {
+  if (success) {
     if (icon.length) {
       backgroundColor = colors["green-400"];
       icon = "check";
@@ -48,8 +51,8 @@ export const TabButton = ({
 
   return (
     <IconButton
-      icon={visible || pressed ? icon : ""}
-      iconColor={pressed ? colors.white : color}
+      icon={visible || success ? icon : ""}
+      iconColor={success ? colors.white : color}
       size={baseWidth * 8}
       style={{
         marginHorizontal: baseWidth * 0.5,
@@ -59,65 +62,108 @@ export const TabButton = ({
         height: baseWidth * 10,
         backgroundColor,
       }}
-      onPress={
-        visible || !active
-          ? undefined
-          : () => {
-              setPressed(true);
-            }
-      }
+      onPress={visible || !active ? undefined : onClick}
     />
   );
 };
 
 export const Task3Game: React.FC<props> = memo(
-  ({ cards = 3, images, grid = 5, visible }) => {
+  ({ cards = 3, images, grid = 5, countDown }) => {
+    const visible = countDown > 0;
+    const [iconIdx, setIconIdx] = useState(0);
     const baseWidth = widthTable[grid];
     let i = 0,
       j = 0;
-
+    setIconIdx;
     const activeCards = useMemo(
       () => generateRandomNumberList(cards, grid * grid),
       [cards, grid]
     );
 
-    const activeImages = useMemo(
-      () => generateRandomNumberList(images, cards),
-      [images, cards]
-    );
-
-    const icons: typeof IconList = useMemo(
-      () =>
+    const [activeImages, icons] = useMemo(
+      () => [
+        generateRandomNumberList(images, cards),
         Array.from(generateRandomNumberList(images, IconList.length)).map(
           (x) => IconList[x]
         ),
+      ],
       [images, cards]
     );
 
     return (
-      <View
-        style={{
-          flexWrap: "wrap",
-          flexDirection: "row",
-          alignItems: "center",
-          width: baseWidth * 11 * grid,
-          height: baseWidth * 11 * grid,
-        }}
-      >
-        {Array(grid * grid)
-          .fill(0)
-          .map((_, idx) => (
-            <TabButton
-              visible={visible}
-              active={activeCards.has(idx)}
-              iconSource={
-                activeCards.has(idx) && activeImages.has(i++) ? icons[j++] : {}
-              }
-              key={idx}
-              baseWidth={baseWidth}
-            />
-          ))}
-      </View>
+      <>
+        {visible ? (
+          <Text
+            style={{
+              marginTop: -100,
+              marginBottom: 75,
+              fontSize: 32,
+              height: baseWidth * 10 + 16,
+            }}
+          >
+            {countDown}
+          </Text>
+        ) : (
+          <IconButton
+            icon={icons[iconIdx].icon}
+            style={{
+              marginTop: -100,
+              marginBottom: 75,
+            }}
+            size={baseWidth * 10}
+            iconColor={icons[iconIdx].color}
+          />
+        )}
+        <View
+          style={{
+            marginBottom: 20,
+            flexDirection: "row",
+            width: 300,
+          }}
+        >
+          <Text style={{ flex: 1 }} variant="titleMedium">
+            Cards: {cards}
+          </Text>
+          <Text variant="titleMedium">Images: {images}</Text>
+        </View>
+        <View
+          style={{
+            flexWrap: "wrap",
+            flexDirection: "row",
+            alignItems: "center",
+            width: baseWidth * 11 * grid,
+            height: baseWidth * 11 * grid,
+          }}
+        >
+          {Array(grid * grid)
+            .fill(0)
+            .map((_, idx) => {
+              const active = activeCards.has(idx),
+                hasIcon = active && activeImages.has(i++),
+                currIconIdx = hasIcon ? j++ : 1000;
+
+              return (
+                <TabButton
+                  onClick={() => {
+                    if (currIconIdx === iconIdx) {
+                      if (iconIdx === images - 1)
+                        showToast("success", "success");
+                      else setIconIdx((i) => i + 1);
+                    } else {
+                      showToast("error", "error");
+                    }
+                  }}
+                  visible={visible}
+                  active={active}
+                  success={currIconIdx < iconIdx}
+                  iconSource={hasIcon ? icons[currIconIdx] : {}}
+                  key={idx}
+                  baseWidth={baseWidth}
+                />
+              );
+            })}
+        </View>
+      </>
     );
   }
 );
