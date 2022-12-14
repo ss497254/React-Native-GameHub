@@ -148,6 +148,7 @@ export const Task3Game: React.FC<{
                     else setIconIdx((i) => i + 1);
                   } else {
                     onError();
+                    return;
                   }
                 }}
                 visible={visible}

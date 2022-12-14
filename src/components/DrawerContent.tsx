@@ -1,8 +1,9 @@
 import { DrawerContentScrollView } from "@react-navigation/drawer";
 import * as React from "react";
 import { Image, StyleSheet, View } from "react-native";
-import { Divider, Drawer, Text } from "react-native-paper";
+import { Button, Drawer, Text } from "react-native-paper";
 import { colors, radius } from "../constants/AppStyle";
+import { useTaskProgress } from "../stores/useTaskProgress";
 import { useUserStore } from "../stores/useUserStore";
 
 const DrawerItemsData = [
@@ -32,6 +33,8 @@ export const DrawerContent = ({ navigation, state }: any) => {
   let activeRoute = "";
   if (!isNaN(state.index) && state.routes.length > 0)
     activeRoute = state.routes[state.index].name || "";
+
+  const { resetTaskProgress } = useTaskProgress();
 
   return (
     <>
@@ -99,19 +102,14 @@ export const DrawerContent = ({ navigation, state }: any) => {
           ))}
         </View>
       </DrawerContentScrollView>
-      <Divider />
-      <Text
-        style={{
-          paddingHorizontal: 10,
-          paddingVertical: 8,
-          borderTopWidth: 0.5,
-          borderTopColor: colors["gray-500"],
-          textAlign: "center",
-        }}
-        variant="labelSmall"
+      <Button
+        onPress={resetTaskProgress}
+        mode="contained"
+        theme={{ roundness: 0 }}
+        labelStyle={{ paddingVertical: 5 }}
       >
-        Made by CREaiTORS
-      </Text>
+        Reset Progress
+      </Button>
     </>
   );
 };

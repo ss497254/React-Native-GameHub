@@ -73,13 +73,14 @@ const Tab = ({ title, color, progress, screen, navigate, num, icon }: any) => {
                 fontSize: 18,
                 textAlignVertical: "center",
                 color,
-                marginBottom: 1,
+                marginBottom: 3,
               }}
             >
               {title}
             </Text>
             <Text
-              style={{ color: subTitleColor, letterSpacing: 0.5, fontSize: 13 }}
+              variant="labelSmall"
+              style={{ color: subTitleColor, marginBottom: -1 }}
             >
               {subTitle}
             </Text>

@@ -16,7 +16,7 @@ const Task5 = () => {
   if (task5Progress.currLevel === task5Progress.totalLevel)
     return <Celebrations />;
 
-  const { navigate } = useNavigation();
+  const { navigate, setParams } = useNavigation();
   const { grid, images, timer } = task5Levels[task5Progress.currLevel];
   const [result, setResult] = useState<"success" | "error" | "">("");
   const Navigate = navigate as any;
@@ -32,13 +32,16 @@ const Task5 = () => {
         result={result}
         onClickBtnB={() => {
           if (result === "success") {
-            updateTaskProgress(1, { currLevel: task5Progress.currLevel + 1 });
+            updateTaskProgress(5, { currLevel: task5Progress.currLevel + 1 });
           } else {
             onRefresh();
           }
         }}
         onClickBtnA={() => {
-          Navigate("Task 1");
+          if (result === "success") {
+            updateTaskProgress(5, { currLevel: task5Progress.currLevel + 1 });
+          }
+          Navigate("Task 5");
         }}
       />
       <Task5Game
@@ -51,6 +54,7 @@ const Task5 = () => {
         onError={() => {
           setResult("error");
         }}
+        reset={onRefresh}
       />
     </GameScreen>
   );

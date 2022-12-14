@@ -21,7 +21,7 @@ const Task1 = () => {
 
   const { navigate, setParams } = useNavigation();
   const { tiles, grid } = task1Levels[task1Progress.currLevel];
-  const { countDown } = useCountDown(0);
+  const { countDown } = useCountDown(5);
   const [result, setResult] = useState<"success" | "error" | "">("");
   const Navigate = navigate as any;
 
@@ -42,6 +42,9 @@ const Task1 = () => {
           }
         }}
         onClickBtnA={() => {
+          if (result === "success") {
+            updateTaskProgress(1, { currLevel: task1Progress.currLevel + 1 });
+          }
           Navigate("Task 1");
         }}
       />

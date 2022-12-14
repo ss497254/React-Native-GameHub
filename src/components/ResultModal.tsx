@@ -1,7 +1,7 @@
 import LottieView from "lottie-react-native";
 import * as React from "react";
 import { View } from "react-native";
-import { Button, Modal as PaperModal, Portal } from "react-native-paper";
+import { Button, Text, Modal as PaperModal, Portal } from "react-native-paper";
 import { colors } from "../constants/AppStyle";
 
 export const ResultModal = ({
@@ -13,10 +13,10 @@ export const ResultModal = ({
   onClickBtnA: () => void;
   onClickBtnB: () => void;
 }) => {
-  const src =
-    result === "success"
-      ? require("../assets/lottie/game-complete.json")
-      : require("../assets/lottie/game-over.json");
+  const success = result === "success";
+  const src = success
+    ? require("../assets/lottie/game-complete.json")
+    : require("../assets/lottie/game-over.json");
 
   return (
     <Portal theme={{ colors: { primaryContainer: "transparent" } }}>
@@ -37,6 +37,7 @@ export const ResultModal = ({
           autoPlay
           style={{
             width: 280,
+            marginTop: success ? -18 : 0,
             padding: 40,
             flex: 1,
             alignItems: "center",
@@ -44,6 +45,16 @@ export const ResultModal = ({
           hardwareAccelerationAndroid
           source={src}
         />
+        <Text
+          variant="labelLarge"
+          style={{
+            marginTop: -20,
+            marginBottom: 20,
+            color: success ? colors["green-500"] : colors["red-500"],
+          }}
+        >
+          {success ? "Task Completed" : "Task Failed"}
+        </Text>
         <View
           style={{
             borderTopWidth: 0.6,
@@ -62,14 +73,14 @@ export const ResultModal = ({
               borderColor: colors["gray-600"],
             }}
             onPress={onClickBtnA}
-            labelStyle={{ paddingVertical: 10, color: colors["red-500"] }}
+            textColor={colors["red-500"]}
+            labelStyle={{ paddingVertical: 10 }}
           >
             Back
           </Button>
           <Button
             theme={{
               roundness: 0,
-              colors: { secondary: colors["red-200"] },
             }}
             style={{
               flex: 1,
@@ -79,7 +90,7 @@ export const ResultModal = ({
             onPress={onClickBtnB}
             labelStyle={{ paddingVertical: 10 }}
           >
-            {result === "success" ? "Next level" : "Play Again"}
+            {success ? "Next level" : "Play Again"}
           </Button>
         </View>
       </PaperModal>

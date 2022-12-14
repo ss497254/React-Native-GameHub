@@ -2,10 +2,9 @@ import generator from "generate-maze";
 import React, { memo, useMemo, useState } from "react";
 import { Image, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { Text } from "react-native-paper";
+import { Button, Text } from "react-native-paper";
 import { colors } from "../../constants/AppStyle";
 import { useCountDown } from "../../hooks/useCountDown";
-import { showToast } from "../../lib/showToast";
 import { generateRandomNumberList } from "../../utils/generateRandomNumberList";
 import { DraggableButton } from "../DraggableButton";
 
@@ -54,7 +53,7 @@ export const Box = ({
     >
       {active ? (
         <DraggableButton
-          minDist={baseWidth * 3}
+          minDist={baseWidth}
           top={left}
           bottom={right}
           left={top}
@@ -63,10 +62,10 @@ export const Box = ({
         >
           <View
             style={{
-              padding: baseWidth * 2,
-              width: baseWidth * 13,
-              height: baseWidth * 13,
-              margin: baseWidth * -1,
+              padding: baseWidth * 3,
+              width: baseWidth * 14,
+              height: baseWidth * 14,
+              margin: baseWidth * -2,
             }}
           >
             <Image
@@ -110,7 +109,8 @@ export const Task5Game: React.FC<{
   timer: number;
   onSuccess: () => void;
   onError: () => void;
-}> = memo(({ images, grid, timer, onSuccess, onError }) => {
+  reset: () => void;
+}> = memo(({ images, grid, timer, onSuccess, onError, reset }) => {
   const [posX, setPosX] = useState(0);
   const [posY, setPosY] = useState(0);
   const { countDown } = useCountDown(timer);
@@ -141,7 +141,7 @@ export const Task5Game: React.FC<{
     if (pos === size) {
       if (fruitPos.size === 0) {
         onSuccess();
-      } else showToast("Failed", "error");
+      } else onError();
     }
 
     setPosX(x);
@@ -150,6 +150,24 @@ export const Task5Game: React.FC<{
 
   return (
     <GestureHandlerRootView>
+      <Text
+        variant="headlineLarge"
+        style={{ marginBottom: 50, textAlign: "center" }}
+      >
+        Time Left:
+        <Text
+          variant="headlineLarge"
+          style={{
+            color: colors["blue-600"],
+            fontWeight: "700",
+            letterSpacing: 1.4,
+            fontSize: 24,
+          }}
+        >
+          {" "}
+          {countDown}
+        </Text>
+      </Text>
       <View
         pointerEvents="box-none"
         style={{
@@ -183,24 +201,13 @@ export const Task5Game: React.FC<{
           </View>
         ))}
       </View>
-      <Text
-        variant="headlineLarge"
-        style={{ marginTop: 50, textAlign: "center" }}
+      <Button
+        onPress={reset}
+        labelStyle={{ fontSize: 18 }}
+        style={{ marginTop: 100 }}
       >
-        Time Left:
-        <Text
-          variant="headlineLarge"
-          style={{
-            color: colors["blue-600"],
-            fontWeight: "700",
-            letterSpacing: 1.4,
-            fontSize: 24,
-          }}
-        >
-          {" "}
-          {countDown}
-        </Text>
-      </Text>
+        Reset
+      </Button>
     </GestureHandlerRootView>
   );
 });

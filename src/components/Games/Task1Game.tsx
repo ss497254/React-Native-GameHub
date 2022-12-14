@@ -65,8 +65,10 @@ export const Task1Game: React.FC<{
   [x: string]: any;
 }> = memo(({ tiles, grid, visible, onSuccess, onError }) => {
   const baseWidth = widthTable[grid];
-  const [clickedTiles, setClickedTiles] = useState<{ tiles: number[] }>({
-    tiles: [],
+  const [{ clickedTiles }, setClickedTiles] = useState<{
+    clickedTiles: number[];
+  }>({
+    clickedTiles: [],
   });
 
   const activeTiles = useMemo(
@@ -75,15 +77,15 @@ export const Task1Game: React.FC<{
   );
 
   const onClickProvider = (idx: number) => () => {
-    clickedTiles.tiles.push(idx);
-    setClickedTiles({ tiles: clickedTiles.tiles });
+    clickedTiles.push(idx);
+    setClickedTiles({ clickedTiles });
     if (activeTiles.has(idx)) {
     } else {
       onError();
       return;
     }
 
-    if (clickedTiles.tiles.length === tiles) onSuccess();
+    if (clickedTiles.length === tiles) onSuccess();
   };
 
   return (
@@ -104,7 +106,7 @@ export const Task1Game: React.FC<{
             baseWidth={baseWidth}
             visible={visible}
             active={activeTiles.has(idx)}
-            success={clickedTiles.tiles.includes(idx)}
+            success={clickedTiles.includes(idx)}
             onClick={onClickProvider(idx)}
           />
         ))}

@@ -17,7 +17,7 @@ const Task3 = () => {
   if (task3Progress.currLevel === task3Progress.totalLevel)
     return <Celebrations />;
 
-  const { navigate } = useNavigation();
+  const { navigate, setParams } = useNavigation();
   const { cards, images, grid } = task3Levels[task3Progress.currLevel];
   const { countDown } = useCountDown(5);
   const [result, setResult] = useState<"success" | "error" | "">("");
@@ -34,13 +34,16 @@ const Task3 = () => {
         result={result}
         onClickBtnB={() => {
           if (result === "success") {
-            updateTaskProgress(1, { currLevel: task3Progress.currLevel + 1 });
+            updateTaskProgress(3, { currLevel: task3Progress.currLevel + 1 });
           } else {
             onRefresh();
           }
         }}
         onClickBtnA={() => {
-          Navigate("Task 1");
+          if (result === "success") {
+            updateTaskProgress(3, { currLevel: task3Progress.currLevel + 1 });
+          }
+          Navigate("Task 3");
         }}
       />
       <Task3Game

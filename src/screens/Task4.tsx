@@ -18,7 +18,7 @@ const Task4 = () => {
   if (task4Progress.currLevel === task4Progress.totalLevel)
     return <Celebrations />;
 
-  const { navigate } = useNavigation();
+  const { navigate, setParams } = useNavigation();
   const { words, time } = task4Levels[task4Progress.currLevel];
   const { countDown } = useCountDown(time);
   const [result, setResult] = useState<"success" | "error" | "">("");
@@ -40,13 +40,16 @@ const Task4 = () => {
         result={result}
         onClickBtnB={() => {
           if (result === "success") {
-            updateTaskProgress(1, { currLevel: task4Progress.currLevel + 1 });
+            updateTaskProgress(4, { currLevel: task4Progress.currLevel + 1 });
           } else {
             onRefresh();
           }
         }}
         onClickBtnA={() => {
-          Navigate("Task 1");
+          if (result === "success") {
+            updateTaskProgress(4, { currLevel: task4Progress.currLevel + 1 });
+          }
+          Navigate("Task 4");
         }}
       />
       <Task4Game
