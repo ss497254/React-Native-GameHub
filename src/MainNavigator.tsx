@@ -110,8 +110,9 @@ export const MainNavigator = () => {
             key={tasks[idx].screen + " Game"}
             name={tasks[idx].screen + " Game"}
             options={{ headerShown: false, swipeEnabled: false }}
-            component={Task}
-          />
+          >
+            {({ route: { params } }) => <Task key={(params as any)?.key} />}
+          </Drawer.Screen>
         ))}
         <Drawer.Screen
           name="ActivityLogs"

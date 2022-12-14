@@ -1,10 +1,11 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { useState } from "react";
 import { View } from "react-native";
 import { Text } from "react-native-paper";
 import { Celebrations } from "../components/Celebrations";
 import { Task1Game } from "../components/Games/Task1Game";
 import { GameScreen } from "../components/GameScreen";
+import { ResultModal } from "../components/ResultModal";
 import { task1Levels } from "../constants/GameLevel";
 import { useCountDown } from "../hooks/useCountDown";
 import { useTaskProgress } from "../stores/useTaskProgress";
@@ -18,12 +19,32 @@ const Task1 = () => {
   if (task1Progress.currLevel === task1Progress.totalLevel)
     return <Celebrations />;
 
-  const { navigate } = useNavigation();
+  const { navigate, setParams } = useNavigation();
   const { tiles, grid } = task1Levels[task1Progress.currLevel];
-  const { countDown } = useCountDown(5);
+  const { countDown } = useCountDown(0);
+  const [result, setResult] = useState<"success" | "error" | "">("");
+  const Navigate = navigate as any;
+
+  const onRefresh = () => {
+    //@ts-ignore
+    setParams({ key: Math.random() });
+  };
 
   return (
-    <GameScreen refreshScreen="Task 1" countDown={countDown} {...task1Progress}>
+    <GameScreen onRefresh={onRefresh} countDown={countDown} {...task1Progress}>
+      <ResultModal
+        result={result}
+        onClickBtnB={() => {
+          if (result === "success") {
+            updateTaskProgress(1, { currLevel: task1Progress.currLevel + 1 });
+          } else {
+            onRefresh();
+          }
+        }}
+        onClickBtnA={() => {
+          Navigate("Task 1");
+        }}
+      />
       <View
         style={{
           marginBottom: 20,
@@ -41,11 +62,10 @@ const Task1 = () => {
         grid={grid}
         visible={countDown > 0}
         onSuccess={() => {
-          updateTaskProgress(1, { currLevel: task1Progress.currLevel + 1 });
+          setResult("success");
         }}
         onError={() => {
-          //@ts-expect-error
-          navigate("Task 1");
+          setResult("error");
         }}
       />
     </GameScreen>

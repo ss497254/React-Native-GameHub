@@ -1,8 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { useState } from "react";
 import { Celebrations } from "../components/Celebrations";
 import { Task3Game } from "../components/Games/Task3Game";
 import { GameScreen } from "../components/GameScreen";
+import { ResultModal } from "../components/ResultModal";
 import { task3Levels } from "../constants/GameLevel";
 import { useCountDown } from "../hooks/useCountDown";
 import { useTaskProgress } from "../stores/useTaskProgress";
@@ -19,20 +20,39 @@ const Task3 = () => {
   const { navigate } = useNavigation();
   const { cards, images, grid } = task3Levels[task3Progress.currLevel];
   const { countDown } = useCountDown(5);
+  const [result, setResult] = useState<"success" | "error" | "">("");
+  const Navigate = navigate as any;
+
+  const onRefresh = () => {
+    //@ts-ignore
+    setParams({ key: Math.random() });
+  };
 
   return (
-    <GameScreen refreshScreen="Task 4" {...task3Progress}>
+    <GameScreen onRefresh={onRefresh} {...task3Progress}>
+      <ResultModal
+        result={result}
+        onClickBtnB={() => {
+          if (result === "success") {
+            updateTaskProgress(1, { currLevel: task3Progress.currLevel + 1 });
+          } else {
+            onRefresh();
+          }
+        }}
+        onClickBtnA={() => {
+          Navigate("Task 1");
+        }}
+      />
       <Task3Game
         countDown={countDown}
         cards={cards}
         images={images}
         grid={grid}
         onSuccess={() => {
-          updateTaskProgress(3, { currLevel: task3Progress.currLevel + 1 });
+          setResult("success");
         }}
         onError={() => {
-          //@ts-expect-error
-          navigate("Task 3");
+          setResult("error");
         }}
       />
     </GameScreen>

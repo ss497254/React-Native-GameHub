@@ -32,7 +32,7 @@ export const Celebrations = () => {
         speed={0.75}
         style={{ height: 300, width: 300 }}
         hardwareAccelerationAndroid
-        source={require("../assets/lottie/trophy-2.json")}
+        source={require("../assets/lottie/trophy.json")}
       />
       <Animated.View
         style={{

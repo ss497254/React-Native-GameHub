@@ -143,7 +143,10 @@ export const HomePage = ({ navigation }: any) => {
           iconColor={colors.white}
           style={{ marginRight: "auto", top: 10, left: -10 }}
         />
-        <CircularProgress value={5 / 5} style={{ marginVertical: 20 }}>
+        <CircularProgress
+          value={totalTaskCompleted / 5}
+          style={{ marginVertical: 20 }}
+        >
           <Text
             style={{
               color: colors.white,

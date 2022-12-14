@@ -1,9 +1,10 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { useState } from "react";
 import { View } from "react-native";
 import { Celebrations } from "../components/Celebrations";
 import { Task4Game } from "../components/Games/Task4Game";
 import { GameScreen } from "../components/GameScreen";
+import { ResultModal } from "../components/ResultModal";
 import { task4Levels } from "../constants/GameLevel";
 import { useCountDown } from "../hooks/useCountDown";
 import { useTaskProgress } from "../stores/useTaskProgress";
@@ -20,23 +21,42 @@ const Task4 = () => {
   const { navigate } = useNavigation();
   const { words, time } = task4Levels[task4Progress.currLevel];
   const { countDown } = useCountDown(time);
+  const [result, setResult] = useState<"success" | "error" | "">("");
+  const Navigate = navigate as any;
+
+  const onRefresh = () => {
+    //@ts-ignore
+    setParams({ key: Math.random() });
+  };
 
   return (
     <GameScreen
-      refreshScreen="Task 4"
+      onRefresh={onRefresh}
       countDown={countDown}
       scroll
       {...task4Progress}
     >
+      <ResultModal
+        result={result}
+        onClickBtnB={() => {
+          if (result === "success") {
+            updateTaskProgress(1, { currLevel: task4Progress.currLevel + 1 });
+          } else {
+            onRefresh();
+          }
+        }}
+        onClickBtnA={() => {
+          Navigate("Task 1");
+        }}
+      />
       <Task4Game
         wordsToShow={words}
         countDown={countDown}
         onSuccess={() => {
-          updateTaskProgress(4, { currLevel: task4Progress.currLevel + 1 });
+          setResult("success");
         }}
         onError={() => {
-          //@ts-expect-error
-          navigate("Task 4");
+          setResult("error");
         }}
       />
       <View style={{ height: 60 }} />

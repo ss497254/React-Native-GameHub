@@ -37,10 +37,25 @@ const LandingScreen = ({ navigation }: any) => {
       </View>
       <Button
         mode="contained"
-        style={{ width: 300, backgroundColor: colors["blue-600"] }}
+        style={{
+          width: 300,
+          marginVertical: 15,
+          backgroundColor: colors["blue-600"],
+        }}
         onPress={() => navigation.navigate("Home Page")}
       >
         OK! LET'S START
+      </Button>
+      <Button
+        mode="contained"
+        style={{
+          width: 300,
+          marginVertical: 15,
+          backgroundColor: colors["orange-500"],
+        }}
+        onPress={() => navigation.navigate("Home Page")}
+      >
+        SIGN IN
       </Button>
     </View>
   );

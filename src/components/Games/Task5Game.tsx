@@ -54,7 +54,7 @@ export const Box = ({
     >
       {active ? (
         <DraggableButton
-          minDist={baseWidth * 5}
+          minDist={baseWidth * 3}
           top={left}
           bottom={right}
           left={top}
@@ -115,6 +115,8 @@ export const Task5Game: React.FC<{
   const [posY, setPosY] = useState(0);
   const { countDown } = useCountDown(timer);
 
+  if (countDown === 0) onError();
+
   const size = grid * grid - 1;
   const baseWidth = widthTable[grid] || 3;
 
@@ -149,6 +151,7 @@ export const Task5Game: React.FC<{
   return (
     <GestureHandlerRootView>
       <View
+        pointerEvents="box-none"
         style={{
           flexWrap: "wrap",
           flexDirection: "row",

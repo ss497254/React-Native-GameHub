@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { task5Levels } from "../constants/GameLevel";
 import { Task5Game } from "../components/Games/Task5Game";
 import { GameScreen } from "../components/GameScreen";
 import { useTaskProgress } from "../stores/useTaskProgress";
 import { Celebrations } from "../components/Celebrations";
 import { useNavigation } from "@react-navigation/native";
+import { ResultModal } from "../components/ResultModal";
 
 const Task5 = () => {
   const {
@@ -17,19 +18,38 @@ const Task5 = () => {
 
   const { navigate } = useNavigation();
   const { grid, images, timer } = task5Levels[task5Progress.currLevel];
+  const [result, setResult] = useState<"success" | "error" | "">("");
+  const Navigate = navigate as any;
+
+  const onRefresh = () => {
+    //@ts-ignore
+    setParams({ key: Math.random() });
+  };
 
   return (
-    <GameScreen refreshScreen="Task 5" {...task5Progress}>
+    <GameScreen {...task5Progress}>
+      <ResultModal
+        result={result}
+        onClickBtnB={() => {
+          if (result === "success") {
+            updateTaskProgress(1, { currLevel: task5Progress.currLevel + 1 });
+          } else {
+            onRefresh();
+          }
+        }}
+        onClickBtnA={() => {
+          Navigate("Task 1");
+        }}
+      />
       <Task5Game
         grid={grid}
         timer={timer}
         images={images}
         onSuccess={() => {
-          updateTaskProgress(5, { currLevel: task5Progress.currLevel + 1 });
+          setResult("success");
         }}
         onError={() => {
-          //@ts-expect-error
-          navigate("Task 5");
+          setResult("error");
         }}
       />
     </GameScreen>
