@@ -1,16 +1,35 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { Dimensions, View } from "react-native";
+import { Dimensions, RefreshControl, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { ProgressBar, Text } from "react-native-paper";
 
-export const GameScreen: React.FC<any> = ({
+export const GameScreen: React.FC<{
+  children: React.ReactNode;
+  countDown?: number;
+  currLevel: number;
+  totalLevel: number;
+  refreshScreen: string;
+  scroll?: boolean;
+}> = ({
   children,
-  currLevel = 1,
-  totalLevel = 2,
+  currLevel,
+  totalLevel,
+  refreshScreen = "Landing Page",
   scroll,
   countDown,
 }) => {
   const { height } = Dimensions.get("window");
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const { navigate } = useNavigation();
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    //@ts-ignore
+    navigate(refreshScreen);
+    setRefreshing(false);
+  }, []);
 
   return (
     <ScrollView
@@ -22,6 +41,9 @@ export const GameScreen: React.FC<any> = ({
         alignItems: "center",
         minHeight: height,
       }}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
     >
       <View
         style={{

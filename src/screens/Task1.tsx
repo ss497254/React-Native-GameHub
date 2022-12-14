@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { View } from "react-native";
 import { Text } from "react-native-paper";
-import Celebrations from "../components/Celebrations";
+import { Celebrations } from "../components/Celebrations";
 import { Task1Game } from "../components/Games/Task1Game";
 import { GameScreen } from "../components/GameScreen";
 import { task1Levels } from "../constants/GameLevel";
@@ -23,7 +23,7 @@ const Task1 = () => {
   const { countDown } = useCountDown(5);
 
   return (
-    <GameScreen countDown={countDown} {...task1Progress}>
+    <GameScreen refreshScreen="Task 1" countDown={countDown} {...task1Progress}>
       <View
         style={{
           marginBottom: 20,

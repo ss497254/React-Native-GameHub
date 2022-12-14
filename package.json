@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "~1.17.3",
-    "@react-native-community/datetimepicker": "6.2.0",
     "@react-native-community/netinfo": "9.3.0",
     "@react-navigation/drawer": "^6.5.0",
     "@react-navigation/native": "^6.0.13",

@@ -92,7 +92,9 @@ export const MainNavigator = () => {
               header: (props) => <Header {...props} back title={task.screen} />,
             }}
           >
-            {() => <TaskInstructionView task={task} />}
+            {({ route: { params } }) => (
+              <TaskInstructionView task={task} params={params} />
+            )}
           </Drawer.Screen>
         ))}
         {games.map((Task, idx) => (

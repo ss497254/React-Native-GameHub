@@ -6,9 +6,17 @@ import { Button, IconButton, Text } from "react-native-paper";
 import { useActivityLog } from "../stores/useActivityLog";
 import { useNavigation } from "@react-navigation/core";
 
-export const TaskInstructionView = ({ task }: { task: typeof task1 }) => {
+export const TaskInstructionView = ({
+  task,
+  params,
+}: {
+  task: typeof task1;
+  params: any;
+}) => {
   const navigation = useNavigation();
   const { addActivity } = useActivityLog((s) => s);
+
+  // console.log(params);
 
   return (
     <View style={{ flex: 1, alignItems: "center", paddingVertical: 40 }}>

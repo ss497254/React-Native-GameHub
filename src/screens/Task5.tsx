@@ -3,7 +3,7 @@ import { task5Levels } from "../constants/GameLevel";
 import { Task5Game } from "../components/Games/Task5Game";
 import { GameScreen } from "../components/GameScreen";
 import { useTaskProgress } from "../stores/useTaskProgress";
-import Celebrations from "../components/Celebrations";
+import { Celebrations } from "../components/Celebrations";
 import { useNavigation } from "@react-navigation/native";
 
 const Task5 = () => {
@@ -19,7 +19,7 @@ const Task5 = () => {
   const { grid, images, timer } = task5Levels[task5Progress.currLevel];
 
   return (
-    <GameScreen {...task5Progress}>
+    <GameScreen refreshScreen="Task 5" {...task5Progress}>
       <Task5Game
         grid={grid}
         timer={timer}

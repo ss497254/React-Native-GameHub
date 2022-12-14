@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import Celebrations from "../components/Celebrations";
+import { Celebrations } from "../components/Celebrations";
 import { Task2Game } from "../components/Games/Task2Game";
 import { GameScreen } from "../components/GameScreen";
 import { task2Levels } from "../constants/GameLevel";
@@ -21,7 +21,7 @@ const Task2 = () => {
   const { countDown } = useCountDown(level + 1);
 
   return (
-    <GameScreen {...task2Progress}>
+    <GameScreen refreshScreen="Task 4" {...task2Progress}>
       <Task2Game
         level={level}
         countDown={countDown}

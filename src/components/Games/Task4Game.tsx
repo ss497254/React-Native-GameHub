@@ -11,7 +11,7 @@ export const Task4Game: React.FC<{
   onSuccess: () => void;
   onError: () => void;
   [x: string]: any;
-}> = memo(({ countDown, onError = () => {}, wordsToShow }) => {
+}> = memo(({ countDown, onError, onSuccess, wordsToShow }) => {
   const [words, setWords] = useState<string[]>([]);
   const [value, setValue] = useState("");
 
@@ -62,7 +62,7 @@ export const Task4Game: React.FC<{
       ) : (
         <>
           <Text
-            variant="labelMedium"
+            variant="titleMedium"
             style={{
               marginBottom: 15,
             }}
@@ -81,10 +81,20 @@ export const Task4Game: React.FC<{
             value={value}
             onChangeText={(e) => setValue(e)}
             onSubmitEditing={(e) => {
-              setValue("");
-              words.push(value.trim());
-              setWords(words);
               e.preventDefault();
+              let word = value.trim();
+
+              if (activeWords.has(word)) {
+                words.push(word);
+
+                if (words.length >= wordsToShow * 0.75) {
+                  return onSuccess();
+                }
+                setWords(words);
+                setValue("");
+              } else {
+                onError();
+              }
             }}
             returnKeyType="next"
             autoCapitalize="none"
@@ -99,33 +109,23 @@ export const Task4Game: React.FC<{
               minHeight: 200,
             }}
           >
-            {words.map((i) => {
-              let backgroundColor = colors["red-400"];
-
-              if (activeWords.has(i)) backgroundColor = colors["green-400"];
-              else {
-                onError();
-                return null;
-              }
-
-              return (
-                <Text
-                  variant="labelLarge"
-                  key={i}
-                  style={{
-                    width: 140,
-                    borderRadius: radius.m,
-                    backgroundColor,
-                    margin: 5,
-                    color: colors.white,
-                    paddingVertical: 10,
-                    textAlign: "center",
-                  }}
-                >
-                  {i}
-                </Text>
-              );
-            })}
+            {words.map((i) => (
+              <Text
+                variant="labelLarge"
+                key={i}
+                style={{
+                  width: 140,
+                  borderRadius: radius.m,
+                  backgroundColor: colors["green-400"],
+                  margin: 5,
+                  color: colors.white,
+                  paddingVertical: 10,
+                  textAlign: "center",
+                }}
+              >
+                {i}
+              </Text>
+            ))}
           </ScrollView>
         </>
       )}
