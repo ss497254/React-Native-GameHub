@@ -11,7 +11,7 @@ export const task1 = {
 
 export const task2 = {
   title: "Digit Span",
-  color: colors["red-600"],
+  color: colors["red-500"],
   screen: "Task 2",
   instructionImgSrc: require("../assets/images/task-2.png"),
   instruction:

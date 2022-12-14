@@ -60,13 +60,20 @@ export const MainNavigator = () => {
 
         if (ref.current === name) return;
 
+        if (ref.current.includes("Game")) {
+          addActivity({
+            timestamp: new Date().getTime(),
+            message: `Moved out of ${ref.current} screent to ${name}`,
+          });
+        } else {
+          addActivity({
+            timestamp: new Date().getTime(),
+            message: "Moved to Screen " + name,
+          });
+        }
+
         ref.current = name;
         StatusBar.setBackgroundColor(setStatusbarColor(name));
-
-        addActivity({
-          timestamp: new Date().getTime(),
-          message: "Moved to Screen " + name,
-        });
       }}
     >
       <Drawer.Navigator

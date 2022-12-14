@@ -1,105 +1,114 @@
-import React from "react";
-import { StyleSheet, View, ViewStyle } from "react-native";
+import React, { useRef } from "react";
+import { Animated, View } from "react-native";
 import { colors } from "../constants/AppStyle";
-/**
- * Override styles that get passed from props
- **/
-const propStyle = (percent: number, base_degrees: number) => {
-  const rotateBy = base_degrees + percent * 3.6;
-  return {
-    transform: [{ rotateZ: `${rotateBy}deg` }],
-  };
-};
 
-const renderThirdLayer = (percent: number) => {
-  if (percent > 50) {
-    /**
-     * Third layer circle default is 45 degrees, so by default it occupies the right half semicircle.
-     * Since first 50 percent is already taken care  by second layer circle, hence we subtract it
-     * before passing to the propStyle function
-     **/
-    return (
-      <View
-        style={[styles.secondProgressLayer, propStyle(percent - 50, 45)]}
-      ></View>
-    );
-  } else {
-    return <View style={styles.offsetLayer}></View>;
-  }
-};
-
-const CircularProgress = ({
-  percent,
+export const CircularProgress = ({
+  value = 0.8,
+  size = 180,
+  thickness = 12,
+  color = colors["green-400"],
+  unfilledColor = "white",
+  style = {},
   children,
-  style,
-}: {
-  percent: number;
-  children: React.ReactElement;
-  style: ViewStyle;
-}) => {
-  let firstProgressLayerStyle;
-  if (percent > 50) {
-    firstProgressLayerStyle = propStyle(50, -135);
-  } else {
-    firstProgressLayerStyle = propStyle(percent, -135);
-  }
+}: any) => {
+  const animatedValue = useRef(new Animated.Value(0)).current;
+
+  Animated.timing(animatedValue, {
+    duration: 500,
+    toValue: value,
+    useNativeDriver: true,
+  }).start();
 
   return (
-    <View style={[styles.container, style]}>
-      <View style={[styles.firstProgressLayer, firstProgressLayerStyle]}></View>
-      {renderThirdLayer(percent)}
-      {children}
+    <View
+      style={[
+        {
+          flexDirection: "row",
+          width: size,
+          height: size,
+          position: "relative",
+        },
+        style,
+      ]}
+    >
+      <View
+        pointerEvents="box-none"
+        style={{
+          width: size,
+          height: size,
+          borderRadius: size / 2,
+          borderWidth: thickness,
+          borderColor: unfilledColor,
+          position: "absolute",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {children}
+      </View>
+      <HalfCircle
+        thickness={thickness + 1}
+        size={size}
+        color={color}
+        animatedValue={animatedValue}
+      />
+      <HalfCircle
+        thickness={thickness + 1}
+        size={size}
+        color={color}
+        animatedValue={animatedValue}
+        isFlipped
+      />
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    width: 180,
-    height: 180,
-    position: "relative",
-    borderWidth: 12,
-    borderRadius: 200,
-    borderColor: colors.white,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  firstProgressLayer: {
-    width: 180,
-    height: 180,
-    borderWidth: 12,
-    borderRadius: 200,
-    position: "absolute",
-    borderLeftColor: "transparent",
-    borderBottomColor: "transparent",
-    borderRightColor: colors["green-400"],
-    borderTopColor: colors["green-400"],
-    transform: [{ rotateZ: "-135deg" }],
-  },
-  secondProgressLayer: {
-    width: 180,
-    height: 180,
-    position: "absolute",
-    borderWidth: 12,
-    borderRadius: 200,
-    borderLeftColor: "transparent",
-    borderBottomColor: "transparent",
-    borderRightColor: colors["green-400"],
-    borderTopColor: colors["green-400"],
-    transform: [{ rotateZ: "45deg" }],
-  },
-  offsetLayer: {
-    width: 180,
-    height: 180,
-    position: "absolute",
-    borderWidth: 12,
-    borderRadius: 200,
-    borderLeftColor: "transparent",
-    borderBottomColor: "transparent",
-    borderRightColor: colors.white,
-    borderTopColor: colors.white,
-    transform: [{ rotateZ: "-135deg" }],
-  },
-});
-
-export default CircularProgress;
+const HalfCircle = ({
+  size,
+  color,
+  thickness,
+  animatedValue,
+  isFlipped,
+}: any) => {
+  return (
+    <Animated.View
+      pointerEvents="none"
+      style={{
+        width: size / 2,
+        height: size,
+        overflow: "hidden",
+        transform: [{ scaleX: isFlipped ? -1 : 1 }],
+      }}
+    >
+      <Animated.View
+        style={{
+          width: size,
+          height: size,
+          transform: [
+            {
+              rotate: animatedValue.interpolate({
+                inputRange: isFlipped ? [0, 0.5] : [0.5, 1],
+                outputRange: isFlipped
+                  ? ["180deg", "0deg"]
+                  : ["-180deg", "0deg"],
+                extrapolate: "clamp",
+              }),
+            },
+          ],
+        }}
+      >
+        <View style={{ width: size / 2, height: size, overflow: "hidden" }}>
+          <View
+            style={{
+              width: size,
+              height: size,
+              borderRadius: size / 2,
+              borderWidth: thickness,
+              borderColor: color,
+            }}
+          />
+        </View>
+      </Animated.View>
+    </Animated.View>
+  );
+};

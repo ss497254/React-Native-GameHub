@@ -1,14 +1,48 @@
-import Confetti from "./Confetti";
-import React from "react";
-import { Image } from "react-native";
+import LottieView from "lottie-react-native";
+import React, { useRef } from "react";
+import { Animated, View } from "react-native";
 import { Text } from "react-native-paper";
 
-export const Celebrations = () => (
-  <Confetti count={100} origin={{ x: -20, y: 0 }}>
-    <Image
-      source={require("../assets/icon.png")}
-      style={{ height: 200, width: 200 }}
-    />
-    <Text>Congrats</Text>
-  </Confetti>
-);
+export const Celebrations = () => {
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  Animated.timing(fadeAnim, {
+    toValue: 1,
+    duration: 2000,
+    useNativeDriver: true,
+  }).start();
+
+  return (
+    <View
+      style={{
+        alignItems: "center",
+        justifyContent: "center",
+        flex: 1,
+      }}
+    >
+      <LottieView
+        autoPlay
+        loop={false}
+        hardwareAccelerationAndroid
+        source={require("../assets/lottie/confetti-background.json")}
+      />
+      <LottieView
+        autoPlay
+        loop={false}
+        speed={0.75}
+        style={{ height: 300, width: 300 }}
+        hardwareAccelerationAndroid
+        source={require("../assets/lottie/trophy-2.json")}
+      />
+      <Animated.View
+        style={{
+          opacity: fadeAnim,
+        }}
+      >
+        <Text variant="titleLarge" style={{ fontSize: 20 }}>
+          You Completed all the levels.
+        </Text>
+      </Animated.View>
+    </View>
+  );
+};

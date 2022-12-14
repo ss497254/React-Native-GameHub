@@ -3,7 +3,7 @@ import React from "react";
 import { Dimensions, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { IconButton, Surface, Text, TouchableRipple } from "react-native-paper";
-import CircularProgress from "../components/CircularProgress";
+import { CircularProgress } from "../components/CircularProgress";
 import { colors, radius } from "../constants/AppStyle";
 import { Progress } from "../constants/progress";
 import { task1, task2, task3, task4, task5 } from "../constants/tasks";
@@ -132,7 +132,7 @@ export const HomePage = ({ navigation }: any) => {
         style={{
           flex: 1,
           paddingHorizontal: 20,
-          paddingBottom: 40,
+          paddingBottom: 20,
           minHeight: height,
           alignItems: "center",
         }}
@@ -143,24 +143,19 @@ export const HomePage = ({ navigation }: any) => {
           iconColor={colors.white}
           style={{ marginRight: "auto", top: 10, left: -10 }}
         />
-        <CircularProgress
-          percent={totalTaskCompleted * 20}
-          style={{ marginVertical: 20 }}
-        >
-          <>
-            <Text
-              style={{
-                color: colors.white,
-                fontSize: 40,
-                lineHeight: 45,
-              }}
-            >
-              {totalTaskCompleted}/5
-            </Text>
-            <Text variant="labelMedium" style={{ color: colors.white }}>
-              Task Completed
-            </Text>
-          </>
+        <CircularProgress value={5 / 5} style={{ marginVertical: 20 }}>
+          <Text
+            style={{
+              color: colors.white,
+              fontSize: 40,
+              lineHeight: 45,
+            }}
+          >
+            {totalTaskCompleted}/5
+          </Text>
+          <Text variant="labelMedium" style={{ color: colors.white }}>
+            Task Completed
+          </Text>
         </CircularProgress>
         <Text
           variant="titleMedium"
