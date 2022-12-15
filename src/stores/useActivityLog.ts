@@ -2,7 +2,7 @@ import create from "zustand";
 import { combine } from "zustand/middleware";
 
 export type Activity = {
-  timestamp: number;
+  timestamp: string;
   message: string;
 };
 

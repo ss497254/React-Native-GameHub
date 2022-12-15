@@ -40,6 +40,7 @@ const LandingScreen = ({ navigation }: any) => {
         style={{
           width: 300,
           marginVertical: 15,
+          paddingVertical: 2,
           backgroundColor: colors["blue-600"],
         }}
         onPress={() => navigation.navigate("Home Page")}
@@ -51,6 +52,7 @@ const LandingScreen = ({ navigation }: any) => {
         style={{
           width: 300,
           marginVertical: 15,
+          paddingVertical: 2,
           backgroundColor: colors["orange-500"],
         }}
         onPress={() => navigation.navigate("Home Page")}

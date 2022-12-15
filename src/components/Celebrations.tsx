@@ -40,7 +40,7 @@ export const Celebrations = () => {
         }}
       >
         <Text variant="titleLarge" style={{ fontSize: 20 }}>
-          You Completed all the levels.
+          You've completed all the levels.
         </Text>
       </Animated.View>
     </View>

@@ -43,7 +43,20 @@ const NumButton = ({ value, success, error, onClick }: any) => {
   );
 };
 
-export const Task2Game = ({ level, countDown, onSuccess, onError }: any) => {
+export const Task2Game = ({
+  level,
+  countDown,
+  reverse,
+  onSuccess,
+  onError,
+}: {
+  level: number;
+  countDown: number;
+  reverse: boolean;
+  onSuccess: () => void;
+  onError: () => void;
+  [x: string]: any;
+}) => {
   const [{ nums }, setValue] = useState<{ nums: number[] }>({ nums: [] });
 
   const res = Array.from(
@@ -54,6 +67,12 @@ export const Task2Game = ({ level, countDown, onSuccess, onError }: any) => {
     <>
       {countDown > 0 ? (
         <>
+          <Text
+            variant="displayMedium"
+            style={{ marginTop: -150, marginBottom: 150 }}
+          >
+            {reverse ? "Part 2" : "Part 1"}
+          </Text>
           <Text
             style={{
               flexGrow: 1,
@@ -67,13 +86,22 @@ export const Task2Game = ({ level, countDown, onSuccess, onError }: any) => {
           </Text>
           <NumberButton
             countDown={countDown}
-            nums={nums}
+            nums={reverse ? nums.reverse() : nums}
             res={res}
             level={level}
           />
+          {reverse ? (
+            <Text variant="labelLarge">Enter the numbers in reverse</Text>
+          ) : null}
         </>
       ) : (
         <>
+          <Text
+            variant="titleLarge"
+            style={{ marginTop: -40, marginBottom: 40 }}
+          >
+            {reverse ? "Part 2" : "Part 1"}
+          </Text>
           <NumberButton nums={nums} res={res} level={level} />
           <View
             style={{
@@ -104,6 +132,10 @@ export const Task2Game = ({ level, countDown, onSuccess, onError }: any) => {
                         if (compareArrays(nums, res)) onSuccess();
                         else onError();
                       }
+
+                      console.log(value, res, nums.length - 1);
+
+                      if (value !== res[nums.length - 1]) onError();
                     }}
                   />
                 );

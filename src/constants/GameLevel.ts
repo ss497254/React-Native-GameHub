@@ -9,10 +9,14 @@ export const task1Levels = [
 ];
 
 export const task2Levels = [
-  { level: 4 },
-  { level: 5 },
-  { level: 6 },
-  { level: 7 },
+  { numLength: 4, reverse: false },
+  { numLength: 5, reverse: false },
+  { numLength: 6, reverse: false },
+  { numLength: 7, reverse: false },
+  { numLength: 4, reverse: true },
+  { numLength: 5, reverse: true },
+  { numLength: 6, reverse: true },
+  { numLength: 7, reverse: true },
 ];
 
 export const task3Levels = [
@@ -59,11 +63,11 @@ export const task3Levels = [
 ];
 
 export const task4Levels = [
-  { words: 6, time: 8 },
-  { words: 8, time: 10 },
-  { words: 10, time: 12 },
-  { words: 12, time: 14 },
-  { words: 14, time: 16 },
+  { words: 9, time: 15, random: false },
+  { words: 9, time: 15, random: false },
+  { words: 9, time: 15, random: false },
+  { words: 9, time: 15, random: true },
+  { words: 0, time: 15, random: false },
 ];
 
 export const task5Levels = [

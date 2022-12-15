@@ -19,6 +19,7 @@ import Task3 from "./screens/Task3";
 import Task4 from "./screens/Task4";
 import Task5 from "./screens/Task5";
 import { useActivityLog } from "./stores/useActivityLog";
+import { formatTimestamp } from "./utils/formatTimestamp";
 
 // import A from "./screens/A";
 
@@ -45,10 +46,10 @@ export const MainNavigator = () => {
 
   useEffect(() => {
     StatusBar.setBarStyle("light-content");
-    addActivity({ timestamp: new Date().getTime(), message: "App Launced" });
+    addActivity({ timestamp: formatTimestamp(), message: "App Launced" });
 
     return () => {
-      addActivity({ timestamp: new Date().getTime(), message: "App Closed!" });
+      addActivity({ timestamp: formatTimestamp(), message: "App Closed!" });
     };
   }, []);
 
@@ -62,13 +63,13 @@ export const MainNavigator = () => {
 
         if (ref.current.includes("Game")) {
           addActivity({
-            timestamp: new Date().getTime(),
-            message: `Moved out of ${ref.current} screent to ${name}`,
+            timestamp: formatTimestamp(),
+            message: `Moved out of ${ref.current} screen to ${name}`,
           });
         } else {
           addActivity({
-            timestamp: new Date().getTime(),
-            message: "Moved to Screen " + name,
+            timestamp: formatTimestamp(),
+            message: `Moved to Screen "${name}"`,
           });
         }
 

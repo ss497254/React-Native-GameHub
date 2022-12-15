@@ -18,8 +18,8 @@ const Task2 = () => {
     return <Celebrations />;
 
   const { navigate, setParams } = useNavigation();
-  const { level } = task2Levels[task2Progress.currLevel];
-  const { countDown } = useCountDown(level + 1);
+  const { numLength, reverse } = task2Levels[task2Progress.currLevel];
+  const { countDown } = useCountDown(numLength + 1);
   const [result, setResult] = useState<"success" | "error" | "">("");
   const Navigate = navigate as any;
 
@@ -47,13 +47,16 @@ const Task2 = () => {
         }}
       />
       <Task2Game
-        level={level}
+        level={numLength}
+        reverse={reverse}
         countDown={countDown}
         onSuccess={() => {
           setResult("success");
         }}
         onError={() => {
-          setResult("error");
+          setTimeout(() => {
+            setResult("error");
+          }, 200);
         }}
       />
     </GameScreen>

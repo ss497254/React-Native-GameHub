@@ -62,10 +62,10 @@ export const useTaskProgress = create(
     },
 
     resetTaskProgress: () => {
-      try {
-        AsyncStorage.setItem(taskProgressKey, JSON.stringify(IntialProgress));
-      } catch {}
       set({ taskProgress: IntialProgress });
+      try {
+        AsyncStorage.setItem(taskProgressKey, "");
+      } catch {}
     },
   }))
 );

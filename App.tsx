@@ -14,6 +14,7 @@ import {
   Provider as PaperProvider,
 } from "react-native-paper";
 import { colors, fonts } from "./src/constants/AppStyle";
+import "./src/lib/firbase";
 
 if ((Text as any).defaultProps == null) {
   (Text as any).defaultProps = {};

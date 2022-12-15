@@ -42,6 +42,7 @@ export const TabButton = ({
   return (
     <IconButton
       icon={icon}
+      size={baseWidth * 5}
       iconColor={colors.white}
       style={{
         marginHorizontal: baseWidth * 0.5,

@@ -50,7 +50,7 @@ export const DrawerContent = ({ navigation, state }: any) => {
           }}
         >
           <Image
-            source={require("../assets/images/profile.png")}
+            source={require("../assets/icon.png")}
             style={{ width: 120, height: 120, marginBottom: 40 }}
           />
           <View
