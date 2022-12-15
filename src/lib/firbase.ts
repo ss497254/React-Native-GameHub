@@ -3,7 +3,7 @@ import {
   getFirestore,
   collection,
   getDocs,
-  Firestore,
+  addDoc,
 } from "firebase/firestore/lite";
 
 const firebaseConfig = {
@@ -21,13 +21,28 @@ const firebaseConfig = {
 export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 
-// Get a list of cities from your database
-async function getItem(db: Firestore, collection: string = "activity_log") {
-  //@ts-ignore
-  const citiesCol = collection(db, collection);
-  const citySnapshot = await getDocs(citiesCol);
-  const cityList = citySnapshot.docs.map((doc) => doc.data());
-  return cityList;
+export const collections = ["activity_log", "result"] as const;
+
+export async function getItem(
+  item: typeof collections[number] = "activity_log"
+) {
+  const itemCollection = collection(db, item);
+  const itemSnapshot = await getDocs(itemCollection);
+
+  return itemSnapshot.docs.map((x) => ({
+    id: x.id,
+    doc: x.data(),
+  }));
 }
 
-console.log(getItem(db));
+export async function addItem(
+  item: typeof collections[number] = "activity_log",
+  data: Object
+) {
+  const itemCollection = collection(db, item);
+  const result = await addDoc(itemCollection, data);
+
+  console.log("result: ", result.id);
+
+  return result.id;
+}

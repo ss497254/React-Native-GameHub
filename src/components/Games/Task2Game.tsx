@@ -96,12 +96,12 @@ export const Task2Game = ({
         </>
       ) : (
         <>
-          <Text
+          {/* <Text
             variant="titleLarge"
-            style={{ marginTop: -40, marginBottom: 40 }}
+            style={{ marginTop: -40, marginBottom: 50 }}
           >
             {reverse ? "Part 2" : "Part 1"}
-          </Text>
+          </Text> */}
           <NumberButton nums={nums} res={res} level={level} />
           <View
             style={{

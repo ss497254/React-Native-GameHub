@@ -15,6 +15,7 @@ import {
 } from "react-native-paper";
 import { colors, fonts } from "./src/constants/AppStyle";
 import "./src/lib/firbase";
+import { useUserIdStore } from "./src/stores/useUserIdStore";
 
 if ((Text as any).defaultProps == null) {
   (Text as any).defaultProps = {};
@@ -44,6 +45,7 @@ export const theme = {
 const App = () => {
   const { setConnected } = useNetworkStatus((s) => s);
   const { loadTaskProgress } = useTaskProgress((s) => s);
+  const { loadUserId } = useUserIdStore((s) => s);
 
   const [fontsLoaded] = useFonts({
     "Inter-Light": require("./src/assets/fonts/Inter-Light.ttf"),
@@ -53,6 +55,7 @@ const App = () => {
 
   useEffect(() => {
     if (!fontsLoaded) {
+      loadUserId();
       loadTaskProgress();
     }
 

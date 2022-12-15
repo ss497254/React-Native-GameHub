@@ -33,11 +33,6 @@
           "android": {
             "enableProguardInReleaseBuilds": true
           }
-        },
-        {
-          "ios": {
-            "useFrameworks": "static"
-          }
         }
       ]
     ],

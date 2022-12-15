@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { Image, View } from "react-native";
 import { Button, Text } from "react-native-paper";
 import { colors } from "../constants/AppStyle";
+import { SignInModal } from "../components/SignInModal";
 
 const LandingScreen = ({ navigation }: any) => {
+  const [modalOpen, setModalOpen] = useState(false);
   return (
     <View style={{ flex: 1, paddingVertical: "20%", alignItems: "center" }}>
+      {modalOpen ? <SignInModal setVisible={setModalOpen} /> : null}
       <View
         style={{
           flex: 1,
@@ -53,11 +56,11 @@ const LandingScreen = ({ navigation }: any) => {
           width: 300,
           marginVertical: 15,
           paddingVertical: 2,
-          backgroundColor: colors["orange-500"],
+          backgroundColor: colors["green-400"],
         }}
-        onPress={() => navigation.navigate("Home Page")}
+        onPress={() => setModalOpen(!modalOpen)}
       >
-        SIGN IN
+        ADD USER_ID
       </Button>
     </View>
   );

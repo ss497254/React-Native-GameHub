@@ -4,7 +4,7 @@ import { Image, StyleSheet, View } from "react-native";
 import { Button, Drawer, Text } from "react-native-paper";
 import { colors, radius } from "../constants/AppStyle";
 import { useTaskProgress } from "../stores/useTaskProgress";
-import { useUserStore } from "../stores/useUserStore";
+import { useUserIdStore } from "../stores/useUserIdStore";
 
 const DrawerItemsData = [
   {
@@ -15,20 +15,14 @@ const DrawerItemsData = [
   },
   {
     label: "Activity Log",
-    activeIcon: "cog",
-    icon: "cog-outline",
+    activeIcon: "clipboard-list",
+    icon: "clipboard-list-outline",
     action: "ActivityLogs",
-  },
-  {
-    label: "Help",
-    activeIcon: "help-circle",
-    icon: "help-circle-outline",
-    action: "Landing Page",
   },
 ];
 
 export const DrawerContent = ({ navigation, state }: any) => {
-  const user = useUserStore((s) => s.user);
+  const { userId } = useUserIdStore();
 
   let activeRoute = "";
   if (!isNaN(state.index) && state.routes.length > 0)
@@ -51,7 +45,7 @@ export const DrawerContent = ({ navigation, state }: any) => {
         >
           <Image
             source={require("../assets/icon.png")}
-            style={{ width: 120, height: 120, marginBottom: 40 }}
+            style={{ width: 150, height: 150, marginBottom: 20 }}
           />
           <View
             style={{
@@ -70,10 +64,10 @@ export const DrawerContent = ({ navigation, state }: any) => {
                 color: colors["blue-600"],
               }}
             >
-              {user.firstName + " " + user.lastName}
+              {userId}
             </Text>
             <Text variant="labelMedium" style={{ color: colors["gray-700"] }}>
-              User
+              UserId
             </Text>
           </View>
         </View>

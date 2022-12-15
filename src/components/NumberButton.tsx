@@ -7,7 +7,8 @@ export const NumberButton = ({ nums, res, level, countDown = "" }: any) => {
   return (
     <View
       style={{
-        marginBottom: 40,
+        marginTop: -20,
+        marginBottom: 60,
         flexDirection: "row",
         width: 300,
         justifyContent: level > 5 ? "space-between" : "space-evenly",

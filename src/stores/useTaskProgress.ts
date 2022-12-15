@@ -41,9 +41,7 @@ export const useTaskProgress = create(
         );
 
         set(data);
-      } catch (e) {
-        console.log("loadTaskProgress e:", e);
-      }
+      } catch {}
     },
 
     updateTaskProgress: (

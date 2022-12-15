@@ -82,12 +82,12 @@ export const Task4Game: React.FC<{
             onChangeText={(e) => setValue(e)}
             onSubmitEditing={(e) => {
               e.preventDefault();
-              let word = value.trim();
+              let word = value.trim().toLocaleLowerCase();
 
               if (activeWords.has(word)) {
                 words.push(word);
 
-                if (words.length >= wordsToShow * 0.75) {
+                if (words.length === wordsToShow) {
                   return onSuccess();
                 }
                 setWords(words);
