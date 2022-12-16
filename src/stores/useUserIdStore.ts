@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import create from "zustand";
 import { combine } from "zustand/middleware";
 
-const userIdKey = "@creaitors/user";
+const userIdKey = "user_id@cerebrus";
 const defaultUserId = "UserId is not added";
 
 export const useUserIdStore = create(

@@ -7,6 +7,7 @@ import { GameScreen } from "../components/GameScreen";
 import { ResultModal } from "../components/ResultModal";
 import { task4Levels } from "../constants/GameLevel";
 import { useCountDown } from "../hooks/useCountDown";
+import { useResultStore } from "../stores/useResultStore";
 import { useTaskProgress } from "../stores/useTaskProgress";
 
 const Task4 = () => {
@@ -19,14 +20,33 @@ const Task4 = () => {
     return <Celebrations />;
 
   const { navigate, setParams } = useNavigation();
-  const { words, time } = task4Levels[task4Progress.currLevel];
+  const { words, time, random } = task4Levels[task4Progress.currLevel];
   const { countDown } = useCountDown(time);
   const [result, setResult] = useState<"success" | "error" | "">("");
+  const { updateResult, resetTaskResult } = useResultStore();
+  const [x, setX] = useState({
+    correct: 0,
+    intrusion: 0,
+    intrusionA: 0,
+    intrusionB: 0,
+  });
   const Navigate = navigate as any;
 
   const onRefresh = () => {
     //@ts-ignore
     setParams({ key: Math.random() });
+  };
+
+  const updateProgress = () => {
+    updateTaskProgress(4, { currLevel: task4Progress.currLevel + 1 });
+    updateResult(
+      "task4",
+      `Trail: ${task4Progress.currLevel + 1}, Correct: ${x.correct} Missed: ${
+        words - x.correct
+      } Intrusion: ${x.intrusion} ${
+        x.intrusionA ? "IntrusionA " + x.intrusionA : ""
+      } ${x.intrusionB ? "IntrusionB " + x.intrusionB : ""}`
+    );
   };
 
   return (
@@ -40,14 +60,19 @@ const Task4 = () => {
         result={result}
         onClickBtnB={() => {
           if (result === "success") {
-            updateTaskProgress(4, { currLevel: task4Progress.currLevel + 1 });
+            updateProgress();
           } else {
+            resetTaskResult("task4");
+            updateTaskProgress(4, { currLevel: 0 });
             onRefresh();
           }
         }}
         onClickBtnA={() => {
           if (result === "success") {
-            updateTaskProgress(4, { currLevel: task4Progress.currLevel + 1 });
+            updateProgress();
+          } else {
+            resetTaskResult("task4");
+            updateTaskProgress(4, { currLevel: 0 });
           }
           Navigate("Task 4");
         }}
@@ -55,6 +80,14 @@ const Task4 = () => {
       <Task4Game
         wordsToShow={words}
         countDown={countDown}
+        setX={setX}
+        reset={() => {
+          resetTaskResult("task4");
+          updateTaskProgress(4, { currLevel: 0 });
+        }}
+        firstLevel={task4Progress.currLevel === 0}
+        random={random}
+        next={updateProgress}
         onSuccess={() => {
           setResult("success");
         }}

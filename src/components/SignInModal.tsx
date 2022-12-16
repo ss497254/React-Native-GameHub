@@ -75,7 +75,7 @@ export const SignInModal = ({ setVisible }: any) => {
         <View
           style={{
             paddingHorizontal: 20,
-            paddingVertical: 15,
+            paddingVertical: 10,
             borderTopColor: colors["gray-600"],
             borderTopWidth: 0.5,
             flexDirection: "row-reverse",

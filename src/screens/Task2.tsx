@@ -6,6 +6,7 @@ import { GameScreen } from "../components/GameScreen";
 import { ResultModal } from "../components/ResultModal";
 import { task2Levels } from "../constants/GameLevel";
 import { useCountDown } from "../hooks/useCountDown";
+import { useResultStore } from "../stores/useResultStore";
 import { useTaskProgress } from "../stores/useTaskProgress";
 
 const Task2 = () => {
@@ -21,11 +22,22 @@ const Task2 = () => {
   const { numLength, reverse } = task2Levels[task2Progress.currLevel];
   const { countDown } = useCountDown(numLength + 1);
   const [result, setResult] = useState<"success" | "error" | "">("");
+  const { updateResult } = useResultStore();
   const Navigate = navigate as any;
 
   const onRefresh = () => {
     //@ts-ignore
     setParams({ key: Math.random() });
+  };
+
+  const updateProgress = () => {
+    updateTaskProgress(2, { currLevel: task2Progress.currLevel + 1 });
+    updateResult(
+      "task2",
+      `Trail: ${task2Progress.currLevel + 1}, ${
+        reverse ? "Reverse" : "Forward"
+      } digit span: ${numLength}`
+    );
   };
 
   return (
@@ -34,14 +46,14 @@ const Task2 = () => {
         result={result}
         onClickBtnB={() => {
           if (result === "success") {
-            updateTaskProgress(2, { currLevel: task2Progress.currLevel + 1 });
+            updateProgress();
           } else {
             onRefresh();
           }
         }}
         onClickBtnA={() => {
           if (result === "success") {
-            updateTaskProgress(2, { currLevel: task2Progress.currLevel + 1 });
+            updateProgress();
           }
           Navigate("Task 2");
         }}

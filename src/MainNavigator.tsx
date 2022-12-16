@@ -18,9 +18,9 @@ import Task2 from "./screens/Task2";
 import Task3 from "./screens/Task3";
 import Task4 from "./screens/Task4";
 import Task5 from "./screens/Task5";
+import Result from "./screens/Result";
 import { useActivityLog } from "./stores/useActivityLog";
-
-// import A from "./screens/A";
+import { useTaskProgress } from "./stores/useTaskProgress";
 
 const Drawer = createDrawerNavigator();
 
@@ -42,6 +42,10 @@ const setStatusbarColor = (name: string) => {
 export const MainNavigator = () => {
   const ref = useRef("");
   const { addActivity } = useActivityLog((s) => s);
+  const {
+    updateTaskProgress,
+    taskProgress: [_1, _2, _3, { currLevel, totalLevel }],
+  } = useTaskProgress();
 
   useEffect(() => {
     StatusBar.setBarStyle("light-content");
@@ -59,6 +63,8 @@ export const MainNavigator = () => {
         const name = e?.routeNames[e.index] || "";
 
         if (ref.current === name) return;
+        if (name === "Task 4 Game" && currLevel !== totalLevel)
+          updateTaskProgress(4, { currLevel: 0 });
 
         if (ref.current.includes("Game")) {
           addActivity(`Moved out of ${ref.current} screen to ${name}`);
@@ -108,6 +114,13 @@ export const MainNavigator = () => {
             {({ route: { params } }) => <Task key={(params as any)?.key} />}
           </Drawer.Screen>
         ))}
+        <Drawer.Screen
+          name="Result"
+          options={{
+            header: (props) => <Header {...props} back title="Result" />,
+          }}
+          component={Result}
+        />
         <Drawer.Screen
           name="ActivityLogs"
           options={{

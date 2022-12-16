@@ -16,6 +16,7 @@ import {
 import { colors, fonts } from "./src/constants/AppStyle";
 import "./src/lib/firbase";
 import { useUserIdStore } from "./src/stores/useUserIdStore";
+import { useResultStore } from "./src/stores/useResultStore";
 
 if ((Text as any).defaultProps == null) {
   (Text as any).defaultProps = {};
@@ -46,6 +47,7 @@ const App = () => {
   const { setConnected } = useNetworkStatus((s) => s);
   const { loadTaskProgress } = useTaskProgress((s) => s);
   const { loadUserId } = useUserIdStore((s) => s);
+  const { loadResult } = useResultStore((s) => s);
 
   const [fontsLoaded] = useFonts({
     "Inter-Light": require("./src/assets/fonts/Inter-Light.ttf"),
@@ -57,6 +59,7 @@ const App = () => {
     if (!fontsLoaded) {
       loadUserId();
       loadTaskProgress();
+      loadResult();
     }
 
     const unsubscribe = NetInfo.addEventListener((state) => {

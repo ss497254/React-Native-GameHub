@@ -52,7 +52,6 @@ export const TabButton = ({
         height: baseWidth * 10,
         backgroundColor,
       }}
-      onPress={visible ? undefined : onClick}
     />
   );
 };

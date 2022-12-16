@@ -63,10 +63,7 @@ export const TaskInstructionView = ({
         mode="contained"
         labelStyle={{ fontSize: 16, paddingVertical: 4 }}
         onPress={() => {
-          addActivity({
-            timestamp: new Date().getTime(),
-            message: "Clicked on " + task.screen + " I'm ready Button.",
-          });
+          addActivity("Clicked on " + task.screen + " I'm ready Button.");
           //@ts-ignore
           navigation.navigate(task.screen + " Game");
         }}

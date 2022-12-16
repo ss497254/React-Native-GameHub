@@ -2,8 +2,15 @@ import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import { Dimensions, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { IconButton, Surface, Text, TouchableRipple } from "react-native-paper";
+import {
+  Button,
+  IconButton,
+  Surface,
+  Text,
+  TouchableRipple,
+} from "react-native-paper";
 import { CircularProgress } from "../components/CircularProgress";
+import SyncResultButton from "../components/SyncResultButton";
 import { colors, radius } from "../constants/AppStyle";
 import { Progress } from "../constants/progress";
 import { task1, task2, task3, task4, task5 } from "../constants/tasks";
@@ -90,7 +97,6 @@ const Tab = ({ title, color, progress, screen, navigate, num, icon }: any) => {
             style={{
               textAlignVertical: "center",
               textAlign: "center",
-              // color: colors["green-500"],
               height: 40,
               width: 40,
               borderRadius: 100,
@@ -133,9 +139,10 @@ export const HomePage = ({ navigation }: any) => {
         style={{
           flex: 1,
           paddingHorizontal: 20,
-          paddingBottom: 20,
+          paddingBottom: 30,
           minHeight: height,
           alignItems: "center",
+          justifyContent: "space-between",
         }}
       >
         <IconButton
@@ -146,12 +153,14 @@ export const HomePage = ({ navigation }: any) => {
         />
         <CircularProgress
           value={totalTaskCompleted / 5}
-          style={{ marginVertical: 20 }}
+          // style={{ marginVertical:  }}
         >
           <Text
             style={{
               color: colors.white,
-              fontSize: 40,
+              fontSize: 45,
+              marginTop: -5,
+              marginBottom: 5,
               lineHeight: 45,
             }}
           >
@@ -161,12 +170,27 @@ export const HomePage = ({ navigation }: any) => {
             Task Completed
           </Text>
         </CircularProgress>
-        <Text
-          variant="titleMedium"
-          style={{ color: colors.white, lineHeight: 24, marginVertical: 10 }}
+        <View
+          style={{
+            flexDirection: "row",
+            width: "100%",
+            marginVertical: 20,
+          }}
         >
-          The complete assessment will take around 15 minutes.
-        </Text>
+          <Button
+            mode="contained"
+            theme={{ roundness: 1 }}
+            style={{
+              flex: 1,
+              marginRight: 10,
+              backgroundColor: colors["green-400"],
+            }}
+            onPress={() => navigation.navigate("Result")}
+          >
+            View Result
+          </Button>
+          <SyncResultButton />
+        </View>
         {Tasks.map((task, idx) => (
           <Tab
             key={idx}

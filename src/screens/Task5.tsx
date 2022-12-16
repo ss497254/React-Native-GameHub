@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { task5Levels } from "../constants/GameLevel";
 import { Task5Game } from "../components/Games/Task5Game";
 import { GameScreen } from "../components/GameScreen";
@@ -6,6 +6,7 @@ import { useTaskProgress } from "../stores/useTaskProgress";
 import { Celebrations } from "../components/Celebrations";
 import { useNavigation } from "@react-navigation/native";
 import { ResultModal } from "../components/ResultModal";
+import { useResultStore } from "../stores/useResultStore";
 
 const Task5 = () => {
   const {
@@ -19,11 +20,23 @@ const Task5 = () => {
   const { navigate, setParams } = useNavigation();
   const { grid, images, timer } = task5Levels[task5Progress.currLevel];
   const [result, setResult] = useState<"success" | "error" | "">("");
+  const { updateResult } = useResultStore();
   const Navigate = navigate as any;
+  const start = useRef(new Date().getTime()).current;
 
   const onRefresh = () => {
     //@ts-ignore
     setParams({ key: Math.random() });
+  };
+
+  const updateProgress = () => {
+    updateTaskProgress(5, { currLevel: task5Progress.currLevel + 1 });
+    updateResult(
+      "task5",
+      `Trail: ${task5Progress.currLevel + 1} Time: ${
+        (new Date().getTime() - start) / 1000
+      }sec`
+    );
   };
 
   return (
@@ -32,14 +45,14 @@ const Task5 = () => {
         result={result}
         onClickBtnB={() => {
           if (result === "success") {
-            updateTaskProgress(5, { currLevel: task5Progress.currLevel + 1 });
+            updateProgress();
           } else {
             onRefresh();
           }
         }}
         onClickBtnA={() => {
           if (result === "success") {
-            updateTaskProgress(5, { currLevel: task5Progress.currLevel + 1 });
+            updateProgress();
           }
           Navigate("Task 5");
         }}

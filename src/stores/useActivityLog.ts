@@ -15,11 +15,12 @@ export const useActivityLog = create(
     {
       activities: [] as Activity[],
     },
-    (set) => ({
+    (set, getState) => ({
       addActivity: (message: string, timestamp: string = formatTimestamp()) => {
-        set((state) => ({
-          activities: [...state.activities, { message, timestamp }],
-        }));
+        const { activities } = getState();
+        activities.push({ message, timestamp });
+
+        set({ activities: activities });
 
         const { userId } = useUserIdStore.getState();
         addItem("activity_log", { message, timestamp, userId });

@@ -63,11 +63,11 @@ export const task3Levels = [
 ];
 
 export const task4Levels = [
-  { words: 2, time: 3, random: false },
-  { words: 2, time: 3, random: false },
-  { words: 2, time: 3, random: false },
-  { words: 2, time: 3, random: true },
-  { words: 0, time: 3, random: false },
+  { words: 9, time: 2, random: false },
+  { words: 9, time: 2, random: false },
+  { words: 9, time: 2, random: false },
+  { words: 9, time: 2, random: true },
+  { words: 0, time: 2, random: false },
 ];
 
 export const task5Levels = [

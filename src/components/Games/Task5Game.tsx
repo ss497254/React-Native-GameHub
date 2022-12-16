@@ -1,4 +1,4 @@
-import generator from "generate-maze";
+import generator from "../../utils/generateMaze";
 import React, { memo, useMemo, useState } from "react";
 import { Image, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -149,7 +149,12 @@ export const Task5Game: React.FC<{
   };
 
   return (
-    <GestureHandlerRootView>
+    <GestureHandlerRootView
+      style={{
+        flexGrow: 3,
+        justifyContent: "space-between",
+      }}
+    >
       <Text
         variant="headlineLarge"
         style={{ marginBottom: 50, textAlign: "center" }}
@@ -179,6 +184,7 @@ export const Task5Game: React.FC<{
           width: baseWidth * 11 * grid + 1.5 - 1 * grid,
           height: baseWidth * 11 * grid + 1.5 - 1 * grid,
           borderWidth: 0.7,
+          marginTop: -50,
         }}
       >
         {mazeMap.map((row, idx_x) => (
@@ -201,11 +207,7 @@ export const Task5Game: React.FC<{
           </View>
         ))}
       </View>
-      <Button
-        onPress={reset}
-        labelStyle={{ fontSize: 18 }}
-        style={{ marginTop: 100 }}
-      >
+      <Button onPress={reset} labelStyle={{ fontSize: 18 }}>
         Reset
       </Button>
     </GestureHandlerRootView>

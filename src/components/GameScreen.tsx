@@ -84,7 +84,7 @@ export const GameScreen: React.FC<{
         ) : null}
       </View>
       {children}
-      <View style={{ flexGrow: 1 }}></View>
+      {scroll ? null : <View style={{ flexGrow: 1 }}></View>}
     </ScrollView>
   );
 };

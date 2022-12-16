@@ -1581,7 +1581,7 @@ export const WordList = [
   "main",
   "mainly",
   "maintain",
-  "maintenance",
+  "maintanance",
   "major",
   "majority",
   "make",

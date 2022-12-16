@@ -6,6 +6,7 @@ import { GameScreen } from "../components/GameScreen";
 import { ResultModal } from "../components/ResultModal";
 import { task3Levels } from "../constants/GameLevel";
 import { useCountDown } from "../hooks/useCountDown";
+import { useResultStore } from "../stores/useResultStore";
 import { useTaskProgress } from "../stores/useTaskProgress";
 
 const Task3 = () => {
@@ -21,11 +22,18 @@ const Task3 = () => {
   const { cards, images, grid } = task3Levels[task3Progress.currLevel];
   const { countDown } = useCountDown(5);
   const [result, setResult] = useState<"success" | "error" | "">("");
+  const { updateResult, resetTaskResult } = useResultStore();
   const Navigate = navigate as any;
 
   const onRefresh = () => {
     //@ts-ignore
     setParams({ key: Math.random() });
+  };
+
+  const updateProgress = () => {
+    resetTaskResult("task3");
+    updateTaskProgress(3, { currLevel: task3Progress.currLevel + 1 });
+    updateResult("task3", `Max Cards: ${cards}, Max Tiles: ${images}`);
   };
 
   return (
@@ -34,14 +42,14 @@ const Task3 = () => {
         result={result}
         onClickBtnB={() => {
           if (result === "success") {
-            updateTaskProgress(3, { currLevel: task3Progress.currLevel + 1 });
+            updateProgress();
           } else {
             onRefresh();
           }
         }}
         onClickBtnA={() => {
           if (result === "success") {
-            updateTaskProgress(3, { currLevel: task3Progress.currLevel + 1 });
+            updateProgress();
           }
           Navigate("Task 3");
         }}

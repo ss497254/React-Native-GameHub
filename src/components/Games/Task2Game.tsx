@@ -86,8 +86,8 @@ export const Task2Game = ({
           </Text>
           <NumberButton
             countDown={countDown}
-            nums={reverse ? nums.reverse() : nums}
-            res={res}
+            nums={nums}
+            res={reverse ? [...res].reverse() : res}
             level={level}
           />
           {reverse ? (
@@ -132,8 +132,6 @@ export const Task2Game = ({
                         if (compareArrays(nums, res)) onSuccess();
                         else onError();
                       }
-
-                      console.log(value, res, nums.length - 1);
 
                       if (value !== res[nums.length - 1]) onError();
                     }}

@@ -3,7 +3,7 @@ import { combine } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as GameLevel from "../constants/GameLevel";
 
-const taskProgressKey = "activity@cerebrus";
+const taskProgressKey = "task_progress@cerebrus";
 export const IntialProgress = [
   {
     name: "task1",
@@ -33,7 +33,7 @@ export const IntialProgress = [
 ];
 
 export const useTaskProgress = create(
-  combine({ taskProgress: IntialProgress }, (set, getState) => ({
+  combine({ taskProgress: IntialProgress.slice() }, (set, getState) => ({
     loadTaskProgress: async () => {
       try {
         const data = JSON.parse(
@@ -45,7 +45,7 @@ export const useTaskProgress = create(
     },
 
     updateTaskProgress: (
-      task: number,
+      task: 1 | 2 | 3 | 4 | 5,
       y: Partial<typeof IntialProgress[0]>
     ) => {
       task--;
@@ -55,12 +55,13 @@ export const useTaskProgress = create(
       });
 
       try {
-        AsyncStorage.setItem(taskProgressKey, JSON.stringify(getState()));
+        if (task !== 4 || y.currLevel === y.totalLevel)
+          AsyncStorage.setItem(taskProgressKey, JSON.stringify(getState()));
       } catch {}
     },
 
     resetTaskProgress: () => {
-      set({ taskProgress: IntialProgress });
+      set({ taskProgress: IntialProgress.slice() });
       try {
         AsyncStorage.setItem(taskProgressKey, "");
       } catch {}

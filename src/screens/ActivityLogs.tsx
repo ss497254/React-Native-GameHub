@@ -6,6 +6,7 @@ import { useActivityLog } from "../stores/useActivityLog";
 
 const ActivityLogs = () => {
   const { activities } = useActivityLog((s) => s);
+
   return (
     <ScrollView>
       {activities.map((activity, idx) => (

@@ -3,6 +3,7 @@ import * as React from "react";
 import { Image, StyleSheet, View } from "react-native";
 import { Button, Drawer, Text } from "react-native-paper";
 import { colors, radius } from "../constants/AppStyle";
+import { useResultStore } from "../stores/useResultStore";
 import { useTaskProgress } from "../stores/useTaskProgress";
 import { useUserIdStore } from "../stores/useUserIdStore";
 
@@ -29,6 +30,7 @@ export const DrawerContent = ({ navigation, state }: any) => {
     activeRoute = state.routes[state.index].name || "";
 
   const { resetTaskProgress } = useTaskProgress();
+  const { resetResult } = useResultStore();
 
   return (
     <>
@@ -97,7 +99,10 @@ export const DrawerContent = ({ navigation, state }: any) => {
         </View>
       </DrawerContentScrollView>
       <Button
-        onPress={resetTaskProgress}
+        onPress={() => {
+          resetResult();
+          resetTaskProgress();
+        }}
         mode="contained"
         theme={{ roundness: 0 }}
         labelStyle={{ paddingVertical: 5 }}

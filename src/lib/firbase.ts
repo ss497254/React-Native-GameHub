@@ -42,7 +42,5 @@ export async function addItem(
   const itemCollection = collection(db, item);
   const result = await addDoc(itemCollection, data);
 
-  console.log("result: ", result.id);
-
   return result.id;
 }
