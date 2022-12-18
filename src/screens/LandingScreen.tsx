@@ -3,9 +3,13 @@ import { Image, View } from "react-native";
 import { Button, Text } from "react-native-paper";
 import { colors } from "../constants/AppStyle";
 import { SignInModal } from "../components/SignInModal";
+import { useUserIdStore } from "../stores/useUserIdStore";
+import { showToast } from "../lib/showToast";
 
 const LandingScreen = ({ navigation }: any) => {
   const [modalOpen, setModalOpen] = useState(false);
+  const { userId } = useUserIdStore();
+
   return (
     <View style={{ flex: 1, paddingVertical: "20%", alignItems: "center" }}>
       {modalOpen ? <SignInModal setVisible={setModalOpen} /> : null}
@@ -46,7 +50,10 @@ const LandingScreen = ({ navigation }: any) => {
           paddingVertical: 2,
           backgroundColor: colors["blue-600"],
         }}
-        onPress={() => navigation.navigate("Home Page")}
+        onPress={() => {
+          if (userId) navigation.navigate("Home Page");
+          else showToast("Please add User_Id", "error");
+        }}
       >
         OK! LET'S START
       </Button>

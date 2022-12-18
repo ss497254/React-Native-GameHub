@@ -3,12 +3,11 @@ import create from "zustand";
 import { combine } from "zustand/middleware";
 
 const userIdKey = "user_id@cerebrus";
-const defaultUserId = "UserId is not added";
 
 export const useUserIdStore = create(
   combine(
     {
-      userId: defaultUserId,
+      userId: "",
     },
     (set) => ({
       loadUserId: async () => {
@@ -28,7 +27,7 @@ export const useUserIdStore = create(
         } catch {}
       },
       logout: async () => {
-        set({ userId: defaultUserId });
+        set({ userId: "" });
 
         try {
           await AsyncStorage.removeItem(userIdKey);

@@ -4,6 +4,9 @@ import {
   collection,
   getDocs,
   addDoc,
+  updateDoc,
+  doc,
+  DocumentReference,
 } from "firebase/firestore/lite";
 
 const firebaseConfig = {
@@ -21,13 +24,9 @@ const firebaseConfig = {
 export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 
-export const collections = ["activity_log", "result"] as const;
-
-export async function getItem(
-  item: typeof collections[number] = "activity_log"
-) {
-  const itemCollection = collection(db, item);
-  const itemSnapshot = await getDocs(itemCollection);
+export async function getItem(item: string) {
+  const itemRef = collection(db, item);
+  const itemSnapshot = await getDocs(itemRef);
 
   return itemSnapshot.docs.map((x) => ({
     id: x.id,
@@ -35,12 +34,9 @@ export async function getItem(
   }));
 }
 
-export async function addItem(
-  item: typeof collections[number] = "activity_log",
-  data: Object
-) {
-  const itemCollection = collection(db, item);
-  const result = await addDoc(itemCollection, data);
+export async function addItem(item: string, data: Object) {
+  const itemRef = collection(db, item);
+  const result = await addDoc(itemRef, data);
 
   return result.id;
 }

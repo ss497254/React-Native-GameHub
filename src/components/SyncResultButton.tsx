@@ -12,7 +12,12 @@ export default function SyncResultButton() {
 
   const onPress = async () => {
     setLoading(true);
-    if (parseInt(userId).toString() === userId) await addItem("result", result);
+
+    if (userId) {
+      result.userId = userId;
+      await addItem("result", result);
+    }
+
     setLoading(false);
   };
   return (

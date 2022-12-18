@@ -31,6 +31,7 @@ export const DrawerContent = ({ navigation, state }: any) => {
 
   const { resetTaskProgress } = useTaskProgress();
   const { resetResult } = useResultStore();
+  const { logout } = useUserIdStore();
 
   return (
     <>
@@ -102,12 +103,15 @@ export const DrawerContent = ({ navigation, state }: any) => {
         onPress={() => {
           resetResult();
           resetTaskProgress();
+          logout();
         }}
         mode="contained"
+        icon="logout-variant"
         theme={{ roundness: 0 }}
         labelStyle={{ paddingVertical: 5 }}
+        style={{ backgroundColor: colors["red-400"] }}
       >
-        Reset Progress
+        Logout
       </Button>
     </>
   );

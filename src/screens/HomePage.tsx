@@ -15,6 +15,7 @@ import { colors, radius } from "../constants/AppStyle";
 import { Progress } from "../constants/progress";
 import { task1, task2, task3, task4, task5 } from "../constants/tasks";
 import { useTaskProgress, IntialProgress } from "../stores/useTaskProgress";
+import { useUserIdStore } from "../stores/useUserIdStore";
 
 const Tab = ({ title, color, progress, screen, navigate, num, icon }: any) => {
   let subTitleColor = "",
@@ -128,6 +129,10 @@ const getTotaltaskCompleted = (taskProgress: typeof IntialProgress) => {
 
 export const HomePage = ({ navigation }: any) => {
   const { height } = Dimensions.get("window");
+  const { userId } = useUserIdStore();
+
+  if (!userId) navigation.navigate("Landing Page");
+
   const { taskProgress } = useTaskProgress((s) => s);
 
   const totalTaskCompleted = getTotaltaskCompleted(taskProgress);
@@ -180,6 +185,7 @@ export const HomePage = ({ navigation }: any) => {
           <Button
             mode="contained"
             theme={{ roundness: 1 }}
+            icon="text-box-outline"
             style={{
               flex: 1,
               marginRight: 10,

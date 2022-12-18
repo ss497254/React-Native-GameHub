@@ -33,7 +33,7 @@ const Task5 = () => {
     updateTaskProgress(5, { currLevel: task5Progress.currLevel + 1 });
     updateResult(
       "task5",
-      `Trail: ${task5Progress.currLevel + 1} Time: ${
+      `Trial: ${task5Progress.currLevel + 1} Time: ${
         (new Date().getTime() - start) / 1000
       }sec`
     );

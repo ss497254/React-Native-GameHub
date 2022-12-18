@@ -23,7 +23,7 @@ export const useActivityLog = create(
         set({ activities: activities });
 
         const { userId } = useUserIdStore.getState();
-        addItem("activity_log", { message, timestamp, userId });
+        addItem("activity_log_" + userId, { message, timestamp });
       },
       clearActivityLog: () => {
         set({ activities: [] });

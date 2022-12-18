@@ -68,11 +68,9 @@ export const Task4Game: React.FC<{
         if (activeWords.has(word)) {
           x.correct++;
         } else {
-          x.intrusion++;
-
           if (store2.size > 0 && store2.has(word)) x.intrusionB++;
-
-          if (random && store.has(word)) x.intrusionA++;
+          else if (random && store.has(word)) x.intrusionA++;
+          else x.intrusion++;
         }
 
         if (x.correct === wordsToShow) z = true;

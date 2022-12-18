@@ -41,8 +41,8 @@ const Task4 = () => {
     updateTaskProgress(4, { currLevel: task4Progress.currLevel + 1 });
     updateResult(
       "task4",
-      `Trail: ${task4Progress.currLevel + 1}, Correct: ${x.correct} Missed: ${
-        words - x.correct
+      `Trial: ${task4Progress.currLevel + 1}, Correct: ${x.correct} Missed: ${
+        9 - x.correct
       } Intrusion: ${x.intrusion} ${
         x.intrusionA ? "IntrusionA " + x.intrusionA : ""
       } ${x.intrusionB ? "IntrusionB " + x.intrusionB : ""}`

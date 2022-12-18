@@ -34,7 +34,7 @@ const Task2 = () => {
     updateTaskProgress(2, { currLevel: task2Progress.currLevel + 1 });
     updateResult(
       "task2",
-      `Trail: ${task2Progress.currLevel + 1}, ${
+      `Trial: ${task2Progress.currLevel + 1}, ${
         reverse ? "Reverse" : "Forward"
       } digit span: ${numLength}`
     );
